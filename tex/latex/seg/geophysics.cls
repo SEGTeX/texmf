@@ -19,7 +19,7 @@
 %%     version 2003/12/01 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
+\ProvidesClass{geophysics}[2004/11/08 v2.0 Geophysics paper]
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -35,6 +35,7 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
+                                % \texttt{geophysics.cls} package conforms to the \LaTeX2e\ standard.
 
 \RequirePackage{ifthen}
 \newcommand{\@type}{}

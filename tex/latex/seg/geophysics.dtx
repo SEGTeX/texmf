@@ -14,7 +14,7 @@
 %
 % \iffalse
 %<class>\NeedsTeXFormat{LaTeX2e}
-%<class>\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
+%<class>\ProvidesClass{geophysics}[2004/11/08 v2.0 Geophysics paper]
 %
 %<*driver>
 \ProvidesFile{geophysics.dtx}[2004/06/22 v1.0 geophysics class]
@@ -47,23 +47,35 @@
 %%   Right brace   \}     Tilde         \~}
 %
 % \changes{v1.0}{2004/06/22}{Initial version}
+% \changes{v2.0}{2004/11/08}{Numerous updates}
 %
 % \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
-% \DoNotIndex{\newcommand,\providecommand,\renewcommand}
+% \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand,
+% \providecommand,\renewcommand}
 %
 % \title{The \textsf{geophysics} class for 
 % writing \emph{Geophysics} papers\thanks{This document corresponds to
-% \textsf{geophhysics}~\fileversion, dated~\filedate.}}
+% \textsf{geophysics}~\fileversion, dated~\filedate.}}
 % \author{Sergey Fomel \\ \texttt{sergey.fomel@beg.utexas.edu}}
 % \maketitle
 % \begin{abstract}
-% This package provides...
+% This package provides a \LaTeX2e\ class for writing \emph{Geophysics}-style papers.
 % \end{abstract}
 %
 % \section{Introduction}
-% \LaTeX\ is a powerful system... 
+% \LaTeX\ is a powerful document typesetting system. The new
+                                % \texttt{geophysics.cls} package conforms to the \LaTeX2e\ standard.
 %
 % \section{Usage}
+%
+%\subsection{Options}
+%
+% Two options control the appearance...
+%
+%\subsection{Appearance}
+%
+% \DescribeEnv{abstract}
+% The |abstract| environment...
 %
 % The following macros are defined in the package:
 %
@@ -76,8 +88,6 @@
 % |\tensor|\marg{t} is used for matrix variables in equations. It puts the
 % argument in boldface and underscores it with a tilde.
 %
-% \DescribeEnv{abstract}
-% Put an abstract
 %
 % \subsection{Figures and tables}
 % \DescribeMacro{\inputdir}
@@ -92,7 +102,7 @@
 % \DescribeMacro{\plot}
 % |\plot|\marg{filename}\marg{size}\marg{caption} inserts a figure from file
 % \meta{filename} (specified relative to figdir) with caption
-% \meta{caption}. The \meta{size} specification corresponds to the convention
+% \meta{caption}. The \meta{size} specification corresponds to the conventions
 % of the \textsf{graphicx} package. Examples:
 % \begin{itemize}
 % \item |width=\textwidth| (for scaling the figure and preserving the aspect
@@ -100,13 +110,16 @@
 % \item |width=3in,height=0.5\textheight| (for scaling the figure
 % anisotropically) 
 % \end{itemize}
-% Refer to the figure number with |\ref{fig:|\meta{filename}|}|.
+% You can refer to the figure number with |\ref{fig:|\meta{filename}|}|.
+%
+% \DescribeMacro{\sideplot}
+% |\sideplot|\marg{filename}\marg{size}\marg{caption} ...
 %
 % \DescribeMacro{\tabl}
 % The |\tabl|\marg{label}\marg{caption}\marg{table} macro is used to 
-% manage tables. The defined \meta{table} will appear at the end of the 
+% manage tables. In the manuscript mode, the defined \meta{table} will appear at% the end of the 
 % paper, and its caption will be
-% added to the list of tables. Refer to the table number with 
+% added to the list of tables. You can refer to the table number with 
 % |\ref{tbl:|\meta{filename}|}|.
 %
 % \StopEventually{\PrintIndex\PrintChanges}
@@ -350,7 +363,7 @@
   \renewcommand{\baselinestretch}{1.0}
 }
 %    \end{macrocode}
-% Specify page dimensions. \emph{This should be adjusted for A4 paper format.}
+% Specify page dimensions. \emph{This should be adjusted for A4 paper format!}
 %    \begin{macrocode}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
