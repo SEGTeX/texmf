@@ -1,0 +1,51 @@
+% \iffalse (meta-comment)
+%% Copyright (C) 2004 Sergey Fomel
+\NeedsTeXFormat{LaTeX2e}
+%<*dtx>
+\ProvidesFile{geophysics.dtx}
+%</dtx>
+%<class>\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
+%<driver>\ProvidesFile{geophysics.drv}
+% \fi
+%\ProvidesFile{geophysics}[2004/06/22 v1.0 Geophysics paper]
+
+% \iffalse
+%<*driver>
+\documentclass[11pt]{article}
+\usepackage{doc}
+\EnableCrossrefs
+\RecordChanges
+\CodelineIndex
+\begin{document}
+\DocInput{geophysics.dtx}
+\end{document}
+%</driver>
+%\fi
+
+% \DoNotIndex{\RequirePackage}
+% \GetFileInfo{geophysics}
+% \title{\bfseries Geophysics: \LaTeX2e\ class for writing \emph{Geophysics}
+% papers}
+% \author{Sergey Fomel \\ sergey.fomel@beg.utexas.edu}
+% \date{This package describes package \texttt{\filename} \\
+% version \fileversion, from \filedate}
+% \maketitle
+% \MakeShortVerb{|}
+%
+% \section{Introduction}
+% This package provides...
+%
+% \StopEventually{\PrintIndex\PrintChanges}
+%
+% \section{The Coding}
+% Our package is a derivative of the standard \texttt{article} class.
+% \begin{macrocode}
+%<*package>
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions*
+
+\LoadClass[11pt]{article}
+% \end{macrocode}
+%
+%</package>
+% \Finale

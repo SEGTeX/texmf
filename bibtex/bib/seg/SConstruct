@@ -1,0 +1,77 @@
+import os, re, sys, signal
+
+env = Environment(TARFLAGS = 'cvz',
+                  TARSUFFIX = '.tar.gz',
+                  ZIPCOM=WhereIs('gzip') + ' -c $SOURCE > $TARGET')
+
+env.Command('SEG.bib',Split('segbib.py preamble segDCI.txt'),
+            '''cat preamble > $TARGET
+            ./segbib.py < segDCI.txt >> $TARGET''')
+
+env.Tar('scripts',Split('segbib.py segtex.py'))
+env.Zip('SEG.bib.gz','SEG.bib')
+env.Alias('compress',['scripts.tar.gz','SEG.bib.gz'])
+
+latex = WhereIs('pdflatex')
+bibtex = WhereIs('bibtex')
+
+child = None
+
+def interrupt(signum,frame):
+    global child
+    print "%s: aborting..." % sys.argv[0]
+    print "Press Enter a few times to empty LaTeX buffer!"
+    if child:
+        os.kill(child,signal.SIGINT)
+    sys.exit(1)
+
+signal.signal(signal.SIGINT,interrupt)
+
+def system(command,arg):
+    global child
+    child = os.fork()
+    if child:        
+        child,err = os.waitpid(child,0)
+        child = 0
+        return err
+    else:
+        os.execv(command,[command,arg])
+        os._exit(1)
+
+def latex2pdf(target=None,source=None,env=None):
+    "Convert LaTeX to DVI"
+    tex = str(source[0])
+    pdf = str(target[0])
+    stem = re.sub('\.[^\.]+$','',pdf) 
+    # First latex run
+    if system(latex,tex):
+        return 1
+    system(bibtex,stem)
+    system(latex,tex)
+    system(latex,tex)
+    return 0
+
+def latex_emitter(target, source, env):
+    '''Produces a list of extra outputs from the LaTeX/BibTeX'''
+    base = re.sub('\.[^\.]+$','',str(source[0]))
+    extra = map (lambda x: base+x,['.pdf','.aux','.log','.bbl','.blg'])
+    return (extra,source)
+
+Pdf = Builder(action = Action(latex2pdf),
+              emitter=latex_emitter,src_suffix='.ltx',suffix='.pdf')
+
+env.Append(BUILDERS={'Pdf':Pdf})
+
+blocks = map(str,range(1,34000,1000))
+for i in xrange(len(blocks)-1):
+    range = '-'.join(blocks[i:i+2])
+    test = 'test' + range
+    ltx = test + '.ltx'
+    pdf = test + '.pdf'
+
+    env.Command(ltx,['segtex.py','SEG.bib'],
+                './segtex.py %s > $TARGET' % range)
+    env.Pdf(pdf,ltx)
+    env.Install('PDF',pdf)
+    env.Depends(os.path.join('PDF',pdf),pdf)
+
