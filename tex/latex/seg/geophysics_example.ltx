@@ -1,5 +1,5 @@
-%\documentclass[12pt,paper]{geophysics}
-\documentclass[manuscript]{geophysics}
+\documentclass[12pt,paper]{geophysics}
+%\documentclass[manuscript]{geophysics}
 
 % An example of defining macros
 \newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
@@ -8,7 +8,14 @@
 \begin{document}
 
 \title{An example \emph{Geophysics} article, \\ with a two-line title}
-\address{\footnotemark[2]Bureau of Economic Geology, \\
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+
+\address{
+\footnotemark[1]BP UTG, \\
+200 Westlake Park Blvd, \\
+Houston, TX, 77079 \\
+\footnotemark[2]Bureau of Economic Geology, \\
 John A. and Katherine G. Jackson School of Geosciences \\
 The University of Texas at Austin \\
 University Station, Box X \\
@@ -112,21 +119,20 @@ The discussion is summarized in Table~\ref{tbl:example}.
 
 I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and Fr\'ed\'eric Billette for having
 names with non-English letters in them.  I wish to thank \cite{Cerveny} for
-providing an example of how to make a bib file that includes an author whose
-name begins with a non-English character, and \cite{forgues96} for providing
-both an example of referencing a Ph.D. thesis and yet more non-English
-characters.
+providing an example of how to make a bib file that includes an author
+whose name begins with a non-English character and \cite{forgues96} for
+providing both an example of referencing a Ph.D. thesis and yet more
+non-English characters.
 
 \newpage
 
 % include bibliography
-\bibliographystyle{seglike}  % the style file is seglike.bst
-\bibliography{example,books} % the bibliography file is example.bib
+\bibliographystyle{seglike}  % style file is seglike.bst
+\bibliography{example,books} % bibliography files are example.bib, books.bib
 
 \newpage
 
-\APPENDIX{A}
-\section{Appendix example}
+\append{Appendix example}
 
 \begin{equation}
 \frac{\partial U}{\partial z} = 
@@ -139,8 +145,7 @@ characters.
 \end{equation}
 It is important to get equation~(\ref{eqn:partial}) right.
 
-\APPENDIX{B}
-\section{Another appendix}
+\append{Another appendix}
 
 \begin{equation}
 \frac{\partial U}{\partial z} = 
@@ -157,11 +162,10 @@ Anisotropy is clearly visible in Figure~\ref{fig:exgr}.
 
 \sideplot{exgr}{width=0.8\textwidth}
 {This figure is specified in the document by \texttt{
-    $\backslash$sideplot\{exgr\}\{width=0.8$\backslash$textwidth\}\{This caption.\}}.
+    $\backslash$sideplot\{exgr\}\{width=0.8$\backslash$text\-width\}\{This caption.\}}.
 }
 
-\APPENDIX{C}
-\section{This document}
+\append{This document}
 
 \verbatiminput{geophysics_example.ltx}
 

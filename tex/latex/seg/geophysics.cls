@@ -99,21 +99,31 @@
         \end{minipage}
         \hfill
         \begin{minipage}{0.6\textwidth}
-          \centering
+          \flushright
           \includegraphics[#3]{\fig@file{#2.pdf}}
         \end{minipage}}
     \end{figure*}
   }}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
-\providecommand{\tabl}[4][X]{
-  \stepcounter{@tabls}
-  \AtEndDocument{
-    \begin{table}[p]
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \providecommand{\tabl}[4][X]{
+    \stepcounter{@tabls}
+    \AtEndDocument{
+      \begin{table}[p]
+        #4
+        \caption[#3]{}
+        \label{tbl:#2}
+      \end{table}\clearpage
+    }
+  }
+}{
+  \providecommand{\tabl}[4][htbp]{
+    \begin{table}[#1]
       #4
-      \caption[#3]{}
+      \caption{#3}
       \label{tbl:#2}
-    \end{table}\clearpage
+    \end{table}
   }
 }
 \renewcommand*{\l@figure}[2]{%
@@ -231,15 +241,28 @@
 \renewcommand{\@evenfoot}{\@oddfoot}}
 \pagestyle{seg}\thispagestyle{segone}}
 \newcounter{@append}
+\ifthenelse{\equal{\@type}{manuscript}}{%
+  \AtEndDocument{\setcounter{@append}{0}}}{}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
 \renewcommand{\appendix}{%
-\ifthenelse{\equal{\append@name}{A}}{%
-\renewcommand{\append@name}{\Alph{@append}}}{}
-\setcounter{equation}{0}\setcounter{figure}{0}%%
-\renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-\renewcommand{\thefigure}{\append@name-\arabic{figure}}\stepcounter{@append}}
-\providecommand{\APPENDIX}[1]{\appendname{#1}\appendix\section{APPENDIX\ #1}}
+  \ifthenelse{\equal{\append@name}{A}}{%
+    \renewcommand{\append@name}{\Alph{@append}}}{}
+  \setcounter{equation}{0}%
+  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+  \ifthenelse{\equal{\@type}{manuscript}}{%
+    \AtEndDocument{
+      \setcounter{figure}{0}%
+      \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+      \stepcounter{@append}
+    }
+  }{%
+    \setcounter{figure}{0}%
+    \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  }
+  \stepcounter{@append}
+}
+\providecommand{\append}[1]{\appendix\section{Appendix \append@name \\ #1}}
 \RequirePackage{verbatim}
 \RequirePackage{moreverb}
 \endinput

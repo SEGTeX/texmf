@@ -67,5 +67,4 @@ env.Command('Fig/exgr.pdf','Fig/exgr.eps','%s $SOURCE' % epstopdf)
 env.Pdf('geophysics_example.pdf',
         ['geophysics_example.ltx','geophysics.cls',
          'example.bib','Fig/exgr.pdf'])
-env.Pdf('geophysics_old_example.pdf',
-        ['geophysics_old_example.tex','geophysics.cls'])
+
