@@ -162,15 +162,13 @@
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
-% \begin{macro}{\@subpath}
-% |\@path| is an internal variable to store the top directory.
-% \begin{macro}{\subdir}
+% \begin{macro}{\figdir}
+% |\figdir| is a variable. It will need to be redefined to specify the figure
+% directory. 
 %    \begin{macrocode}
-\newcommand{\@subpath}{.}
-\newcommand{\subdir}[1]{\renewcommand{\@subpath}{#1}}
-\newcommand{\fig@file}[1]{\@path/\@subpath/#1}
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\@path/\figdir/#1}
 %    \end{macrocode}
-% \end{macro}
 % \end{macro}
 % Load the \textsf{graphicx} package for included figures.
 %    \begin{macrocode}

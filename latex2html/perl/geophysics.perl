@@ -4,12 +4,14 @@ package seg;
 
 $fignum = 0;
 $append = '';
-$imgdir = '../Img/';
+$figdir = 'Fig';
+$path = '.';
 
 sub figure {
     my ($figname,$size) = @_;
-    print "Translating plot $figname...\n";
-    my $out = join ('', "<TD><IMG SRC = \"",$imgdir,$figname,".png\"");
+    my $fig = join('/','..',$path,$figdir,$figname);
+    print "Translating plot $fig... \n";
+    my $out = join ('', "<IMG SRC = \"$fig.png\"");
     foreach $dimension ("width","height") {
         if ($size =~ /$dimension=(\d*\.?\d*)in/) {
             $out .= sprintf (" %s=%d",$dimension,$1*75);
@@ -17,14 +19,40 @@ sub figure {
             $out .= sprintf (" %s=%d",$dimension,$1*30);
         }
     }
-    $out .= " ALT = \"$figname\"><\/TD>";
+    $out .= " ALT = \"$figname\">\n";
 }
 
 sub caption {
     my ($figname,$caption) = @_;
-    join ('',"<STRONG>","<A HREF = \"",$imgdir,$figname,".png\">$figname<\/A>",
-          "<BR>Figure ",$append,$fignum,"<\/STRONG> ",$caption);
+    my $fig = join('/','..',$path,$figdir,$figname);
+    join ('',"<STRONG>",
+	  "<A HREF = \"$fig.png\">$figname<\/A>",
+	  "<BR>Figure ",$append,$fignum,"<\/STRONG> ",$caption);
 }
+
+sub buttons {
+    my $figname = shift;
+    my $fig = join('/','..',$path,$figdir,$figname);
+    my $type = $main::IMAGE_TYPE;
+    my $out = join(''," <a href=\"$fig.pdf\">", 
+		   "<img src=\"$main::ICONSERVER/pdf.$type\"",
+		   " alt=\"[pdf]\" width=\"32\" height=\"32\"></a>");
+    if ($path ne '.') {
+	$out .= join(''," <a href=\"../$path.tgz\">", 
+		     "<img src=\"$main::ICONSERVER/tgz.$type\"", 
+		     " alt=\"[tgz]\" width=\"32\" height=\"32\"></a>");
+    }
+    $out .= join(''," <a href=\"$fig.$type\">", 
+		 "<img src=\"$main::ICONSERVER/viewmag.$type\"",
+		 " alt=\"[$type]\" width=\"32\" height=\"32\"></a>");
+    if ($path ne '.') {
+	$out .= join(''," <a href=\"../$path.html\">", 
+		     "<img src=\"$main::ICONSERVER/configure.$type\"", 
+		     " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
+    }
+    $out;    
+}
+
 
 package main;
 
@@ -35,6 +63,14 @@ _RAW_ARG_CMDS_
 bibAnnoteFile # {}
 footer # {}
 _IGNORED_CMDS_
+
+sub do_cmd_inputdir {
+    my $rest = shift;
+    $rest =~ s/$next_pair_pr_rx//o;
+    $seg::path = $2;
+    $latex_body .= &revert_to_raw_tex("\\inputdir{$2}\n");
+    $rest;
+}
 
 sub do_cmd_APPENDIX {
     my $rest = shift;
@@ -58,9 +94,12 @@ sub do_cmd_plot {
     my $label = 'fig:' . $figname;
     join ("\n","<P><CENTER>",
           &anchor_label($label,$CURRENT_FILE,''),
-          "<TABLE BORDER>",
-          &seg::figure  ($figname,$size),"<\/TABLE>",
-          &seg::caption ($figname,$caption),"<BR><\/CENTER><\/P>", $_);
+          "<TABLE BORDER=0>","<TR><TH>",
+          &seg::figure  ($figname,$size),"<TR><TH>",
+          &seg::caption ($figname,$caption),"<TR><TH>",
+	  &seg::buttons ($figname),
+	  "<\/TABLE>",
+	  "<BR><\/CENTER><\/P>", $_);
 }
 
 sub do_cmd_sideplot {
@@ -76,9 +115,10 @@ sub do_cmd_sideplot {
     join ("\n","<P><CENTER>",
           &anchor_label($label,$CURRENT_FILE,''),
           "<TABLE BORDER=0>","<TR>",
-          "<TD WIDTH=\"40\%\">",
-          &seg::caption ($figname,$caption),"<\TD>",
-          &seg::figure  ($figname,$size),
+          "<TH WIDTH=\"40\%\">",
+          &seg::caption ($figname,$caption),"<TH rowspan=2>",
+          &seg::figure  ($figname,$size),"<TR><TH WIDTH=\"40\%\">",
+	  &seg::buttons ($figname),
           "<\/TABLE><\/CENTER><\/P>", $_);
 }
 

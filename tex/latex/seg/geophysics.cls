@@ -52,9 +52,8 @@
 \providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
-\newcommand{\@subpath}{.}
-\newcommand{\subdir}[1]{\renewcommand{\@subpath}{#1}}
-\newcommand{\fig@file}[1]{\@path/\@subpath/#1}
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \RequirePackage{graphicx}
 \newcounter{@plots}
 \setcounter{@plots}{0}
