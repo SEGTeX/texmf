@@ -8,9 +8,9 @@ makeindex = WhereIs('makeindex')
 bibtex = WhereIs('bibtex')
 epstopdf = WhereIs('epstopdf')
 
-env.Command(Split('seg.sty geophysics.cls'),
-            Split('seg.ins seg.dtx geophysics.dtx'),
-            '%s ${SOURCES[0]}' % latex)
+env.Command(Split('seg.sty geophysics.cls georeport.cls'),
+            Split('seg.ins seg.dtx geophysics.dtx georeport.dtx'),
+            '%s $SOURCE' % latex)
 
 for cls in ('geophysics','georeport'):
     env.Command([cls+'.pdf',cls+'.aux',cls+'.gls',
