@@ -6,6 +6,8 @@ $fignum = 0;
 $append = '';
 $figdir = 'Fig';
 $path = '.';
+$left = '';
+$right = '';
 
 sub figure {
     my ($figname,$size) = @_;
@@ -149,19 +151,19 @@ sub do_cmd_sideplot {
 sub do_cmd_lefthead {
     my $rest = shift;
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
-    local ($_) = $2;
+    $seg::left = $2;
     &extract_pure_text("liberal");
-    $TITLE = join (": ",$_,$TITLE);
+    $TITLE = join (": ",$seg::left,$seg:right) unless ($seg::right eq '');
     $rest;
 }
 
-#sub do_cmd_righthead {
-#    my $rest = shift;
-#    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
-#    local ($_) = $2;
-#    &extract_pure_text("liberal");
-#    $TITLE .= $_;
-#    $rest;
-#}
+sub do_cmd_righthead {
+    my $rest = shift;
+    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
+    $seg::right = $2;
+    &extract_pure_text("liberal");
+    $TITLE = join (": ",$seg::left,$seg:right) unless ($seg::left eq '');
+    $rest;
+}
 
 1;                              # This must be the last line
