@@ -72,7 +72,7 @@ env.Pdf('geophysics_manuscript.pdf',
          'example.bib','Fig/exgr.pdf'])
 
 env.Command('geophysics_paper.ltx','geophysics_example.ltx',
-            'sed s/manuscript/12pt,paper/ < $SOURCE > $TARGET')
+            'sed s/manuscript/paper/ < $SOURCE > $TARGET')
 
 env.Pdf('geophysics_paper.pdf',
         ['geophysics_paper.ltx','geophysics.cls',

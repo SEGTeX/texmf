@@ -124,6 +124,10 @@
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
+% Load \textsf{ifthen} package for conditionals.
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
 % Different types: can prepare a manuscript or a paper.
 %    \begin{macrocode}
 \newcommand{\@type}{}
@@ -139,10 +143,6 @@
 \ExecuteOptions{paper}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-%    \end{macrocode}
-% Load \textsf{ifthen} package for conditionals.
-%    \begin{macrocode}
-\RequirePackage{ifthen}
 %    \end{macrocode}
 % Load SEG style package
 %    \begin{macrocode}
@@ -263,39 +263,39 @@
     \AtEndDocument{
       \begin{figure}[p]
         \centering
-	\setcounter{sub@fig}{0}
-	\edef\list@i{#3}
-	\loop
-	\edef\item@i{\expandafter\next@item\list@i,\empty?}
-	\edef\list@i{\expandafter\rest@item\list@i,\empty?}
-	\ifx\item@i\empty 
-	\else
-	\stepcounter{sub@fig}
-	\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-	  \label{fig:\item@i}}
-	\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
-	\repeat
-	\caption[#5]{}
-	\label{fig:#3}
+        \setcounter{sub@fig}{0}
+        \edef\list@i{#3}
+        \loop
+        \edef\item@i{\expandafter\next@item\list@i,\empty?}
+        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+        \ifx\item@i\empty 
+        \else
+        \stepcounter{sub@fig}
+        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+          \label{fig:\item@i}}
+        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
+        \repeat
+        \caption[#5]{}
+        \label{fig:#3}
       \end{figure}\clearpage
 }}}
 {\newcommand{\multiplot}[5][htbp]{
     \begin{figure*}[#1]
         \centering
-	\setcounter{sub@fig}{0}
-	\edef\list@i{#3}
-	\loop
-	\edef\item@i{\expandafter\next@item\list@i,\empty?}
-	\edef\list@i{\expandafter\rest@item\list@i,\empty?}
-	\ifx\item@i\empty 
-	\else
-	\stepcounter{sub@fig}
-	\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-	  \label{fig:\item@i}}
-	\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
-	\repeat
-	\caption{#5}
-	\label{fig:#3}
+        \setcounter{sub@fig}{0}
+        \edef\list@i{#3}
+        \loop
+        \edef\item@i{\expandafter\next@item\list@i,\empty?}
+        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+        \ifx\item@i\empty 
+        \else
+        \stepcounter{sub@fig}
+        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+          \label{fig:\item@i}}
+        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
+        \repeat
+        \caption{#5}
+        \label{fig:#3}
     \end{figure*}
 }}
 %    \end{macrocode}
@@ -419,7 +419,8 @@
 \let\seg@section\section
 \let\seg@subsection\subsection
 \let\seg@subsubsection\subsubsection
-\newcommand{\segsection}[2][]{\seg@section*{\MakeUppercase{#2}}}
+\newcommand{\segsection}[2][]{%
+\seg@section*{\protect\centering\MakeUppercase{#2}}}
 \def\section{\@ifstar{\segsection}{\segsection}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
@@ -460,7 +461,7 @@
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
     \seg@title
-      \begin{centering}
+      \begin{center}
         \ifthenelse{\equal{\@type}{manuscript}}{%
           \textbf{#1} \\
           \seg@address\ \\
@@ -468,7 +469,7 @@
         }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
             \footnote{\textbf{e-mail: }\seg@email}} \\ \ 
         }
-      \end{centering}
+      \end{center}
     }}
 %    \end{macrocode}
 % \end{macro}
@@ -494,6 +495,7 @@
     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
         \centerline{\textbf{ABSTRACT}}\medskip}{%
         \medskip\end{minipage}\end{lrbox}%
+%    \twocolumn[\noindent\fbox{\usebox{\seg@abstract}}]
     \noindent\fbox{\usebox{\seg@abstract}}
   }
 } 
@@ -580,7 +582,8 @@
   }
   \stepcounter{@append}
 }
-\providecommand{\append}[1]{\appendix\section{Appendix \append@name \\ #1}}
+\providecommand{\append}[1]{%
+\appendix\section{Appendix \append@name}\section{#1}}
 %    \end{macrocode}
 % Packages for including things verbatum.
 %    \begin{macrocode}

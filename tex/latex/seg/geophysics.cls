@@ -35,6 +35,7 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
+\RequirePackage{ifthen}
 \newcommand{\@type}{}
 \DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
 \DeclareOption{paper}{\renewcommand{\@type}{paper}}
@@ -42,7 +43,6 @@
 \ExecuteOptions{paper}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-\RequirePackage{ifthen}
 \RequirePackage{seg}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
@@ -107,39 +107,39 @@
     \AtEndDocument{
       \begin{figure}[p]
         \centering
-\setcounter{sub@fig}{0}
-\edef\list@i{#3}
-\loop
-\edef\item@i{\expandafter\next@item\list@i,\empty?}
-\edef\list@i{\expandafter\rest@item\list@i,\empty?}
-\ifx\item@i\empty
-\else
-\stepcounter{sub@fig}
-\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-  \label{fig:\item@i}}
-\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
-\repeat
-\caption[#5]{}
-\label{fig:#3}
+        \setcounter{sub@fig}{0}
+        \edef\list@i{#3}
+        \loop
+        \edef\item@i{\expandafter\next@item\list@i,\empty?}
+        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+        \ifx\item@i\empty
+        \else
+        \stepcounter{sub@fig}
+        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+          \label{fig:\item@i}}
+        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+        \repeat
+        \caption[#5]{}
+        \label{fig:#3}
       \end{figure}\clearpage
 }}}
 {\newcommand{\multiplot}[5][htbp]{
     \begin{figure*}[#1]
         \centering
-\setcounter{sub@fig}{0}
-\edef\list@i{#3}
-\loop
-\edef\item@i{\expandafter\next@item\list@i,\empty?}
-\edef\list@i{\expandafter\rest@item\list@i,\empty?}
-\ifx\item@i\empty
-\else
-\stepcounter{sub@fig}
-\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-  \label{fig:\item@i}}
-\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
-\repeat
-\caption{#5}
-\label{fig:#3}
+        \setcounter{sub@fig}{0}
+        \edef\list@i{#3}
+        \loop
+        \edef\item@i{\expandafter\next@item\list@i,\empty?}
+        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+        \ifx\item@i\empty
+        \else
+        \stepcounter{sub@fig}
+        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+          \label{fig:\item@i}}
+        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+        \repeat
+        \caption{#5}
+        \label{fig:#3}
     \end{figure*}
 }}
 \newcounter{@tabls}
@@ -211,7 +211,8 @@
 \let\seg@section\section
 \let\seg@subsection\subsection
 \let\seg@subsubsection\subsubsection
-\newcommand{\segsection}[2][]{\seg@section*{\MakeUppercase{#2}}}
+\newcommand{\segsection}[2][]{%
+\seg@section*{\protect\centering\MakeUppercase{#2}}}
 \def\section{\@ifstar{\segsection}{\segsection}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
@@ -231,7 +232,7 @@
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
     \seg@title
-      \begin{centering}
+      \begin{center}
         \ifthenelse{\equal{\@type}{manuscript}}{%
           \textbf{#1} \\
           \seg@address\ \\
@@ -239,7 +240,7 @@
         }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
             \footnote{\textbf{e-mail: }\seg@email}} \\ \
         }
-      \end{centering}
+      \end{center}
     }}
 \renewcommand{\maketitle}{\seg@author}
 \ifthenelse{\equal{\@type}{manuscript}}{
@@ -300,7 +301,8 @@
   }
   \stepcounter{@append}
 }
-\providecommand{\append}[1]{\appendix\section{Appendix \append@name \\ #1}}
+\providecommand{\append}[1]{%
+\appendix\section{Appendix \append@name}\section{#1}}
 \RequirePackage{verbatim}
 \RequirePackage{moreverb}
 \endinput
