@@ -79,7 +79,6 @@ package main;
 _RAW_ARG_CMDS_
 
 &ignore_commands( <<_IGNORED_CMDS_);
-righthead # {}
 bibAnnoteFile # {}
 footer # {}
 _IGNORED_CMDS_
@@ -153,7 +152,7 @@ sub do_cmd_lefthead {
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     $seg::left = $2;
     &extract_pure_text("liberal");
-    $TITLE = join (": ",$seg::left,$seg:right) unless ($seg::right eq '');
+    $TITLE = join (": ",$seg::left,$seg::right) unless ($seg::right eq '');
     $rest;
 }
 
@@ -162,7 +161,7 @@ sub do_cmd_righthead {
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     $seg::right = $2;
     &extract_pure_text("liberal");
-    $TITLE = join (": ",$seg::left,$seg:right) unless ($seg::left eq '');
+    $TITLE = join (": ",$seg::left,$seg::right) unless ($seg::left eq '');
     $rest;
 }
 
