@@ -2,6 +2,9 @@
 #
 ### Command Line Argument Defaults #######################################
 
+$TRANSPARENT_FIGURES = 0;
+$LATEX_COLOR = "\\pagecolor{white}";
+
 $MAX_SPLIT_DEPTH = 8;	# Stop making separate files at this depth
 
 $MAX_LINK_DEPTH = 4;    # Stop showing child nodes at this depth   
@@ -219,19 +222,19 @@ sub my_navigation_panel {
 	. "\n<td>$PREVIOUS</td>"
 	# title box
 	. "\n<td><img src=\"$ICONSERVER/left.$IMAGE_TYPE\"" 
-	. "width=\"16\" height=\"32\"></td>"
+	. " width=\"16\" height=\"32\" border=\"0\"></td>"
 	. "<td class=\"navigation\" align=\"center\" width=\"100%\">"
 	. "$title</td>"
 	. "<td><img src=\"$ICONSERVER/right.$IMAGE_TYPE\"" 
-	. "width=\"16\" height=\"32\"></td>"
+	. " width=\"16\" height=\"32\" border=\"0\"></td>"
 	# right-hand side
 	. "\n<td>$CONTENTS</td>"
 	. "\n<td><a href=\"../$FILE.pdf\">" 
 	. "<img src=\"$ICONSERVER/pdf.$IMAGE_TYPE\" alt=\"[pdf]\""
-	. "width=\"32\" height=\"32\"></a></td>" 
+	. " width=\"32\" height=\"32\" border=\"0\"></a></td>" 
 	. "\n<td><a href=\"../$FILE.tgz\">" 
 	. "<img src=\"$ICONSERVER/tgz.$IMAGE_TYPE\" alt=\"[tgz]\""
-	. "width=\"32\" height=\"32\"></a></td>" 
+	. " width=\"32\" height=\"32\" border=\"0\"></a></td>" 
         # module index
 	. "\n<td>$INDEX</td>"
 	. "\n</tr></table>\n" .

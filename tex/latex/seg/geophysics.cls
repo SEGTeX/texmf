@@ -55,8 +55,6 @@
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \RequirePackage{graphicx}
-\RequirePackage{color}
-\pagecolor{white}
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\equal{\@type}{manuscript}}

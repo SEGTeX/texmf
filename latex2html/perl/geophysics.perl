@@ -11,7 +11,7 @@ sub figure {
     my ($figname,$size) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
     print "Translating plot $fig... \n";
-    my $out = join ('', "<IMG SRC = \"$fig.png\"");
+    my $out = join ('', "<IMG SRC = \"$fig.png\" border=\"0\"");
     foreach $dimension ("width","height") {
         if ($size =~ /$dimension=(\d*\.?\d*)in/) {
             $out .= sprintf (" %s=%d",$dimension,$1*75);
@@ -35,19 +35,20 @@ sub buttons {
     my $fig = join('/','..',$path,$figdir,$figname);
     my $type = $main::IMAGE_TYPE;
     my $out = join(''," <a href=\"$fig.pdf\">", 
-		   "<img src=\"$main::ICONSERVER/pdf.$type\"",
+		   "<img src=\"$main::ICONSERVER/pdf.$type\" border=\"0\"",
 		   " alt=\"[pdf]\" width=\"32\" height=\"32\"></a>");
     if ($path ne '.') {
 	$out .= join(''," <a href=\"../$path.tgz\">", 
-		     "<img src=\"$main::ICONSERVER/tgz.$type\"", 
+		     "<img src=\"$main::ICONSERVER/tgz.$type\" border=\"0\"", 
 		     " alt=\"[tgz]\" width=\"32\" height=\"32\"></a>");
     }
     $out .= join(''," <a href=\"$fig.$type\">", 
-		 "<img src=\"$main::ICONSERVER/viewmag.$type\"",
+		 "<img src=\"$main::ICONSERVER/viewmag.$type\" border=\"0\"",
 		 " alt=\"[$type]\" width=\"32\" height=\"32\"></a>");
     if ($path ne '.') {
 	$out .= join(''," <a href=\"../$path.html\">", 
-		     "<img src=\"$main::ICONSERVER/configure.$type\"", 
+		     "<img src=\"$main::ICONSERVER/configure.$type\"",
+		     " border=\"0\"", 
 		     " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
     }
     $out;    
