@@ -55,6 +55,7 @@
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \RequirePackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.eps,.ps}
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\equal{\@type}{manuscript}}

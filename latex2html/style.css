@@ -46,3 +46,10 @@ pre {
 	width: 100%;
 	}
 
+pre.code {
+     background-color: #eeeeee;
+     border: thin solid black;
+     padding: 1em;
+     margin-left: 2em;
+     margin-right: 2em; }
+
