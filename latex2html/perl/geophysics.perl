@@ -50,6 +50,16 @@ sub buttons {
 		     "<img src=\"$main::ICONSERVER/configure.$type\"",
 		     " border=\"0\"", 
 		     " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
+    } elsif (-d '../Math') {
+	$math = $fig;
+	$math =~ s/$figdir/Math/e;
+	$math .= '.ma';
+	if (-f $math) {
+	    $out .= join(''," <a href=\"$math\">", 
+			 "<img src=\"$main::ICONSERVER/mathematica.$type\"",
+			 " border=\"0\"", 
+			 " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
+	}
     }
     $out;    
 }
