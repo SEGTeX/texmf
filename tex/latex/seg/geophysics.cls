@@ -161,10 +161,10 @@
 \let\seg@section\section
 \let\seg@subsection\subsection
 \let\seg@subsubsection\subsubsection
-\newcommand{\segsection}[1]{\seg@section*{#1}}
-\renewcommand{\section}[2][]{\segsection{\MakeUppercase{#2}}}%
-\def\subsection{\seg@subsection*}%
-\def\subsubsection{\seg@subsubsection*}
+\newcommand{\segsection}[2][]{\seg@section*{\MakeUppercase{#2}}}
+\def\section{\@ifstar{\segsection}{\segsection}}
+\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
 \vspace{.3in}\begin{minipage}{\textwidth}%

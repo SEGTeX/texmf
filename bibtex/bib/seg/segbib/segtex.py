@@ -29,7 +29,7 @@ for line in bib:
 bib.close()
 
 print r'''
-\bibliographystyle{segnat}
+\bibliographystyle{seglike}
 \bibliography{SEG}
 \end{document}'''
 
