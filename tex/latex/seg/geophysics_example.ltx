@@ -1,5 +1,5 @@
-\documentclass[12pt,paper]{geophysics}
-%\documentclass[manuscript]{geophysics}
+%\documentclass[12pt,paper]{geophysics}
+\documentclass[manuscript]{geophysics}
 
 % An example of defining macros
 \newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
@@ -23,25 +23,26 @@ Austin, TX 78713-8972}
 \author{Joe Dellinger\footnotemark[1] and Sergey Fomel\footnotemark[2]}
 
 \footer{Example}
-\lefthead{Fomel}
+\lefthead{Dellinger \& Fomel}
 \righthead{\emph{Geophysics} example}
 
 \maketitle
 
 \begin{abstract}
-  This is an example of using \textsf{geophysics} class for writing
+  This is an example of using \textsf{geophysics.cls} for writing
   \emph{Geophysics} papers.
 \end{abstract}
 
 \section{Introduction}
 
-This is an introduction. 
+This is an introduction. \LaTeX\ is a powerful document typesetting
+system \cite[]{lamport}. An excellent reference is \cite[]{kopka}. The
+new \textsf{geophysics.cls} class complies with the \LaTeX2e\
+standard.
 
 \section*{Theory}
 
-This is another section. \LaTeX\ is a powerful document typesetting system
-\cite[]{lamport}. An excellent reference is \cite{kopka}. The new \LaTeX\
-standard is called \LaTeX2e.
+This is another section. 
 
 \subsection{Equations}
 
@@ -115,7 +116,7 @@ The discussion is summarized in Table~\ref{tbl:example}.
   \end{center}
 }
 
-\section{ACKNOWLEDGEMENTS}
+\section{ACKNOWLEDGMENTS}
 
 I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and Fr\'ed\'eric Billette for having
 names with non-English letters in them.  I wish to thank \cite{Cerveny} for
@@ -124,15 +125,9 @@ whose name begins with a non-English character and \cite{forgues96} for
 providing both an example of referencing a Ph.D. thesis and yet more
 non-English characters.
 
-\newpage
-
-% include bibliography
-\bibliographystyle{seglike}  % style file is seglike.bst
-\bibliography{example,books} % bibliography files are example.bib, books.bib
-
-\newpage
-
 \append{Appendix example}
+
+According to the new SEG standard, appendices come before references.
 
 \begin{equation}
 \frac{\partial U}{\partial z} = 
@@ -165,8 +160,17 @@ Anisotropy is clearly visible in Figure~\ref{fig:exgr}.
     $\backslash$sideplot\{exgr\}\{width=0.8$\backslash$text\-width\}\{This caption.\}}.
 }
 
-\append{This document}
+\append{The source of this document}
 
 \verbatiminput{geophysics_example.ltx}
+
+\append{The source of the bibliography}
+
+\verbatiminput{example.bib}
+
+\newpage
+
+\bibliographystyle{seglike}  % style file is seglike.bst
+\bibliography{example}
 
 \end{document}

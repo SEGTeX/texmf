@@ -47,11 +47,7 @@
 \ProcessOptions*
 \LoadClass[11pt]{article}
 \renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
-\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
-        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
-        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\tensor}[1]{%
-  \ensuremath{\under@tilde{\mathbf{\MakeUppercase{#1}}}}}
+\providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}

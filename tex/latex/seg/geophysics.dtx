@@ -81,13 +81,12 @@
 %
 % \subsection{SEG-style vectors and tensors}
 % \DescribeMacro{\vector}
-% |\vector|\marg{v} is used for vector variables in equations. It simply puts
-% the argument in boldface.
+% |\vector|\marg{v} is used for vector variables in equations. It puts
+% the argument in boldface and converts it to lowercase.
 %
 % \DescribeMacro{\tensor}
 % |\tensor|\marg{t} is used for matrix variables in equations. It puts the
-% argument in boldface and underscores it with a tilde.
-%
+% argument in boldface and converts it to uppercase.
 %
 % \subsection{Figures and tables}
 % \DescribeMacro{\inputdir}
@@ -150,19 +149,18 @@
 %
 % \subsection{SEG-style vectors and tensors}
 % \begin{macro}{\vector}
-% The SEG-style vector is lowercase and bold math.
+% The SEG-style vector is lowercase bold math.
 %    \begin{macrocode}
 \renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\tensor}
-% The SEG-style matrix is uppercase, bold math, and tilde-underscored.
+% The SEG-style matrix is uppercase bold math.
 %    \begin{macrocode}
-\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
-        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
-        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\tensor}[1]{%
-  \ensuremath{\under@tilde{\mathbf{\MakeUppercase{#1}}}}}
+%\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
+%        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
+%        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
+\providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
 %    \end{macrocode}
 % \end{macro}
 %
