@@ -378,6 +378,14 @@
 \providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\email}
+% The |\email| macro will save the e-mail address in the internal 
+% |\seg@email|.
+%    \begin{macrocode}
+\providecommand{\seg@email}{.}
+\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
+%    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\author}
 % Finally, everything goes to \author and is stored in |\seg@author|.
 %    \begin{macrocode}
@@ -390,7 +398,9 @@
           \textbf{#1} \\
           \seg@address\ \\
           (\today) \\
-        }{\textit{#1} \\ \ }
+        }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
+            \footnote{\textbf{e-mail: }\seg@email}} \\ \ 
+        }
       \end{centering}
     }}
 %    \end{macrocode}

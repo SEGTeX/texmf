@@ -140,8 +140,7 @@
 \ifthenelse{\equal{\@type}{manuscript}}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{\section{\refname}}}
-\RequirePackage{times}
-\RequirePackage{mathptm}
+\RequirePackage{mathptmx}
 \ifthenelse{\equal{\@type}{manuscript}}{
   \renewcommand{\baselinestretch}{2.0}
 }{
@@ -175,6 +174,8 @@
 {\smallskip #1}\end{geo@title}}}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
+\providecommand{\seg@email}{.}
+\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
@@ -184,7 +185,9 @@
           \textbf{#1} \\
           \seg@address\ \\
           (\today) \\
-        }{\textit{#1} \\ \ }
+        }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
+            \footnote{\textbf{e-mail: }\seg@email}} \\ \
+        }
       \end{centering}
     }}
 \renewcommand{\maketitle}{\seg@author}
