@@ -25,6 +25,7 @@ sub figure {
 sub caption {
     my ($figname,$caption) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
+    print STDERR "\n!!!!!!!!CAPTION!!!!!!\n";
     join ('',"<STRONG>",
 	  "<A HREF = \"$fig.png\">$figname<\/A>",
 	  "<BR>Figure ",$append,'-',$fignum,"<\/STRONG> ",$caption);
@@ -101,8 +102,9 @@ sub do_cmd_append {
     }
     $seg::fignum = 0;
     &extract_pure_text("liberal");
+    print STDERR "\n!!!!!!!!APPEND!!!!!!\n";
     join("\n",
-	 '<H1>',"Appendix ",$sep:append,'</H1>',
+	 '<H1>',"Appendix ",$sep::append,'</H1>',
 	 '<H1>',$section,'</H1>') . $rest;
 }
 
