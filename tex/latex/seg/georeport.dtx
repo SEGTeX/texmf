@@ -1,0 +1,516 @@
+% \iffalse meta-comment
+%
+%   Copyright (C) 2004 by Sergey Fomel 
+%  
+%    This work may be distributed and/or modified under the
+%    conditions of the LaTeX Project Public License, either version 1.3
+%    of this license or (at your option) any later version.
+%    The latest version of this license is in
+%      http://www.latex-project.org/lppl.txt
+%    and version 1.3 or later is part of all distributions of LaTeX
+%    version 2003/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<class>\NeedsTeXFormat{LaTeX2e}
+%<class>\ProvidesClass{georeport}[2004/10/10 v1.0 SEP-style report]
+%
+%<*driver>
+\ProvidesFile{georeport.dtx}[2004/10/10 v1.0 SEP-style report]
+\documentclass{ltxdoc}
+\GetFileInfo{georeport.dtx}
+\EnableCrossrefs
+\RecordChanges
+\CodelineIndex
+\begin{document}
+\DocInput{georeport.dtx}
+\end{document}
+%</driver>
+%\fi
+%
+% \CheckSum{0}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \changes{v1.0}{2004/10/10}{Initial version}
+%
+% \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
+% \DoNotIndex{\newcommand,\providecommand,\renewcommand}
+%
+% \title{The \textsf{georeport} class for 
+% writing collective reports\thanks{This document corresponds to
+% \textsf{gereport}~\fileversion, dated~\filedate.}}
+% \author{Sergey Fomel \\ \texttt{sergey.fomel@beg.utexas.edu}}
+% \maketitle
+% \begin{abstract}
+% This package provides...
+% \end{abstract}
+%
+% \section{Introduction}
+% \LaTeX\ is a powerful system... 
+%
+% \section{Usage}
+%
+% The following macros are defined in the package:
+%
+% \subsection{SEG-style vectors and tensors}
+% \DescribeMacro{\vector}
+% |\vector|\marg{v} is used for vector variables in equations. It simply puts
+% the argument in boldface.
+%
+% \DescribeMacro{\tensor}
+% |\tensor|\marg{t} is used for matrix variables in equations. It puts the
+% argument in boldface and underscores it with a tilde.
+%
+% \DescribeEnv{abstract}
+% Put an abstract
+%
+% \subsection{Figures and tables}
+% \DescribeMacro{\inputdir}
+% |\inputdir|\marg{dirname}
+% specifies the top-level directory (current directory by default).
+%
+% \DescribeMacro{\figdir}
+% |\figdir| stores the name of the figure directory relative to the directory
+% specified by |\inputdir|. |\figdir| is ``|.|'' (the current directory) by
+% default. You can change it with |\renewcommand{\figdir}|\marg{dirname}.
+%
+% \DescribeMacro{\plot}
+% |\plot|\marg{filename}\marg{size}\marg{caption} inserts a figure from file
+% \meta{filename} (specified relative to figdir) with caption
+% \meta{caption}. The \meta{size} specification corresponds to the convention
+% of the \textsf{graphicx} package. Examples:
+% \begin{itemize}
+% \item |width=\textwidth| (for scaling the figure and preserving the aspect
+% ratio)
+% \item |width=3in,height=0.5\textheight| (for scaling the figure
+% anisotropically) 
+% \end{itemize}
+% Refer to the figure number with |\ref{fig:|\meta{filename}|}|.
+%
+% \DescribeMacro{\tabl}
+% The |\tabl|\marg{label}\marg{caption}\marg{table} macro is used to 
+% manage tables. The defined \meta{table} will appear at the end of the 
+% paper, and its caption will be
+% added to the list of tables. Refer to the table number with 
+% |\ref{tbl:|\meta{filename}|}|.
+%
+% \StopEventually{\PrintIndex\PrintChanges}
+%
+% \section{Implementation}
+
+% Load \textsf{ifthen} package for conditionals.
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
+% Different types: can prepare a manuscript, a paper, or a book.
+%    \begin{macrocode}
+\newcommand{\@type}{}
+\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
+\DeclareOption{paper}{\renewcommand{\@type}{paper}}
+\DeclareOption{book}{\renewcommand{\@type}{book}}
+%    \end{macrocode}
+% Our package is a derivative of the standard \texttt{article} class.
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+%    \end{macrocode}
+% We will use paper and 11pt fonts by default.
+%    \begin{macrocode}
+\ExecuteOptions{paper}
+\ProcessOptions*
+\LoadClass[11pt]{article}
+%    \end{macrocode}
+%
+% \subsection{SEG-style vectors and tensors}
+% \begin{macro}{\vector}
+% The SEG-style vector is simply bold math.
+%    \begin{macrocode}
+\renewcommand{\vector}[1]{\ensuremath{\mathbf{#1}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\tensor}
+% The SEG-style matrix is tilde-underscored vector.
+%    \begin{macrocode}
+\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
+        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
+        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
+\providecommand{\tensor}[1]{\ensuremath{\under@tilde{\vector{#1}}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Figures and Tables}
+% \begin{macro}{\@path}
+% |\@path| is an internal variable to store the top directory.
+% \begin{macro}{\inputdir}
+%    \begin{macrocode}
+\newcommand{\@path}{.}
+\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \begin{macro}{\figdir}
+% |\figdir| is a variable. It will need to be redefined to specify the figure
+% directory. 
+%    \begin{macrocode}
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\@path/\figdir/#1}
+%    \end{macrocode}
+% \end{macro}
+% Load the \textsf{graphicx} package for included figures.
+%    \begin{macrocode}
+\RequirePackage{graphicx}
+%    \end{macrocode}
+% Count figures.
+%    \begin{macrocode}
+\newcounter{@plots}
+\setcounter{@plots}{0}
+%    \end{macrocode}
+% \begin{macro}{\plot}
+% Define commands for figure inclusion.
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode} 
+% In manuscripts, each figure appears on a separate page at the
+% end of the paper.
+%    \begin{macrocode}
+{\newcommand{\plot}[4][X]{
+    \stepcounter{@plots}
+    \AtEndDocument{
+      \begin{figure}[p]
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
+        \caption[#4]{}
+        \label{fig:#2}
+      \end{figure}\clearpage
+    }}
+  \long\def\@makecaption#1#2{%
+    \vskip\abovecaptionskip
+    \sbox\@tempboxa{#1.}%
+    \ifdim \wd\@tempboxa >\hsize
+    #1.\par
+    \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \vskip\belowcaptionskip}}
+%    \end{macrocode}
+%In papers, an optional argument places the figure.
+%    \begin{macrocode}
+{\newcommand{\plot}[4][htbp]{%
+    \begin{figure*}[#1]
+      \centering
+      \includegraphics[#3]{\fig@file{#2}}
+      \caption{#4}
+      \label{fig:#2}
+    \end{figure*}
+  }}
+%    \end{macrocode} 
+% \end{macro}
+% \begin{macro}{\sideplot}
+% Unless in manuscript mode, |\sideplot| puts figures on the side 
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode} 
+% In manuscripts, there is no difference.
+%    \begin{macrocode}
+{\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
+%In papers, an optional argument places the figure. The page is split in half
+%to put the figure on the side.
+%    \begin{macrocode}
+{\newcommand{\sideplot}[4][htbp]{%
+    \begin{figure*}[#1]
+      \makebox{%
+        \begin{minipage}{0.4\textwidth}
+          \caption{#4}
+          \label{fig:#2}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.6\textwidth}
+          \centering
+          \includegraphics[#3]{\fig@file{#2.pdf}}
+        \end{minipage}}
+    \end{figure*}
+  }}
+%    \end{macrocode} 
+% \end{macro}
+% Count tables.
+%    \begin{macrocode}
+\newcounter{@tabls}
+\setcounter{@tabls}{0}
+%    \end{macrocode}
+% \begin{macro}{\tabl}
+% Define the |\tabl| macro for handling tables.
+%    \begin{macrocode}
+\providecommand{\tabl}[4][X]{
+  \stepcounter{@tabls}
+  \AtEndDocument{
+    \begin{table}[p]
+      #4
+      \caption[#3]{}
+      \label{tbl:#2}
+    \end{table}\clearpage
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+% Suppress page numbers from lists of figures
+%    \begin{macrocode}
+\renewcommand*{\l@figure}[2]{%
+  \setlength{\@tempdima}{2.3em}%
+  \noindent\hspace*{1.5em}#1\hfil\newline}
+\let\l@table\l@figure
+%    \end{macrocode}
+% Redefine lists of figures and tables
+%    \begin{macrocode}
+\renewcommand\listoffigures{%
+  \section{\listfigurename
+    \@mkboth{\MakeUppercase\listfigurename}%
+    {\MakeUppercase\listfigurename}}%
+  \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+  \section{\listtablename
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\MakeUppercase\listtablename}}%
+  \@starttoc{lot}%
+}
+%    \end{macrocode}
+% List of figures and list of tables appear at the end of the document.
+%    \begin{macrocode}
+\AtEndDocument{
+  \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
+  \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
+}
+%    \end{macrocode}
+% \subsection{References}
+% Load the \textsf{natbib} package for natural-science-style citations.
+%    \begin{macrocode}
+\RequirePackage{natbib}
+%    \end{macrocode}
+% The following is \textsf{natbib}'s default.
+%    \begin{macrocode}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+%    \end{macrocode}
+% Redefine the reference section name.
+%    \begin{macrocode}
+\DeclareRobustCommand{\refname}{REFERENCES}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode}
+% In manuscripts, references appear at a separate page
+%    \begin{macrocode}
+{\renewcommand\bibsection{\newpage\section{\refname}}}
+{\renewcommand\bibsection{\section{\refname}}}
+%    \end{macrocode}
+% For backward compatibility: shortcite refers to the year
+%    \begin{macrocode}
+\newcommand{\shortcite}[1]{\citeyearpar{#1}}
+%    \end{macrocode}
+%
+% \subsection{Fonts}
+% Load postscript fonts for text and math.
+%    \begin{macrocode}
+\RequirePackage{mathptmx}
+%    \end{macrocode}
+%
+% \subsection{Page layout}
+% Do double spacing for manuscripts.
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewcommand{\baselinestretch}{2.0}
+}{
+  \renewcommand{\baselinestretch}{1.0}
+}
+%    \end{macrocode}
+% Specify page dimensions. \emph{This should be adjusted for A4 paper format.}
+%    \begin{macrocode}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\oddsidemargin}{.26in}
+\setlength{\evensidemargin}{.26in}
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+%    \end{macrocode}
+% \subsection{Section headings}
+% Capitalize section headings and redefine their size from 
+% |\Large| to |\large|%
+%\footnote{Thanks to Joerg Schleicher for the ifstar trick.}.
+%    \begin{macrocode}
+\let\seg@large\large
+\let\seg@Large\Large
+\renewcommand{\Large}{\protect\seg@large}
+\let\seg@section\section
+\let\seg@subsection\subsection
+\let\seg@subsubsection\subsubsection
+\newcommand{\segsection}[2][]{\seg@section*{\MakeUppercase{#2}}}
+\def\section{\@ifstar{\segsection}{\segsection}}
+\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+%    \end{macrocode}
+% \subsection{Title and author}
+% \begin{macro}{\title}
+% |\title| is redefined for consistency. It changes the internal |\seg@title|.
+%    \begin{macrocode}
+\newcommand{\seg@title}{}
+\newenvironment{geo@title}{%
+\vspace{.3in}\begin{minipage}{\textwidth}%
+\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
+\renewcommand{\title}[1]{%
+\renewcommand{\seg@title}{%
+\noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
+{\smallskip #1}\end{geo@title}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\address}
+% The |\address| macro will save the address in the internal |\seg@address|.
+%    \begin{macrocode}
+\providecommand{\seg@address}{}
+\providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\email}
+% The |\email| macro will save the e-mail address in the internal 
+% |\seg@email|.
+%    \begin{macrocode}
+\providecommand{\seg@email}{.}
+\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\author}
+% Finally, everything goes to \author and is stored in |\seg@author|.
+%    \begin{macrocode}
+\providecommand{\seg@author}{}
+\renewcommand{\author}[1]{%
+  \renewcommand{\seg@author}{%
+    \seg@title
+      \begin{centering}
+        \ifthenelse{\equal{\@type}{manuscript}}{%
+          \textbf{#1} \\
+          \seg@address\ \\
+          (\today) \\
+        }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
+            \footnote{\textbf{e-mail: }\seg@email}} \\ \ 
+        }
+      \end{centering}
+    }}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\maketitle}
+% Redefined |\maketitle| is dumping the |\seg@author|.
+%    \begin{macrocode}
+\renewcommand{\maketitle}{\seg@author}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{abstract}
+% For manuscripts, the abstract environment is simply a section.
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+}
+%    \end{macrocode}
+% For papers, the abstract apears in a box.
+%    \begin{macrocode}
+{
+  \newsavebox{\seg@abstract}
+  \setlength{\fboxsep}{10pt}
+  \renewenvironment{abstract}{
+    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+        \centerline{\textbf{ABSTRACT}}\medskip}{%
+        \medskip\end{minipage}\end{lrbox}%
+    \noindent\fbox{\usebox{\seg@abstract}}
+  }
+} 
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Headers and footers}
+% Internal storage
+%    \begin{macrocode}
+%    \end{macrocode}
+% \begin{macro}{\righthead}
+% Right header
+%    \begin{macrocode}
+\newcommand{\seg@rhead}{}
+\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\lefthead}
+% Left header
+%    \begin{macrocode}
+\newcommand{\seg@lhead}{}
+\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\footer}
+% Footer
+%    \begin{macrocode}
+\newcommand{\seg@foot}{}
+\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\header}
+% Header
+%    \begin{macrocode}
+\newcommand{\seg@head}{}
+\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Page style}
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode}
+% For manuscript, use plain page style.
+%    \begin{macrocode}
+{\pagestyle{plain}\thispagestyle{plain}}
+%    \end{macrocode}
+% For paper, define a page style
+%    \begin{macrocode}
+{\newcommand{\ps@seg}{%
+\renewcommand{\@oddhead}{%
+\makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
+\makebox[2.5in][r]{\textit{\seg@rhead}}}%
+\renewcommand{\@evenhead}{\@oddhead}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\newcommand{\ps@segone}{%
+\renewcommand{\@oddhead}{}%
+\renewcommand{\@evenhead}{}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\pagestyle{seg}\thispagestyle{segone}}
+%    \end{macrocode}
+% \subsection{Appendix}
+% Clean this mess later.
+%    \begin{macrocode}
+\newcounter{@append}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+\ifthenelse{\equal{\append@name}{A}}{%
+\renewcommand{\append@name}{\Alph{@append}}}{}
+\setcounter{equation}{0}\setcounter{figure}{0}%%
+\renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+\renewcommand{\thefigure}{\append@name-\arabic{figure}}\stepcounter{@append}}
+\providecommand{\APPENDIX}[1]{\appendname{#1}\appendix\section{APPENDIX\ #1}}
+%    \end{macrocode}
+% Packages for including things verbatum.
+%    \begin{macrocode}
+\RequirePackage{verbatim}
+\RequirePackage{moreverb}
+%    \end{macrocode}
+% \Finale
+\endinput

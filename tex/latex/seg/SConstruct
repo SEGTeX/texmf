@@ -8,17 +8,17 @@ makeindex = WhereIs('makeindex')
 bibtex = WhereIs('bibtex')
 epstopdf = WhereIs('epstopdf')
 
-env.Command('geophysics.cls',['geophysics.ins','geophysics.dtx'],
-            '%s ${SOURCES[0]}' % latex)
-env.Command(['geophysics.pdf','geophysics.aux',
-             'geophysics.gls','geophysics.glo',
-             'geophysics.ind','geophysics.idx'],
-            'geophysics.dtx',
-            '%s $SOURCE && '
-            '%s -s gglo.ist -o ${TARGETS[2]} ${TARGETS[3]} && '
-            '%s -s gind.ist -o ${TARGETS[4]} ${TARGETS[5]} && '
-            '%s $SOURCE' % (pdflatex,makeindex,makeindex,pdflatex))
-
+for cls in ('geophysics','georeport'):
+    env.Command(cls+'.cls',[cls+'.ins',cls+'.dtx'],
+                '%s ${SOURCES[0]}' % latex)
+    env.Command([cls+'.pdf',cls+'.aux',cls+'.gls',
+                 cls+'.glo',cls+'.ind',cls+'.idx'],
+                cls+'.dtx',
+                '%s $SOURCE && '
+                '%s -s gglo.ist -o ${TARGETS[2]} ${TARGETS[3]} && '
+                '%s -s gind.ist -o ${TARGETS[4]} ${TARGETS[5]} && '
+                '%s $SOURCE' % (pdflatex,makeindex,makeindex,pdflatex))
+    
 def interrupt(signum,frame):
     global child
     print "%s: aborting..." % sys.argv[0]
