@@ -74,7 +74,7 @@ sub buttons {
 package main;
 
 &process_commands_in_tex (<<_RAW_ARG_CMDS_);
-apppend # {}
+append # {}
 _RAW_ARG_CMDS_
 
 &ignore_commands( <<_IGNORED_CMDS_);
