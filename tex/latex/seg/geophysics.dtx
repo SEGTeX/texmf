@@ -124,17 +124,11 @@
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
-
-% Load \textsf{ifthen} package for conditionals.
-%    \begin{macrocode}
-\RequirePackage{ifthen}
-%    \end{macrocode}
-% Different types: can prepare a manuscript, a paper, or a book.
+% Different types: can prepare a manuscript or a paper.
 %    \begin{macrocode}
 \newcommand{\@type}{}
 \DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
 \DeclareOption{paper}{\renewcommand{\@type}{paper}}
-\DeclareOption{book}{\renewcommand{\@type}{book}}
 %    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
@@ -146,23 +140,14 @@
 \ProcessOptions*
 \LoadClass[11pt]{article}
 %    \end{macrocode}
-%
-% \subsection{SEG-style vectors and tensors}
-% \begin{macro}{\vector}
-% The SEG-style vector is lowercase bold math.
+% Load \textsf{ifthen} package for conditionals.
 %    \begin{macrocode}
-\renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
+\RequirePackage{ifthen}
 %    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\tensor}
-% The SEG-style matrix is uppercase bold math.
+% Load SEG style package
 %    \begin{macrocode}
-%\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
-%        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
-%        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
+\RequirePackage{seg}
 %    \end{macrocode}
-% \end{macro}
 %
 % \subsection{Figures and Tables}
 % \begin{macro}{\@path}

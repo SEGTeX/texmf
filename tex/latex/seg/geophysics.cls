@@ -35,18 +35,15 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
-
-\RequirePackage{ifthen}
 \newcommand{\@type}{}
 \DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
 \DeclareOption{paper}{\renewcommand{\@type}{paper}}
-\DeclareOption{book}{\renewcommand{\@type}{book}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{paper}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-\renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
-\providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
+\RequirePackage{ifthen}
+\RequirePackage{seg}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}

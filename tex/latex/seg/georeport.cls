@@ -35,6 +35,10 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\ProcessOptions*
+\LoadClass[11pt]{report}
+\RequirePackage{seg}
 \endinput
 %%
 %% End of file `georeport.cls'.

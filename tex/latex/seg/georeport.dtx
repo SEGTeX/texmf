@@ -66,5 +66,23 @@
 % \section{Usage}
 %
 % The following macros are defined in the package:
+%
+% \StopEventually{\PrintIndex\PrintChanges}
+%
+% \section{Implementation}
+% Our package is a derivative of the standard \texttt{report} class.
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+%    \end{macrocode}
+% We will use 11pt fonts by default.
+%    \begin{macrocode}
+\ProcessOptions*
+\LoadClass[11pt]{report}
+%    \end{macrocode}
+% Load SEG style package
+%    \begin{macrocode}
+\RequirePackage{seg}
+%    \end{macrocode}
+%
 % \Finale
 \endinput
