@@ -45,25 +45,31 @@ sub buttons {
     $out .= join(''," <a href=\"$fig.$type\">", 
 		 "<img src=\"$main::ICONSERVER/viewmag.$type\" border=\"0\"",
 		 " alt=\"[$type]\" width=\"32\" height=\"32\"></a>");
-    if ($path ne '.') {
-	$out .= join(''," <a href=\"../$path.html\">", 
-		     "<img src=\"$main::ICONSERVER/configure.$type\"",
-		     " border=\"0\"", 
-		     " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
-    } elsif (-d '../Math') {
-	$math = $fig;
-	$math =~ s/$figdir/Math/e;
-	$math .= '.ma';
+    if ($path eq 'Math') {
+	my $math = join('/','..',$path,$figname . '.ma');
 	if (-f $math) {
 	    $out .= join(''," <a href=\"$math\">", 
 			 "<img src=\"$main::ICONSERVER/mathematica.$type\"",
 			 " border=\"0\"", 
-			 " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
+			 " alt=\"[mathematica]\"",
+			 "width=\"32\" height=\"32\"></a>");
 	}
-    }
+    } elsif ($path eq 'XFig') {
+	my $xfig = join('/','..',$path,$figname . '.fig');
+	if (-f $xfig) {
+	    $out .= join(''," <a href=\"$xfig\">", 
+			 "<img src=\"$main::ICONSERVER/xfig.$type\"",
+			 " border=\"0\"", 
+			 " alt=\"[xfig]\" width=\"32\" height=\"32\"></a>");
+	}
+    } elsif ($path ne '.') {
+	$out .= join(''," <a href=\"../$path.html\">", 
+		     "<img src=\"$main::ICONSERVER/configure.$type\"",
+		     " border=\"0\"", 
+		     " alt=\"[scons]\" width=\"32\" height=\"32\"></a>");
+    } 
     $out;    
 }
-
 
 package main;
 
