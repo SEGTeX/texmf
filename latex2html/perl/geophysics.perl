@@ -3,6 +3,7 @@ require ("$LATEX2HTMLDIR/styles/natbib.perl");
 package seg;
 
 $fignum = 0;
+$tabnum = 0;
 $append = '';
 $figdir = 'Fig';
 $path = '.';
@@ -127,6 +128,26 @@ sub do_cmd_plot {
 	  &seg::buttons ($figname),
 	  "<\/TABLE>",
 	  "<BR><\/CENTER><\/P>", $_);
+}
+
+sub do_cmd_tabl {
+    local ($_) = @_;
+    &get_next_optional_argument;
+    $seg::tabnum++;
+    my ($tabname, $caption, $body);
+    foreach $arg ($tabname, $caption, $body) {
+	s/$next_pair_pr_rx//o;
+	$arg = $2;
+    }
+    my $label = 'tbl:' . $tabname;
+    $latex_body .= &revert_to_raw_tex("\n{\n$body\n}\n");
+    my $dash = '';
+    $dash = '-' if ($seg::append ne '');
+    $caption = join ('',"<CENTER><STRONG>",
+		     &anchor_label($label,$CURRENT_FILE,''),
+		     "Table ",$seg::append,$dash,$seg::tabnum,
+		     ".<\/STRONG> ",$caption,"<\/CENTER>");
+    $caption .= $_;
 }
 
 sub do_cmd_sideplot {
