@@ -4,9 +4,12 @@ env = Environment(TARFLAGS = 'cvz',
                   TARSUFFIX = '.tar.gz',
                   ZIPCOM=WhereIs('gzip') + ' -c $SOURCE > $TARGET')
 
-env.Command('SEG.bib',Split('segbib.py preamble segDCI.txt'),
-            '''cat preamble > $TARGET
-            ./segbib.py < segDCI.txt >> $TARGET''')
+env.Command('SEG.bib',Split('segbib.py preamble strings.bib segDCI.txt'),
+            '''
+            cat ${SOURCES[1]} > $TARGET 
+            cat ${SOURCES[2]} >> $TARGET
+            python ${SOURCES[0]} < ${SOURCES[3]} >> $TARGET
+            ''')
 
 env.Tar('scripts',Split('segbib.py segtex.py'))
 env.Zip('SEG.bib.gz','SEG.bib')
