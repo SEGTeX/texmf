@@ -27,9 +27,11 @@ sub figure {
 sub caption {
     my ($figname,$caption) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
+    my $dash = '';
+    $dash = '-' if ($append ne '');	
     join ('',"<STRONG>",
 	  "<A HREF = \"$fig.png\">$figname<\/A>",
-	  "<BR>Figure ",$append,'-',$fignum,"<\/STRONG> ",$caption);
+	  "<BR>Figure ",$append,$dash,$fignum,"<\/STRONG> ",$caption);
 }
 
 sub buttons {
@@ -95,6 +97,7 @@ sub do_cmd_append {
     my $rest = shift;
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     my $section = $2;
+    $latex_body .= &revert_to_raw_tex("\\append{$2}\n");
     if ($seg::append eq '') {
 	$seg::append = 'A';
     } else {
