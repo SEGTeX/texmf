@@ -48,8 +48,16 @@
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
-\RequirePackage{graphicx}
-\DeclareGraphicsExtensions{.pdf,.eps,.ps}
+\newif\ifpdf
+   \ifx\pdfoutput\undefined \pdffalse
+     \else \pdfoutput=1 \pdftrue \fi
+   \ifpdf
+     \RequirePackage[pdftex]{graphicx}
+     \DeclareGraphicsExtensions{.pdf,.png}
+   \else
+     \usepackage{graphicx}
+     \DeclareGraphicsExtensions{.eps,.ps}
+   \fi
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\equal{\@type}{manuscript}}
@@ -93,7 +101,7 @@
         \hfill
         \begin{minipage}{0.6\textwidth}
           \flushright
-          \includegraphics[#3]{\fig@file{#2.pdf}}
+          \includegraphics[#3]{\fig@file{#2}}
         \end{minipage}}
     \end{figure*}
   }}

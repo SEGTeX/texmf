@@ -168,12 +168,19 @@
 %    \end{macrocode}
 % \end{macro}
 % Load the \textsf{graphicx} package for included figures.
+% Possible suffices for graphics files depend on whether 
+% we are running pdflatex or latex.
 %    \begin{macrocode}
-\RequirePackage{graphicx}
-%    \end{macrocode}
-% Possible suffices for graphics files.
-%    \begin{macrocode}
-\DeclareGraphicsExtensions{.pdf,.eps,.ps}
+\newif\ifpdf
+   \ifx\pdfoutput\undefined \pdffalse              
+     \else \pdfoutput=1 \pdftrue \fi
+   \ifpdf
+     \RequirePackage[pdftex]{graphicx}
+     \DeclareGraphicsExtensions{.pdf,.png}
+   \else
+     \usepackage{graphicx}
+     \DeclareGraphicsExtensions{.eps,.ps}
+   \fi
 %    \end{macrocode}
 % Count figures.
 %    \begin{macrocode}
@@ -242,7 +249,7 @@
         \hfill
         \begin{minipage}{0.6\textwidth}
           \flushright
-          \includegraphics[#3]{\fig@file{#2.pdf}}
+          \includegraphics[#3]{\fig@file{#2}}
         \end{minipage}}
     \end{figure*}
   }}
