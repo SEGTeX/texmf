@@ -1,0 +1,30 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{sep}[2004/07/04 v0.1 SEP back compatibility macros]
+
+\RequirePackage{moreverb}
+\RequirePackage{varioref}
+
+\newcommand{\bold}[1]{\mathbf{#1}}
+
+\newcommand{\sepverbinput}[1]{%
+  \IfFileExists{#1}{\footnotesize\verbatimtabinput{#1}\normalsize}%
+  {\PackageError{sep}{file #1 is not found}%
+    {You are trying to include a file that doesn't exist in the
+      default path}}}
+
+\newenvironment{sep@listing}{\par%
+\setlength{\parskip}{0ex}\setlength{\parindent}{0em}}{}
+
+\providecommand{\listing}[1]%
+{\begin{sep@listing}\sepverbinput{#1}\end{sep@listing}}
+
+\newcommand{\gprogblock}[2]{{\label{/prog:#1}\listing{#2}}}
+
+\newcommand{\boxit}[1]{\noindent\fbox{\parbox{0.95\textwidth}{#1}}}
+
+\newcommand{\FIG}[1]{\ref{fig:#1}}
+\newcommand{\EQN}[1]{(\ref{eqn:#1})}
+
+\newcommand{\activeplot}[5][htbp]{\plot[#1]{#2}{#3}{#5}}
+\newcommand{\activesideplot}[5][htbp]{\sideplot[#1]{#2}{#3}{#5}}
+

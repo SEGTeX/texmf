@@ -180,21 +180,72 @@
 \setcounter{@plots}{0}
 %    \end{macrocode}
 % \begin{macro}{\plot}
-% Define the |\plot| command for putting each figure on a separate page at the
+% Define commands for figure inclusion.
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode} 
+% In manuscripts, each figure appears on a separate page at the
 % end of the paper.
 %    \begin{macrocode}
-\providecommand{\plot}[4][X]{
-  \stepcounter{@plots}
-  \AtEndDocument{
-    \begin{figure}[p]
+{\newcommand{\plot}[4][X]{
+    \stepcounter{@plots}
+    \AtEndDocument{
+      \begin{figure}[p]
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
+        \caption[#4]{}
+        \label{fig:#2}
+      \end{figure}\clearpage
+    }}
+  \long\def\@makecaption#1#2{%
+    \vskip\abovecaptionskip
+    \sbox\@tempboxa{#1.}%
+    \ifdim \wd\@tempboxa >\hsize
+    #1.\par
+    \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \vskip\belowcaptionskip}}
+%    \end{macrocode}
+%In papers, an optional argument places the figure.
+%    \begin{macrocode}
+{\newcommand{\plot}[4][htbp]{%
+    \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
-      \caption[#4]{}
+      \caption{#4}
       \label{fig:#2}
-    \end{figure}\clearpage
-  }
-}
-%    \end{macrocode}
+    \end{figure*}
+  }}
+%    \end{macrocode} 
+% \end{macro}
+% \begin{macro}{\sideplot}
+% Unless in manuscript mode, |\sideplot| puts figures on the side 
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode} 
+% In manuscripts, there is no difference.
+%    \begin{macrocode}
+{\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
+%In papers, an optional argument places the figure. The page is split in half
+%to put the figure on the side.
+%    \begin{macrocode}
+{\providecommand{\sideplot}[4][htbp]{%
+    \begin{figure*}[#1]
+      \makebox{%
+        \begin{minipage}{0.4\textwidth}
+          \caption{#4}
+          \label{fig:#2}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.6\textwidth}
+          \centering
+          \includegraphics[#3]{\fig@file{#2}}
+        \end{minipage}}
+    \end{figure*}
+  }}
+%    \end{macrocode} 
 % \end{macro}
 % Count tables.
 %    \begin{macrocode}
@@ -216,19 +267,6 @@
 }
 %    \end{macrocode}
 % \end{macro}
-% Redefine captions
-%    \begin{macrocode}
-\long\def\@makecaption#1#2{%
-  \vskip\abovecaptionskip
-  \sbox\@tempboxa{#1.}%
-  \ifdim \wd\@tempboxa >\hsize
-  #1.\par
-  \else
-  \global \@minipagefalse
-  \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
-  \fi
-  \vskip\belowcaptionskip}
-%    \end{macrocode}
 % Suppress page numbers from lists of figures
 %    \begin{macrocode}
 \renewcommand*{\l@figure}[2]{%
@@ -279,10 +317,9 @@
 %    \end{macrocode}
 %
 % \subsection{Fonts}
-% Load postscript \textsf{times} fonts for text and math.
+% Load postscript fonts for text and math.
 %    \begin{macrocode}
-\RequirePackage{times}
-\RequirePackage{mathptm}
+\RequirePackage{mathptmx}
 %    \end{macrocode}
 %
 % \subsection{Page layout}

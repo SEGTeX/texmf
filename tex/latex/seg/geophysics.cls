@@ -57,17 +57,51 @@
 \RequirePackage{graphicx}
 \newcounter{@plots}
 \setcounter{@plots}{0}
-\providecommand{\plot}[4][X]{
-  \stepcounter{@plots}
-  \AtEndDocument{
-    \begin{figure}[p]
+\ifthenelse{\equal{\@type}{manuscript}}
+{\newcommand{\plot}[4][X]{
+    \stepcounter{@plots}
+    \AtEndDocument{
+      \begin{figure}[p]
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
+        \caption[#4]{}
+        \label{fig:#2}
+      \end{figure}\clearpage
+    }}
+  \long\def\@makecaption#1#2{%
+    \vskip\abovecaptionskip
+    \sbox\@tempboxa{#1.}%
+    \ifdim \wd\@tempboxa >\hsize
+    #1.\par
+    \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \vskip\belowcaptionskip}}
+{\newcommand{\plot}[4][htbp]{%
+    \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
-      \caption[#4]{}
+      \caption{#4}
       \label{fig:#2}
-    \end{figure}\clearpage
-  }
-}
+    \end{figure*}
+  }}
+\ifthenelse{\equal{\@type}{manuscript}}
+{\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
+{\providecommand{\sideplot}[4][htbp]{%
+    \begin{figure*}[#1]
+      \makebox{%
+        \begin{minipage}{0.4\textwidth}
+          \caption{#4}
+          \label{fig:#2}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.6\textwidth}
+          \centering
+          \includegraphics[#3]{\fig@file{#2}}
+        \end{minipage}}
+    \end{figure*}
+  }}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
 \providecommand{\tabl}[4][X]{
@@ -80,16 +114,6 @@
     \end{table}\clearpage
   }
 }
-\long\def\@makecaption#1#2{%
-  \vskip\abovecaptionskip
-  \sbox\@tempboxa{#1.}%
-  \ifdim \wd\@tempboxa >\hsize
-  #1.\par
-  \else
-  \global \@minipagefalse
-  \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
-  \fi
-  \vskip\belowcaptionskip}
 \renewcommand*{\l@figure}[2]{%
   \setlength{\@tempdima}{2.3em}%
   \noindent\hspace*{1.5em}#1\hfil\newline}
