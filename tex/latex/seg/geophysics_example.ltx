@@ -84,6 +84,18 @@ Figure~\ref{fig:waves} shows what it is about.
     $\backslash$plot\{waves\}\{width=$\backslash$textwidth\}\{This caption.\}}.
 }
 
+Sometimes it is convenient to put two or more figures from different
+files in an array (see Figure~\ref{fig:exph,exgr}). Individual plots
+are Figures~\ref{fig:exph} and~\ref{fig:exgr}.
+
+\multiplot{2}{exph,exgr}{width=0.4\textwidth}
+{This figure is specified in the document by \texttt{
+    $\backslash$multiplot\{2\}\{exph,exgr\}\{width=0.4$\backslash$textwidth\}\{This caption.\}}.
+}
+
+The first argument of the \texttt{multiplot} command specifies the
+number of plots per row.
+
 \subsection{Tables}
 
 The discussion is summarized in Table~\ref{tbl:example}.
@@ -153,11 +165,11 @@ It is important to get equation~(\ref{eqn:partial}) right.
 \end{equation}
 Too lazy to type a different equation but note the numeration.
 
-Anisotropy is clearly visible in Figure~\ref{fig:exgr}.
+The error comparison is provided in Figure~\ref{fig:errgrp}.
 
-\sideplot{exgr}{width=0.8\textwidth}
+\sideplot{errgrp}{width=0.8\textwidth}
 {This figure is specified in the document by \texttt{
-    $\backslash$sideplot\{exgr\}\{width=0.8$\backslash$text\-width\}\{This caption.\}}.
+    $\backslash$sideplot\{errgrp\}\{width=0.8$\backslash$text\-width\}\{This caption.\}}.
 }
 
 \append{The source of this document}

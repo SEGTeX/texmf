@@ -97,6 +97,51 @@
         \end{minipage}}
     \end{figure*}
   }}
+\RequirePackage{subfigure}
+\def\next@item#1,#2?{#1}
+\def\rest@item#1,#2?{#2}
+\newcounter{sub@fig}
+\ifthenelse{\equal{\@type}{manuscript}}
+{\newcommand{\multiplot}[5][X]{
+    \stepcounter{@plots}
+    \AtEndDocument{
+      \begin{figure}[p]
+        \centering
+\setcounter{sub@fig}{0}
+\edef\list@i{#3}
+\loop
+\edef\item@i{\expandafter\next@item\list@i,\empty?}
+\edef\list@i{\expandafter\rest@item\list@i,\empty?}
+\ifx\item@i\empty
+\else
+\stepcounter{sub@fig}
+\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+  \label{fig:\item@i}}
+\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+\repeat
+\caption[#5]{}
+\label{fig:#3}
+      \end{figure}\clearpage
+}}}
+{\newcommand{\multiplot}[5][htbp]{
+    \begin{figure*}[#1]
+        \centering
+\setcounter{sub@fig}{0}
+\edef\list@i{#3}
+\loop
+\edef\item@i{\expandafter\next@item\list@i,\empty?}
+\edef\list@i{\expandafter\rest@item\list@i,\empty?}
+\ifx\item@i\empty
+\else
+\stepcounter{sub@fig}
+\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+  \label{fig:\item@i}}
+\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+\repeat
+\caption{#5}
+\label{fig:#3}
+    \end{figure*}
+}}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
 \ifthenelse{\equal{\@type}{manuscript}}{
