@@ -35,7 +35,6 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
-                                % \texttt{geophysics.cls} package conforms to the \LaTeX2e\ standard.
 
 \RequirePackage{ifthen}
 \newcommand{\@type}{}
