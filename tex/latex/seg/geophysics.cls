@@ -63,7 +63,7 @@
     \AtEndDocument{
       \begin{figure}[p]
         \centering
-        \includegraphics[#3]{\fig@file{#2.pdf}}
+        \includegraphics[#3]{\fig@file{#2}}
         \caption[#4]{}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -81,7 +81,7 @@
 {\newcommand{\plot}[4][htbp]{%
     \begin{figure*}[#1]
       \centering
-      \includegraphics[#3]{\fig@file{#2.pdf}}
+      \includegraphics[#3]{\fig@file{#2}}
       \caption{#4}
       \label{fig:#2}
     \end{figure*}
