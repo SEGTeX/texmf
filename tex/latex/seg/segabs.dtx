@@ -14,17 +14,17 @@
 %
 % \iffalse
 %<class>\NeedsTeXFormat{LaTeX2e}
-%<class>\ProvidesClass{geophysics}[2004/11/08 v2.0 Geophysics paper]
+%<class>\ProvidesClass{segabs}[2005/04/03 v1.0 SEG expanded abstract]
 %
 %<*driver>
-\ProvidesFile{geophysics.dtx}[2004/06/22 v1.0 geophysics class]
+\ProvidesFile{segabs.dtx}[2005/04/03 v1.0 segabs class]
 \documentclass{ltxdoc}
-\GetFileInfo{geophysics.dtx}
+\GetFileInfo{segabs.dtx}
 \EnableCrossrefs
 \RecordChanges
 \CodelineIndex
 \begin{document}
-\DocInput{geophysics.dtx}
+\DocInput{segabs.dtx}
 \end{document}
 %</driver>
 %\fi
@@ -46,25 +46,24 @@
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
 %
-% \changes{v1.0}{2004/06/22}{Initial version}
-% \changes{v2.0}{2004/11/08}{Numerous updates}
+% \changes{v1.0}{2005/04/03}{Initial version}
 %
 % \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
 % \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand,
 % \providecommand,\renewcommand}
 %
-% \title{The \textsf{geophysics} class for 
-% writing \emph{Geophysics} papers\thanks{This document corresponds to
-% \textsf{geophysics.cls}~\fileversion, dated~\filedate.}}
+% \title{The \textsf{segabs} class for 
+% writing SEG expanded abstracts\thanks{This document corresponds to
+% \textsf{segabs.cls}~\fileversion, dated~\filedate.}}
 % \author{Sergey Fomel \\ \texttt{sergey.fomel@beg.utexas.edu}}
 % \maketitle
 % \begin{abstract}
-% This package provides a \LaTeX2e\ class for writing \emph{Geophysics}-style papers.
+% This package provides a \LaTeX2e\ class for writing SEG expanded abstracts.
 % \end{abstract}
 %
 % \section{Introduction}
 % \LaTeX\ is a powerful document typesetting system. The new
-% \texttt{geophysics.cls} package conforms to the \LaTeX2e\ standard.
+% \texttt{segabs.cls} package conforms to the \LaTeX2e\ standard.
 %
 % \section{Usage}
 %
@@ -78,15 +77,6 @@
 % The |abstract| environment...
 %
 % The following macros are defined in the package:
-%
-% \subsection{SEG-style vectors and tensors}
-% \DescribeMacro{\vector}
-% |\vector|\marg{v} is used for vector variables in equations. It puts
-% the argument in boldface and converts it to lowercase.
-%
-% \DescribeMacro{\tensor}
-% |\tensor|\marg{t} is used for matrix variables in equations. It puts the
-% argument in boldface and converts it to uppercase.
 %
 % \subsection{Figures and tables}
 % \DescribeMacro{\inputdir}
@@ -124,23 +114,12 @@
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
-% Load \textsf{ifthen} package for conditionals.
-%    \begin{macrocode}
-\RequirePackage{ifthen}
-%    \end{macrocode}
-% Different types: can prepare a manuscript or a paper.
-%    \begin{macrocode}
-\newcommand{\@type}{}
-\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
-\DeclareOption{paper}{\renewcommand{\@type}{paper}}
-%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
-% We will use paper and 11pt fonts by default.
+% We will use 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper}
 \ProcessOptions*
 \LoadClass[11pt]{article}
 %    \end{macrocode}
@@ -187,186 +166,76 @@
 \newcounter{@plots}
 \setcounter{@plots}{0}
 %    \end{macrocode}
-% \begin{macro}{\plot}
 % Define commands for figure inclusion.
+% \begin{macro}{\plot}
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
-%    \end{macrocode} 
-% In manuscripts, each figure appears on a separate page at the
-% end of the paper.
-%    \begin{macrocode}
-{\newcommand{\plot}[4][X]{
-    \stepcounter{@plots}
-    \AtEndDocument{
-      \begin{figure}[p]
-        \centering
-        \includegraphics[#3]{\fig@file{#2}}
-        \caption[#4]{}
-        \label{fig:#2}
-      \end{figure}\clearpage
-    }}
-  \long\def\@makecaption#1#2{%
-    \vskip\abovecaptionskip
-    \sbox\@tempboxa{#1.}%
-    \ifdim \wd\@tempboxa >\hsize
-    #1.\par
-    \else
-    \global \@minipagefalse
-    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
-    \fi
-    \vskip\belowcaptionskip}}
+\DeclareRobustCommand{\fullplot}[4][htbp]{%
+\begin{figure*}[#1]
+\centering
+\includegraphics[#3]{\fig@file{#2}}
+\caption[]{#4}
+\label{fig:#2}
+\end{figure*}}
 %    \end{macrocode}
-%In papers, an optional argument places the figure.
-%    \begin{macrocode}
-{\newcommand{\plot}[4][htbp]{%
-    \begin{figure*}[#1]
-      \centering
-      \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4}
-      \label{fig:#2}
-    \end{figure*}
-  }}
-%    \end{macrocode} 
 % \end{macro}
 % \begin{macro}{\sideplot}
-% Unless in manuscript mode, |\sideplot| puts figures on the side 
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
-%    \end{macrocode} 
-% In manuscripts, there is no difference.
-%    \begin{macrocode}
-{\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
-%In papers, an optional argument places the figure. The page is split in half
-%to put the figure on the side.
-%    \begin{macrocode}
-{\newcommand{\sideplot}[4][htbp]{%
-    \begin{figure*}[#1]
-      \makebox{%
-        \begin{minipage}{0.4\textwidth}
-          \caption{#4}
-          \label{fig:#2}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.6\textwidth}
-          \flushright
-          \includegraphics[#3]{\fig@file{#2}}
-        \end{minipage}}
-    \end{figure*}
-  }}
-%    \end{macrocode} 
+\DeclareRobustCommand{\sideplot}[4][htbp]{%
+\begin{figure}[#1]
+\centering
+\includegraphics[#3]{\fig@file{#2}}
+\caption[]{#4}
+\label{fig:#2}
+\end{figure}}
+%    \end{macrocode}
 % \end{macro}
-% Multiple plots from different files in one figure\footnote{Thanks to 
-% Martin Karrennbach}.
+% \begin{macro}{\plot}
+%    \begin{macrocode}
+\def\plot{\@ifstar{\fullplot}{\sideplot}}
+%    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\multiplot}
 %    \begin{macrocode}
 \RequirePackage{subfigure}
+\RequirePackage{ifthen}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
-\ifthenelse{\equal{\@type}{manuscript}}
 %    \end{macrocode} 
 %    \begin{macrocode}
-{\newcommand{\multiplot}[5][X]{
-    \stepcounter{@plots}
-    \AtEndDocument{
-      \begin{figure}[p]
-        \centering
-        \setcounter{sub@fig}{0}
-        \edef\list@i{#3}
-        \loop
-        \edef\item@i{\expandafter\next@item\list@i,\empty?}
-        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
-        \ifx\item@i\empty 
-        \else
-        \stepcounter{sub@fig}
-        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-          \label{fig:\item@i}}
-        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
-        \repeat
-        \caption[#5]{}
-        \label{fig:#3}
-      \end{figure}\clearpage
-}}}
-{\newcommand{\multiplot}[5][htbp]{
-    \begin{figure*}[#1]
-        \centering
-        \setcounter{sub@fig}{0}
-        \edef\list@i{#3}
-        \loop
-        \edef\item@i{\expandafter\next@item\list@i,\empty?}
-        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
-        \ifx\item@i\empty 
-        \else
-        \stepcounter{sub@fig}
-        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-          \label{fig:\item@i}}
-        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
-        \repeat
-        \caption{#5}
-        \label{fig:#3}
-    \end{figure*}
-}}
+\newcommand{\multiplot}[5][htbp]{
+  \begin{figure*}[#1]
+    \centering
+    \setcounter{sub@fig}{0}
+    \edef\list@i{#3}
+    \loop
+    \edef\item@i{\expandafter\next@item\list@i,\empty?}
+    \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+    \ifx\item@i\empty 
+    \else
+    \stepcounter{sub@fig}
+    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\item@i}}
+    \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
+    \repeat
+    \caption{#5}
+    \label{fig:#3}
+  \end{figure*}
+}
 %    \end{macrocode}
 % \end{macro}
-% Count tables.
-%    \begin{macrocode}
-\newcounter{@tabls}
-\setcounter{@tabls}{0}
-%    \end{macrocode}
 % \begin{macro}{\tabl}
 % Define the |\tabl| macro for handling tables.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
-  \providecommand{\tabl}[4][X]{
-    \stepcounter{@tabls}
-    \AtEndDocument{
-      \begin{table}[p]
-        #4
-        \caption[#3]{}
-        \label{tbl:#2}
-      \end{table}\clearpage
-    }
-  }
-}{
-  \providecommand{\tabl}[4][htbp]{
-    \begin{table}[#1]
-      #4
-      \caption{#3}
-      \label{tbl:#2}
-    \end{table}
-  }
+\providecommand{\tabl}[4][htbp]{
+  \begin{table}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table}
 }
 %    \end{macrocode}
 % \end{macro}
-% Suppress page numbers from lists of figures
-%    \begin{macrocode}
-\renewcommand*{\l@figure}[2]{%
-  \setlength{\@tempdima}{2.3em}%
-  \noindent\hspace*{1.5em}#1\hfil\newline}
-\let\l@table\l@figure
-%    \end{macrocode}
-% Redefine lists of figures and tables
-%    \begin{macrocode}
-\renewcommand\listoffigures{%
-  \section{\listfigurename
-    \@mkboth{\MakeUppercase\listfigurename}%
-    {\MakeUppercase\listfigurename}}%
-  \@starttoc{lof}%
-}
-\renewcommand\listoftables{%
-  \section{\listtablename
-    \@mkboth{\MakeUppercase\listtablename}%
-    {\MakeUppercase\listtablename}}%
-  \@starttoc{lot}%
-}
-%    \end{macrocode}
-% List of figures and list of tables appear at the end of the document.
-%    \begin{macrocode}
-\AtEndDocument{
-  \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
-  \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
-}
-%    \end{macrocode}
 % \subsection{References}
 % Load the \textsf{natbib} package for natural-science-style citations.
 %    \begin{macrocode}
@@ -379,12 +248,7 @@
 % Redefine the reference section name.
 %    \begin{macrocode}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\ifthenelse{\equal{\@type}{manuscript}}
-%    \end{macrocode}
-% In manuscripts, references appear at a separate page
-%    \begin{macrocode}
-{\renewcommand\bibsection{\newpage\section{\refname}}}
-{\renewcommand\bibsection{\section{\refname}}}
+\renewcommand\bibsection{\section{\refname}}
 %    \end{macrocode}
 % For backward compatibility: shortcite refers to the year
 %    \begin{macrocode}
@@ -398,40 +262,41 @@
 %    \end{macrocode}
 %
 % \subsection{Page layout}
-% Do double spacing for manuscripts.
-%    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
-  \renewcommand{\baselinestretch}{2.0}
-}{
-  \renewcommand{\baselinestretch}{1.0}
-}
-%    \end{macrocode}
 % Specify page dimensions. \emph{This should be adjusted for A4 paper format!}
 %    \begin{macrocode}
-\setlength{\textheight}{9in}
-\setlength{\textwidth}{6in}
-\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
-\setlength{\oddsidemargin}{.26in}
-\setlength{\evensidemargin}{.26in}
-\setlength{\topmargin}{-.51in}
-\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
-\setlength{\headsep}{0.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.0625in}
+\setlength{\parindent}{0em}
+\setlength{\headheight}{0.3125in}
+\setlength{\headsep}{0.125in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex}
+\setlength{\topmargin}{-0.5in}
+\setlength{\columnsep}{0.3125in}
 %    \end{macrocode}
-% \subsection{Section headings}
-% Capitalize section headings and redefine their size from 
-% |\Large| to |\large|%
-%\footnote{Thanks to Joerg Schleicher for the ifstar trick.}.
+% \subsection{Font size}
+% Messing with sizes to get the required 9pt Times-Roman
 %    \begin{macrocode}
-\let\seg@large\large
-\let\seg@Large\Large
-\renewcommand{\Large}{\protect\seg@large}
+\renewcommand{\Large}{\protect\scriptsize}
+\let\normal@size\normalsize
+\renewcommand{\normalsize}{\protect\scriptsize}
+\renewcommand{\footnotesize}{\protect\tiny}
+\scriptsize
+%    \end{macrocode}
+% \subsection{Section commands}
+%    \begin{macrocode}
 \let\seg@section\section
 \let\seg@subsection\subsection
-\let\seg@subsubsection\subsubsection
 \newcommand{\segsection}[2][]{%
-\seg@section*{\protect\centering\MakeUppercase{#2}}}
+\seg@section*{\protect\parbox[t]{\columnwidth}{%
+\textbf{\MakeUppercase{#2}}\\*}}}
+\newcommand{\segsubsection}[2][]{%
+\begin{minipage}{\columnwidth}
+\textbf{#2} 
+\end{minipage}}
 \def\section{\@ifstar{\segsection}{\segsection}}
-\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
+\def\subsection{\@ifstar{\segsubsection}{\segsubsection}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
 %    \end{macrocode}
 % \subsection{Title and author}
@@ -439,13 +304,7 @@
 % |\title| is redefined for consistency. It changes the internal |\seg@title|.
 %    \begin{macrocode}
 \newcommand{\seg@title}{}
-\newenvironment{geo@title}{%
-\vspace{.3in}\begin{minipage}{\textwidth}%
-\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
-\renewcommand{\title}[1]{%
-\renewcommand{\seg@title}{%
-\noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-{\smallskip #1}\end{geo@title}}}
+\renewcommand{\title}[1]{\renewcommand{\seg@title}{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\address}
@@ -468,18 +327,9 @@
 %    \begin{macrocode}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
-  \renewcommand{\seg@author}{%
-    \seg@title
-      \begin{center}
-        \ifthenelse{\equal{\@type}{manuscript}}{%
-          \textbf{#1} \\
-          \seg@address\ \\
-          (\today) \\
-        }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
-            \footnote{\textbf{e-mail: }\seg@email}} \\ \ 
-        }
-      \end{center}
-    }}
+\renewcommand{\seg@author}{%
+\twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
+\newline\small\textit{#1}\vspace{2ex}]}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
@@ -489,25 +339,12 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{abstract}
-% For manuscripts, the abstract environment is simply a section.
+% The abstract environment produces a summary section.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
-  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
-}
-%    \end{macrocode}
-% For papers, the abstract apears in a box.
-%    \begin{macrocode}
-{
-  \newsavebox{\seg@abstract}
-  \setlength{\fboxsep}{10pt}
-  \renewenvironment{abstract}{
-    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\textbf{ABSTRACT}}\medskip}{%
-        \medskip\end{minipage}\end{lrbox}%
-%    \twocolumn[\noindent\fbox{\usebox{\seg@abstract}}]
-    \noindent\fbox{\usebox{\seg@abstract}}
-  }
-} 
+\renewenvironment{abstract}{%
+\begin{minipage}[t]{\columnwidth}
+\textbf{SUMMARY}\\*}{%
+\end{minipage}\vspace{2ex}}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{Headers and footers}
@@ -543,35 +380,21 @@
 %    \end{macrocode}
 % \end{macro}
 % \subsection{Page style}
+% Define a page style
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
-%    \end{macrocode}
-% For manuscript, use plain page style.
-%    \begin{macrocode}
-{\pagestyle{plain}\thispagestyle{plain}}
-%    \end{macrocode}
-% For paper, define a page style
-%    \begin{macrocode}
-{\newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{%
-\makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
-\makebox[2.5in][r]{\textit{\seg@rhead}}}%
-\renewcommand{\@evenhead}{\@oddhead}%
-\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
-\renewcommand{\@evenfoot}{\@oddfoot}}
-\newcommand{\ps@segone}{%
-\renewcommand{\@oddhead}{}%
-\renewcommand{\@evenhead}{}%
-\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
-\renewcommand{\@evenfoot}{\@oddfoot}}
-\pagestyle{seg}\thispagestyle{segone}}
+\newcommand{\ps@seg}{%
+\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
+\renewcommand{\@evenhead}{\@oddhead}
+\renewcommand{\@oddfoot}{}
+\renewcommand{\@evenfoot}{}}
+%
+\thispagestyle{empty}
+\pagestyle{seg}
 %    \end{macrocode}
 % \subsection{Appendix}
 % Clean this mess later.
 %    \begin{macrocode}
 \newcounter{@append}
-\ifthenelse{\equal{\@type}{manuscript}}{%
-  \AtEndDocument{\setcounter{@append}{0}}}{}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
 \renewcommand{\appendix}{%
@@ -579,16 +402,8 @@
     \renewcommand{\append@name}{\Alph{@append}}}{}
   \setcounter{equation}{0}%
   \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-  \ifthenelse{\equal{\@type}{manuscript}}{%
-    \AtEndDocument{      
-      \setcounter{figure}{0}%
-      \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
-      \stepcounter{@append}
-    }
-  }{% 
     \setcounter{figure}{0}%
     \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
-  }
   \stepcounter{@append}
 }
 \providecommand{\append}[1]{%

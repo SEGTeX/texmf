@@ -1,5 +1,4 @@
-%\documentclass[paper]{geophysics}
-\documentclass[manuscript]{geophysics}
+\documentclass{segabs}
 
 % An example of defining macros
 \newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
@@ -7,30 +6,21 @@
 
 \begin{document}
 
-\title{An example \emph{Geophysics} article, \\ with a two-line title}
+\title{An example SEG expanded abstract}
 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}} 
 
-\address{
-\footnotemark[1]BP UTG, \\
-200 Westlake Park Blvd, \\
-Houston, TX, 77079 \\
-\footnotemark[2]Bureau of Economic Geology, \\
-John A. and Katherine G. Jackson School of Geosciences \\
-The University of Texas at Austin \\
-University Station, Box X \\
-Austin, TX 78713-8972}
-\author{Joe Dellinger\footnotemark[1] and Sergey Fomel\footnotemark[2]}
+\author{Joe Dellinger\footnotemark[1], BP and Sergey Fomel, University of Texas at Austin}
 
 \footer{Example}
 \lefthead{Dellinger \& Fomel}
-\righthead{\emph{Geophysics} example}
+\righthead{SEG abstract example}
 
 \maketitle
 
 \begin{abstract}
-  This is an example of using \textsf{geophysics.cls} for writing
-  \emph{Geophysics} papers.
+  This is an example of using \textsf{segabs.cls} for writing
+  SEG expanded abstracts.
 \end{abstract}
 
 \section{Introduction}
@@ -79,9 +69,9 @@ $\vector{V}$ (note converted to lowercase).
 
 Figure~\ref{fig:waves} shows what it is about.
 
-\plot{waves}{width=\textwidth}
+\plot{waves}{width=\columnwidth}
 {This figure is specified in the document by \texttt{
-    $\backslash$plot\{waves\}\{width=$\backslash$textwidth\}\{This caption.\}}.
+    $\backslash$plot\{waves\}\{width=$\backslash$columnwidth\}\{This caption.\}}.
 }
 
 Sometimes it is convenient to put two or more figures from different
@@ -167,20 +157,10 @@ Too lazy to type a different equation but note the numeration.
 
 The error comparison is provided in Figure~\ref{fig:errgrp}.
 
-\sideplot{errgrp}{width=0.8\textwidth}
-{This figure is specified in the document by \texttt{
-    $\backslash$sideplot\{errgrp\}\{width=0.8$\backslash$text\-width\}\{This caption.\}}.
-}
-
-\append{The source of this document}
-
-\verbatiminput{geophysics_example.ltx}
-
-\append{The source of the bibliography}
-
-\verbatiminput{example.bib}
-
-\newpage
+\plot*{errgrp}{width=0.8\textwidth} {This figure is specified in the document
+  by \texttt{
+    $\backslash$plot$\star$\{errgrp\}\{width=0.8$\backslash$textwidth\}\{This
+    caption.\}}.  }
 
 \bibliographystyle{seg}  % style file is seg.bst
 \bibliography{example}
