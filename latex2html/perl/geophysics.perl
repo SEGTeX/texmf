@@ -140,13 +140,12 @@ sub do_cmd_tabl {
 	$arg = $2;
     }
     my $label = 'tbl:' . $tabname;
-    $latex_body .= &revert_to_raw_tex("\n{\n$body\n}\n");
     my $dash = '';
     $dash = '-' if ($seg::append ne '');
-    $caption = join ('',"<CENTER><STRONG>",
+    $caption = join ('',"<CENTER>",$body,"<BR>\n<STRONG>",
 		     &anchor_label($label,$CURRENT_FILE,''),
 		     "Table ",$seg::append,$dash,$seg::tabnum,
-		     ".<\/STRONG> ",$caption,"<\/CENTER>");
+		     ". ",$caption,"<\/STRONG><\/CENTER>");
     $caption .= $_;
 }
 
