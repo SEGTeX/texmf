@@ -1,15 +1,19 @@
-\documentclass[12pt,paper]{geophysics}
-%\documentclass[12pt,manuscript]{geophysics}
+%\documentclass[12pt,paper]{geophysics}
+\documentclass[manuscript]{geophysics}
+
+% An example of defining macros
+\newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
+\newcommand{\rr}[1]{\mbox{\rm #1}}
 
 \begin{document}
 
-\title{An example \emph{Geophysics} article}
-\address{Bureau of Economic Geology, \\
+\title{An example \emph{Geophysics} article, \\ with a two-line title}
+\address{\footnotemark[2]Bureau of Economic Geology, \\
 John A. and Katherine G. Jackson School of Geosciences \\
 The University of Texas at Austin \\
 University Station, Box X \\
 Austin, TX 78713-8972}
-\author{Sergey Fomel}
+\author{Joe Dellinger\footnotemark[1] and Sergey Fomel\footnotemark[2]}
 
 \footer{Example}
 \lefthead{Fomel}
@@ -28,32 +32,48 @@ This is an introduction.
 
 \section*{Theory}
 
-This is another section. \LaTeX\ is a powerful system
+This is another section. \LaTeX\ is a powerful document typesetting system
 \cite[]{lamport}. An excellent reference is \cite{kopka}. The new \LaTeX\
 standard is called \LaTeX2e.
 
 \subsection{Equations}
 
+Section headings should be capitalized. Subsection headings should only
+have the first letter of the first word capitalized.
+
+Here are examples of equations involving vectors and tensors:
 \begin{equation}
-\frac{\partial U}{\partial z} = 
-\left\{
-  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial g}\right]^2} +
-  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial s}\right]^2}
-\right\}
-\frac{\partial U}{\partial t}
-\label{eqn:partial}
+\tensor{R} = \pmatrix{R_{\rs{XX}} & R_{\rs{YX}} \cr R_{\rs{XY}} & R_{\rs{YY}}} 
+=
+\tensor{P}_{M\rightarrow R} \; \tensor{D} \; \tensor{P}_{S\rightarrow M}
+\;\;\; \tensor{S} \ \ \  ,
+\label{SVD}
+\end{equation}
+and
+\begin{equation}
+R_{j,m}(\omega) =
+\sum_{n=1}^{N} \, \,
+P_{j}^{(n)}(\vector{x}_R) \, \,
+D^{(n)}(\omega) \, \,
+P_{m}^{(n)}(\vector{x}_S) \ \ \ .
+\label{SVDray}
 \end{equation}
 
-It is important to get equation~(\ref{eqn:partial}) right.
+Note that the macros for the \verb#\vector# and \verb#\tensor# commands have
+been changed to force tensors to be bold uppercase and vectors to be bold
+lowercase, in compliance with current SEG submission standards. This is so
+that documents typeset to the old standards will print out according to the
+new ones: e.g., tensor $\tensor{t}$ (note converted to uppercase) and vector
+$\vector{V}$ (note converted to lowercase).
 
 \subsection*{Figures}
 \renewcommand{\figdir}{Fig} % figure directory
 
-Figure~\ref{fig:exgr} shows what it is about.
+Figure~\ref{fig:waves} shows what it is about.
 
-\plot{exgr}{width=\textwidth}
+\plot{waves}{width=\textwidth}
 {This figure is specified in the document by \texttt{
-    $\backslash$plot\{exgr\}\{width=$\backslash$textwidth\}\{This caption.\}}.
+    $\backslash$plot\{waves\}\{width=$\backslash$textwidth\}\{This caption.\}}.
 }
 
 \subsection{Tables}
@@ -88,8 +108,61 @@ The discussion is summarized in Table~\ref{tbl:example}.
   \end{center}
 }
 
+\section{ACKNOWLEDGEMENTS}
+
+I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and Fr\'ed\'eric Billette for having
+names with non-English letters in them.  I wish to thank \cite{Cerveny} for
+providing an example of how to make a bib file that includes an author whose
+name begins with a non-English character, and \cite{forgues96} for providing
+both an example of referencing a Ph.D. thesis and yet more non-English
+characters.
+
+\newpage
+
 % include bibliography
-\bibliographystyle{segnat} % the style file is segnat.bst
-\bibliography{example}     % the bibliography file is example.bib
+\bibliographystyle{seglike}  % the style file is seglike.bst
+\bibliography{example,books} % the bibliography file is example.bib
+
+\newpage
+
+\APPENDIX{A}
+\section{Appendix example}
+
+\begin{equation}
+\frac{\partial U}{\partial z} = 
+\left\{
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial g}\right]^2} +
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial s}\right]^2}
+\right\}
+\frac{\partial U}{\partial t}
+\label{eqn:partial}
+\end{equation}
+It is important to get equation~(\ref{eqn:partial}) right.
+
+\APPENDIX{B}
+\section{Another appendix}
+
+\begin{equation}
+\frac{\partial U}{\partial z} = 
+\left\{
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial g}\right]^2} +
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial s}\right]^2}
+\right\}
+\frac{\partial U}{\partial t}
+\label{eqn:partial2}
+\end{equation}
+Too lazy to type a different equation but note the numeration.
+
+Anisotropy is clearly visible in Figure~\ref{fig:exgr}.
+
+\sideplot{exgr}{width=0.8\textwidth}
+{This figure is specified in the document by \texttt{
+    $\backslash$sideplot\{exgr\}\{width=0.8$\backslash$textwidth\}\{This caption.\}}.
+}
+
+\APPENDIX{C}
+\section{This document}
+
+\verbatiminput{geophysics_example.ltx}
 
 \end{document}
