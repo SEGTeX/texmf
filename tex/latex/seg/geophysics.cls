@@ -237,6 +237,8 @@
 \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
 \renewcommand{\thefigure}{\append@name-\arabic{figure}}\stepcounter{@append}}
 \providecommand{\APPENDIX}[1]{\appendname{#1}\appendix\section{APPENDIX\ #1}}
+\RequirePackage{verbatim}
+\RequirePackage{moreverb}
 \endinput
 %%
 %% End of file `geophysics.cls'.
