@@ -29,8 +29,11 @@ TD.eqno			{ }	/* equation-number cells */
 
 /* document-specific styles come next */
 
-td.navigation {           
-	                  color: #ffffff;
+body {
+    color: #000000;
+    background-color: #ffffff; }
+
+td.navigation {		  color: #ffffff;
 	                  background-color: #3b80ff;
 		          font-weight: bold;
                           font-family: avantgarde, sans-serif;

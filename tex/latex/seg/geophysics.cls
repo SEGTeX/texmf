@@ -55,6 +55,8 @@
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \RequirePackage{graphicx}
+\RequirePackage{color}
+\pagecolor{white}
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\equal{\@type}{manuscript}}
@@ -63,7 +65,7 @@
     \AtEndDocument{
       \begin{figure}[p]
         \centering
-        \includegraphics[#3]{\fig@file{#2}}
+        \includegraphics[#3]{\fig@file{#2.pdf}}
         \caption[#4]{}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -81,7 +83,7 @@
 {\newcommand{\plot}[4][htbp]{%
     \begin{figure*}[#1]
       \centering
-      \includegraphics[#3]{\fig@file{#2}}
+      \includegraphics[#3]{\fig@file{#2.pdf}}
       \caption{#4}
       \label{fig:#2}
     \end{figure*}
@@ -98,7 +100,7 @@
         \hfill
         \begin{minipage}{0.6\textwidth}
           \centering
-          \includegraphics[#3]{\fig@file{#2}}
+          \includegraphics[#3]{\fig@file{#2.pdf}}
         \end{minipage}}
     \end{figure*}
   }}

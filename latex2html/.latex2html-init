@@ -127,7 +127,7 @@ $PAPERSIZE = "a4";
 # file "latex2html.config" 
 $TITLES_LANGUAGE = "english";
 
-$ICONSERVER = $ENV{'ICONSERVER'} || '../../../icons';
+$ICONSERVER = $ENV{'ICONSERVER'} || 'icons';
 
 %iconsizes = (
 	      'up' ,'WIDTH="32" HEIGHT="32"',
