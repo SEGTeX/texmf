@@ -77,6 +77,7 @@ package main;
 _RAW_ARG_CMDS_
 
 &ignore_commands( <<_IGNORED_CMDS_);
+righthead # {}
 bibAnnoteFile # {}
 footer # {}
 _IGNORED_CMDS_
@@ -148,15 +149,13 @@ sub do_cmd_lefthead {
     $rest;
 }
 
-sub do_cmd_righthead {
-    my $rest = shift;
-    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
-    local ($_) = $2;
-    &extract_pure_text("liberal");
-    $TITLE .= $_;
-    $rest;
-}
-
-
+#sub do_cmd_righthead {
+#    my $rest = shift;
+#    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
+#    local ($_) = $2;
+#    &extract_pure_text("liberal");
+#    $TITLE .= $_;
+#    $rest;
+#}
 
 1;                              # This must be the last line

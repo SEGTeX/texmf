@@ -38,3 +38,10 @@ td.navigation {		  color: #ffffff;
 		          font-weight: bold;
                           font-family: avantgarde, sans-serif;
                           font-size: 110%; }
+
+pre {
+	background-color: #99ccff;
+	padding: 7pt;
+	white-space: pre;
+	width: 100%;
+	}
