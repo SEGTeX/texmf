@@ -27,7 +27,7 @@ sub caption {
     my $fig = join('/','..',$path,$figdir,$figname);
     join ('',"<STRONG>",
 	  "<A HREF = \"$fig.png\">$figname<\/A>",
-	  "<BR>Figure ",$append,$fignum,"<\/STRONG> ",$caption);
+	  "<BR>Figure ",$append,'-',$fignum,"<\/STRONG> ",$caption);
 }
 
 sub buttons {
@@ -74,7 +74,6 @@ sub buttons {
 package main;
 
 &process_commands_in_tex (<<_RAW_ARG_CMDS_);
-append # {}
 _RAW_ARG_CMDS_
 
 &ignore_commands( <<_IGNORED_CMDS_);
@@ -91,14 +90,20 @@ sub do_cmd_inputdir {
     $rest;
 }
 
-sub do_cmd_APPENDIX {
+sub do_cmd_append {
     my $rest = shift;
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
-    my $append = $2;
-    $seg::append = $append . '-';
+    my $section = $2;
+    if ($sep::append eq '') {
+	$sep::append = 'A';
+    } else {
+	$sep::append++;
+    }
     $seg::fignum = 0;
     &extract_pure_text("liberal");
-    $rest;
+    join("\n",
+	 '<H1>',"Appendix ",$sep:append,'</H1>',
+	 '<H1>',$section,'</H1>') . $rest;
 }
 
 sub do_cmd_plot {
