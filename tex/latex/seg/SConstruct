@@ -66,7 +66,18 @@ Pdf = Builder(action = Action(latex2pdf),
 env.Append(BUILDERS={'Pdf':Pdf})
 
 env.Command('Fig/exgr.pdf','Fig/exgr.eps','%s $SOURCE' % epstopdf)
-env.Pdf('geophysics_example.pdf',
+
+env.Pdf('geophysics_manuscript.pdf',
         ['geophysics_example.ltx','geophysics.cls',
          'example.bib','Fig/exgr.pdf'])
+
+env.Command('geophysics_paper.ltx','geophysics_example.ltx',
+            'sed s/manuscript/12pt,paper/ < $SOURCE > $TARGET')
+
+env.Pdf('geophysics_paper.pdf',
+        ['geophysics_paper.ltx','geophysics.cls',
+         'example.bib','Fig/exgr.pdf'])
+
+
+
 
