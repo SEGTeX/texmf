@@ -45,11 +45,11 @@
 \ExecuteOptions{paper}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-\providecommand{\sv}[1]{\ensuremath{\mathbf{#1}}}
+\renewcommand{\vector}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
         $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
         $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
+\providecommand{\tensor}[1]{\ensuremath{\under@tilde{\vector{#1}}}}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}
@@ -140,6 +140,7 @@
 \ifthenelse{\equal{\@type}{manuscript}}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{\section{\refname}}}
+\newcommand{\shortcite}[1]{\citeyearpar{#1}}
 \RequirePackage{mathptmx}
 \ifthenelse{\equal{\@type}{manuscript}}{
   \renewcommand{\baselinestretch}{2.0}

@@ -1,0 +1,113 @@
+\documentclass{geophysics}
+
+% An example of defining macros
+\newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
+\newcommand{\rr}[1]{\mbox{\rm #1}}
+
+\begin{document}
+
+\title{An example SEG paper template,\\with a two-line title}
+
+\author{Joe Dellinger}
+\address{BP Amoco UTG, 200 Westlake Park Blvd, Houston, TX, 77079, USA}
+
+%\author{Another Author}
+%\address{SEG business office, Tulsa, OK}
+
+\date{\today}
+
+\maketitle
+
+{Short title: example SEG paper}
+
+\begin{abstract}
+The abstract goes here.
+This new distribution of SEGTeX contains a new bibliography database file.
+It also includes some minor changes to conform to new SEG submission standards.
+\end{abstract}
+
+\section{INTRODUCTION}
+Here are some examples of how to do citations using SEG.bib.
+The SEG.bib file contains the entire SEG database up to mid-2000. It was
+put together by Ossie Moore and Sergey Fomel. Please read the terms and
+conditions at the start of the SEG.bib file before using it or
+redistributing it.
+
+Alford \shortcite{SEG-1986-S9.6} rotation is a widely used technique for
+separating split shear waves in $2{\times}2$-component
+seismic data~\cite{GEO53-03-03040313}.
+More recently it has come to be used for processing $2{\times}2$-C
+crossed-dipole data as well \cite{SEG-1994-0233,SEG-1994-1139,SEG-1994-1143}.
+See Figure~\ref{fig:waves}.
+
+\plot{waves}{height=0in,width=6.0in}{You can keep figures from getting
+stretched by setting the free dimension to length zero.}
+
+\subsection{Here is a subsection}
+Section headings should be in all caps. Subsection headings should only
+have the first letter of the first word capitalized.
+See table~\ref{rotation} for an example of a table.
+
+Here are examples of equations involving vectors and tensors:
+\begin{equation}
+\tensor{R} = \pmatrix{R_{\rs{XX}} & R_{\rs{YX}} \cr R_{\rs{XY}} & R_{\rs{YY}}} =
+\tensor{P}_{M\rightarrow R} \; \tensor{D} \; \tensor{P}_{S\rightarrow M}
+\;\;\; \tensor{S} \ \ \  ,
+\label{SVD}
+\end{equation}
+and
+\begin{equation}
+R_{j,m}(\omega) =
+\sum_{n=1}^{N} \, \,
+P_{j}^{(n)}(\vector{x}_R) \, \,
+D^{(n)}(\omega) \, \,
+P_{m}^{(n)}(\vector{x}_S) \ \ \ .
+\label{SVDray}
+\end{equation}
+Note that the macros for the ``vector'' and ``tensor'' commands have been
+changed to force tensors to be bold uppercase and vectors to be bold lowercase,
+in compliance with current SEG submission standards. This is so that documents
+typeset to the old standards will print out according to the new ones:
+e.g., tensor $\tensor{t}$ (note converted to uppercase) and
+vector $\vector{V}$ (note converted to lowercase).
+
+%
+% Note a tilde makes an "unbreakable space".
+%
+Here is an example of referring to equations (\ref{SVD}) and~(\ref{SVDray}).
+
+\section{CONCLUSIONS}
+I conclude that
+someone needs to come up with a \LaTeX2e\ set of macros for the SEG to use!
+
+\section{ACKNOWLEDGEMENTS}
+First, thanks to Sergey Fomel for creating the new SEG.bib database!
+
+I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and
+Fr\'ed\'eric Billette for having names with non-English letters in them.
+I wish to thank
+\v{C}erven\'{y}~\shortcite{Cerveny} for
+providing an example of how to make a bib file that includes an author
+whose name begins with a non-English character, and
+Forgues~\shortcite{forgues96} for providing both an example of referencing a
+Ph.D. thesis and yet more non-English characters.
+
+\bibliographystyle{segnat}
+\bibliography{SEG,books}
+
+\begin{table}
+$$
+\pmatrix{
+16.0398 & 9.30334 & -3.01053 & 7.32306 & 0.187091 & -.0887023 \cr
+9.30334 & 16.0000 & 3.26742 & 0. & -.641486 & 0. \cr
+-3.01053 & 3.26742 & 16.0398 & -.00932298 & -.187091 & 0.857407 \cr
+7.32306 & 0. & -.00932298 & 6.36847 & -.340491 & 0.299948 \cr
+0.187091 & -.641486 & -.187091 & -.340491 & 10.3656 & -4.07418 \cr
+-.0887023 & 0. & 0.857407 & 0.299948 & -4.07418 & 3.54618 \cr
+}
+$$
+\caption{Here is an example of how to do a table.}
+\label{rotation}
+\end{table}
+
+\end{document}

@@ -68,12 +68,12 @@
 % The following macros are defined in the package:
 %
 % \subsection{SEG-style vectors and tensors}
-% \DescribeMacro{\sv}
-% |\sv|\marg{vector} is used for vector variables in equations. It simply puts
+% \DescribeMacro{\vector}
+% |\vector|\marg{v} is used for vector variables in equations. It simply puts
 % the argument in boldface.
 %
-% \DescribeMacro{\st}
-% |\st|\marg{tensor} is used for matrix variables in equations. It puts the
+% \DescribeMacro{\tensor}
+% |\tensor|\marg{t} is used for matrix variables in equations. It puts the
 % argument in boldface and underscores it with a tilde.
 %
 % \DescribeEnv{abstract}
@@ -136,19 +136,19 @@
 %    \end{macrocode}
 %
 % \subsection{SEG-style vectors and tensors}
-% \begin{macro}{\sv}
+% \begin{macro}{\vector}
 % The SEG-style vector is simply bold math.
 %    \begin{macrocode}
-\providecommand{\sv}[1]{\ensuremath{\mathbf{#1}}}
+\renewcommand{\vector}[1]{\ensuremath{\mathbf{#1}}}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\st}
+% \begin{macro}{\tensor}
 % The SEG-style matrix is tilde-underscored vector.
 %    \begin{macrocode}
 \newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
         $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
         $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
+\providecommand{\tensor}[1]{\ensuremath{\under@tilde{\vector{#1}}}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -314,6 +314,10 @@
 %    \begin{macrocode}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{\section{\refname}}}
+%    \end{macrocode}
+% For backward compatibility: shortcite refers to the year
+%    \begin{macrocode}
+\newcommand{\shortcite}[1]{\citeyearpar{#1}}
 %    \end{macrocode}
 %
 % \subsection{Fonts}
