@@ -1,18 +1,25 @@
-% \iffalse (meta-comment)
-%% Copyright (C) 2004 Sergey Fomel
-\NeedsTeXFormat{LaTeX2e}
-%<*dtx>
-\ProvidesFile{geophysics.dtx}
-%</dtx>
-%<class>\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
-%<driver>\ProvidesFile{geophysics.drv}
+% \iffalse meta-comment
+%
+%   Copyright (C) 2004 by Sergey Fomel 
+%  
+%    This work may be distributed and/or modified under the
+%    conditions of the LaTeX Project Public License, either version 1.3
+%    of this license or (at your option) any later version.
+%    The latest version of this license is in
+%      http://www.latex-project.org/lppl.txt
+%    and version 1.3 or later is part of all distributions of LaTeX
+%    version 2003/12/01 or later.
+%
 % \fi
-%\ProvidesFile{geophysics}[2004/06/22 v1.0 Geophysics paper]
-
+%
 % \iffalse
+%<class>\NeedsTeXFormat{LaTeX2e}
+%<class>\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
+%
 %<*driver>
-\documentclass[11pt]{article}
-\usepackage{doc}
+\ProvidesFile{geophysics.dtx}[2004/06/22 v1.0 geophysics class]
+\documentclass{ltxdoc}
+\GetFileInfo{geophysics.dtx}
 \EnableCrossrefs
 \RecordChanges
 \CodelineIndex
@@ -21,31 +28,345 @@
 \end{document}
 %</driver>
 %\fi
-
-% \DoNotIndex{\RequirePackage}
-% \GetFileInfo{geophysics}
-% \title{\bfseries Geophysics: \LaTeX2e\ class for writing \emph{Geophysics}
-% papers}
-% \author{Sergey Fomel \\ sergey.fomel@beg.utexas.edu}
-% \date{This package describes package \texttt{\filename} \\
-% version \fileversion, from \filedate}
+%
+% \CheckSum{0}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \changes{v1.0}{2004/06/22}{Initial version}
+%
+% \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
+% \DoNotIndex{\newcommand,\providecommand,\renewcommand}
+%
+% \title{The \textsf{geophysics} class for 
+% writing \emph{Geophysics} papers\thanks{This document corresponds to
+% \textsf{geophhysics}~\fileversion, dated~\filedate.}}
+% \author{Sergey Fomel \\ \texttt{sergey.fomel@beg.utexas.edu}}
 % \maketitle
-% \MakeShortVerb{|}
+% \begin{abstract}
+% This package provides...
+% \end{abstract}
 %
 % \section{Introduction}
-% This package provides...
+% \LaTeX\ is a powerful system... 
+%
+% \section{Usage}
+%
+% The following macros are defined in the package:
+%
+% \subsection{SEG-style vectors and tensors}
+% \DescribeMacro{\sv}
+% |\sv|\marg{vector} is used for vector variables in equations. It simply puts
+% the argument in boldface.
+%
+% \DescribeMacro{\st}
+% |\st|\marg{tensor} is used for matrix variables in equations. It puts the
+% argument in boldface and underscores it with a tilde.
+%
+% \DescribeEnv{abstract}
+% Put an abstract
+%
+% \subsection{Figures and tables}
+% \DescribeMacro{\inputdir}
+% |\inputdir|\marg{dirname}
+% specifies the top-level directory (current directory by default).
+%
+% \DescribeMacro{\figdir}
+% |\figdir| stores the name of the figure directory relative to the directory
+% specified by |\inputdir|. |\figdir| is ``|.|'' (the current directory) by
+% default. You can change it with |\renewcommand{\figdir}|\marg{dirname}.
+%
+% \DescribeMacro{\plot}
+% |\plot|\marg{filename}\marg{size}\marg{caption} inserts a figure from file
+% \meta{filename} (specified relative to figdir) with caption
+% \meta{caption}. The \meta{size} specification corresponds to the convention
+% of the \textsf{graphicx} package. Examples:
+% \begin{itemize}
+% \item |width=\textwidth| (for scaling the figure and preserving the aspect
+% ratio)
+% \item |width=3in,height=0.5\textheight| (for scaling the figure
+% anisotropically) 
+% \end{itemize}
+% Refer to the figure number with |\ref{fig:|\meta{filename}|}|.
+%
+% \DescribeMacro{\tabl}
+% The |\tabl|\marg{label}\marg{caption}\marg{table} macro is used to 
+% manage tables. The defined \meta{table} will appear at the end of the 
+% paper, and its caption will be
+% added to the list of tables. Refer to the table number with 
+% |\ref{tbl:|\meta{filename}|}|.
 %
 % \StopEventually{\PrintIndex\PrintChanges}
 %
-% \section{The Coding}
+% \section{Implementation}
+
+% Load \textsf{ifthen} package for conditionals.
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
-% \begin{macrocode}
-%<*package>
+%    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
 
 \LoadClass[11pt]{article}
-% \end{macrocode}
+%    \end{macrocode}
 %
-%</package>
+% \subsection{SEG-style vectors and tensors}
+% \begin{macro}{\sv}
+% The SEG-style vector is simply bold math.
+%    \begin{macrocode}
+\providecommand{\sv}[1]{\ensuremath{\mathbf{#1}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\st}
+% The SEG-style matrix is tilde-underscored vector.
+%    \begin{macrocode}
+\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
+        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
+        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
+\providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Figures and Tables}
+% \begin{macro}{\@pathname}
+% |\@pathname| is an internal variable to store the top directory.
+% \begin{macro}{\inputdir}
+%    \begin{macrocode}
+\providecommand{\@pathname}{.}
+\providecommand{\inputdir}[1]{\renewcommand{\@pathname}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \begin{macro}{\figdir}
+% |\figdir| is a variable. It will need to be redefined to specify the figure
+% directory. 
+%    \begin{macrocode}
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\@pathname/\figdir/#1}
+%    \end{macrocode}
+% \end{macro}
+% Load the \textsf{graphicx} package for included figures.
+%    \begin{macrocode}
+\RequirePackage{graphicx}
+%    \end{macrocode}
+% Count figures.
+%    \begin{macrocode}
+\newcounter{@plots}
+\setcounter{@plots}{0}
+%    \end{macrocode}
+% \begin{macro}{\plot}
+% Define the |\plot| command for putting each figure on a separate page at the
+% end of the paper.
+%    \begin{macrocode}
+\providecommand{\plot}[4][X]{
+  \stepcounter{@plots}
+  \AtEndDocument{
+    \begin{figure}[p]
+      \centering
+      \includegraphics[#3]{\fig@file{#2}}
+      \caption[#4]{}
+      \label{fig:#2}
+    \end{figure}\clearpage
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+% Count tables.
+%    \begin{macrocode}
+\newcounter{@tabls}
+\setcounter{@tabls}{0}
+%    \end{macrocode}
+% \begin{macro}{\tabl}
+% Define the |\tabl| macro for handling tables.
+%    \begin{macrocode}
+\providecommand{\tabl}[4][X]{
+  \stepcounter{@tabls}
+  \AtEndDocument{
+    \begin{table}[p]
+      #4
+      \caption[#3]{}
+      \label{tbl:#2}
+    \end{table}\clearpage
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+% Redefine captions
+%    \begin{macrocode}
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#1.}%
+  \ifdim \wd\@tempboxa >\hsize
+  #1.\par
+  \else
+  \global \@minipagefalse
+  \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+%    \end{macrocode}
+% Suppress page numbers from lists of figures
+%    \begin{macrocode}
+\renewcommand*{\l@figure}[2]{%
+  \setlength{\@tempdima}{2.3em}%
+  \noindent\hspace*{1.5em}#1\hfil\newline}
+\let\l@table\l@figure
+%    \end{macrocode}
+% Redefine lists of figures and tables
+%    \begin{macrocode}
+\renewcommand\listoffigures{%
+  \section{\listfigurename
+    \@mkboth{\MakeUppercase\listfigurename}%
+    {\MakeUppercase\listfigurename}}%
+  \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+  \section{\listtablename
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\MakeUppercase\listtablename}}%
+  \@starttoc{lot}%
+}
+%    \end{macrocode}
+% List of figures and list of tables appear at the end of the document.
+%    \begin{macrocode}
+\AtEndDocument{
+  \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
+  \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
+}
+%    \end{macrocode}
+% \subsection{References}
+% Load the \textsf{natbib} package for natural-science-style citations.
+%    \begin{macrocode}
+\RequirePackage{natbib}
+%    \end{macrocode}
+% The following is \textsf{natbib}'s default.
+%    \begin{macrocode}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+%    \end{macrocode}
+% Redefine the reference section name.
+%    \begin{macrocode}
+\DeclareRobustCommand{\refname}{REFERENCES}
+\renewcommand\bibsection{\newpage\section{\refname}}
+%    \end{macrocode}
+%
+% \subsection{Fonts}
+% Load postscript \textsf{times} fonts for text and math.
+%    \begin{macrocode}
+\RequirePackage{times}
+\RequirePackage{mathptm}
+%    \end{macrocode}
+%
+% \subsection{Page layout}
+% Do double spacing.
+%    \begin{macrocode}
+\renewcommand{\baselinestretch}{2.0} % double spacing
+%    \end{macrocode}
+% Use plain page style.
+%    \begin{macrocode}
+\pagestyle{plain}
+\thispagestyle{plain}
+%    \end{macrocode}
+% Specify page dimensions.
+%    \begin{macrocode}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\oddsidemargin}{.26in}
+\setlength{\evensidemargin}{.26in}
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+%    \end{macrocode}
+% \subsection{Section headings}
+% Capitalize section headings and redefine their size from 
+% |\Large| to |\large|.
+%    \begin{macrocode}
+\let\seg@large\large
+\let\seg@Large\Large
+\renewcommand{\Large}{\protect\seg@large}
+\let\seg@section\section
+\let\seg@subsection\subsection
+\let\seg@subsubsection\subsubsection
+\newcommand{\segsection}[1]{\seg@section*{#1}}
+\renewcommand{\section}[2][]{\segsection{\MakeUppercase{#2}}}%
+\def\subsection{\seg@subsection*}%
+\def\subsubsection{\seg@subsubsection*}
+%    \end{macrocode}
+% \subsection{Title and author}
+% \begin{macro}{\title}
+% |\title| is redefined for consistency. It changes the internal |\seg@title|.
+%    \begin{macrocode}
+\newcommand{\seg@title}{}
+\newenvironment{geo@title}{%
+\vspace{.3in}\begin{minipage}{\textwidth}%
+\bfseries\seg@Large\centering}
+{\end{minipage}\vspace{.2in}}
+\renewcommand{\title}[1]{%
+\renewcommand{\seg@title}{%
+\noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
+{\smallskip #1}\end{geo@title}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\address}
+% The |\address| macro will save the address in the internal |\seg@address|.
+%    \begin{macrocode}
+\providecommand{\seg@address}{}
+\providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\author}
+% Finally, everything goes to \author and is stored in |\seg@author|.
+%    \begin{macrocode}
+\providecommand{\seg@author}{}
+\renewcommand{\author}[1]{%
+\renewcommand{\seg@author}{%
+  \seg@title
+\begin{centering}
+  \textbf{#1} \\
+  \seg@address \\
+  (\today) \\
+\end{centering}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\maketitle}
+% Redefined |\maketitle| is dumping the |\seg@author|.
+%    \begin{macrocode}
+\renewcommand{\maketitle}{\seg@author}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{abstract}
+% The abstract environment is simply a section.
+%    \begin{macrocode}
+\renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Appendix}
+% Clean this mess later.
+%    \begin{macrocode}
+\newcounter{@append}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+\ifthenelse{\equal{\append@name}{A}}{%
+\renewcommand{\append@name}{\Alph{@append}}}{}
+\setcounter{equation}{0}\setcounter{figure}{0}%%
+\renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+\renewcommand{\thefigure}{\append@name-\arabic{figure}}\stepcounter{@append}}
+\providecommand{\APPENDIX}[1]{\appendname{#1}\appendix\section{APPENDIX\ #1}}
+%    \end{macrocode}
 % \Finale
+\endinput

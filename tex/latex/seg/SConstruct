@@ -1,0 +1,69 @@
+import os, sys, signal, re
+
+env=Environment()
+
+latex = WhereIs('latex')
+pdflatex = WhereIs('pdflatex')
+makeindex = WhereIs('makeindex')
+bibtex = WhereIs('bibtex')
+epstopdf = WhereIs('epstopdf')
+
+env.Command('geophysics.cls',['geophysics.ins','geophysics.dtx'],
+            '%s ${SOURCES[0]}' % latex)
+env.Command(['geophysics.pdf','geophysics.aux',
+             'geophysics.gls','geophysics.glo',
+             'geophysics.ind','geophysics.idx'],
+            'geophysics.dtx',
+            '%s $SOURCE && '
+            '%s -s gglo.ist -o ${TARGETS[2]} ${TARGETS[3]} && '
+            '%s -s gind.ist -o ${TARGETS[4]} ${TARGETS[5]} && '
+            '%s $SOURCE' % (pdflatex,makeindex,makeindex,pdflatex))
+
+def interrupt(signum,frame):
+    global child
+    print "%s: aborting..." % sys.argv[0]
+    print "Press Enter a few times to empty LaTeX buffer!"
+    if child:
+        os.kill(child,signal.SIGINT)
+    sys.exit(1)
+
+signal.signal(signal.SIGINT,interrupt)
+
+def system(command,arg):
+    global child
+    child = os.fork()
+    if child:        
+        child,err = os.waitpid(child,0)
+        child = 0
+        return err
+    else:
+        os.execv(command,[command,arg])
+        os._exit(1)
+
+def latex2pdf(target=None,source=None,env=None):
+    "Convert LaTeX to DVI"
+    tex = str(source[0])
+    pdf = str(target[0])
+    stem = re.sub('\.[^\.]+$','',pdf) 
+    # First latex run
+    if system(pdflatex,tex):
+        return 1
+    system(bibtex,stem)
+    system(pdflatex,tex)
+    system(pdflatex,tex)
+    return 0
+
+def latex_emitter(target, source, env):
+    '''Produces a list of extra outputs from the LaTeX/BibTeX'''
+    base = re.sub('\.[^\.]+$','',str(source[0]))
+    extra = map (lambda x: base+x,['.pdf','.aux','.log','.bbl','.blg'])
+    return (extra,source)
+
+Pdf = Builder(action = Action(latex2pdf),
+              emitter=latex_emitter,src_suffix='.ltx',suffix='.pdf')
+env.Append(BUILDERS={'Pdf':Pdf})
+
+env.Command('Fig/exgr.pdf','Fig/exgr.eps','%s $SOURCE' % epstopdf)
+env.Pdf('geophysics_example.pdf',
+        ['geophysics_example.ltx','geophysics.cls',
+         'example.bib','Fig/exgr.pdf'])

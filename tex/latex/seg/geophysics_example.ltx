@@ -1,0 +1,91 @@
+\documentclass[12pt]{geophysics}
+
+\begin{document}
+
+\title{An example \emph{Geophysics} article}
+\address{Bureau of Economic Geology, \\
+John A. and Katherine G. Jackson School of Geosciences \\
+The University of Texas at Austin \\
+University Station, Box X \\
+Austin, TX 78713-8972}
+\author{Sergey Fomel}
+
+\maketitle
+
+\begin{abstract}
+  This is an example of using \textsf{geophysics} class for writing
+  \emph{Geophysics} papers.
+\end{abstract}
+
+\section{Introduction}
+
+This is an introduction. 
+
+\section{Theory}
+
+This is another section. \LaTeX\ is a powerful system
+\cite[]{lamport}. An excellent reference is \cite{kopka}. The new \LaTeX\
+standard is called \LaTeX2e.
+
+\subsection{Equations}
+
+\begin{equation}
+\frac{\partial U}{\partial z} = 
+\left\{
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial g}\right]^2} +
+  \sqrt{\frac{1}{v^2} - \left[\frac{\partial t}{\partial s}\right]^2}
+\right\}
+\frac{\partial U}{\partial t}
+\label{eqn:partial}
+\end{equation}
+
+It is important to get equation~(\ref{eqn:partial}) right.
+
+\subsection{Figures}
+
+Figure~\ref{fig:exgr} shows what it is about.
+
+\renewcommand{\figdir}{Fig} % figure directory
+
+\plot{exgr}{width=\textwidth}
+{This figure is specified in the document by \texttt{
+    $\backslash$plot\{exgr\}\{width=$\backslash$textwidth\}\{This caption.\}}.
+}
+
+\subsection{Tables}
+
+The discussion is summarized in Table~\ref{tbl:example}.
+
+\tabl{example}{This table is specified in the document by \texttt{
+    $\backslash$tabl\{example\}\{This caption.\}\{\ldots\}}.
+}{
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      \multicolumn{3}{|c|}{Table Example} \\
+      \hline
+      migration\rule[-2ex]{0ex}{5ex} & 
+      $\omega \rightarrow k_z$ & $k_y^2+k-z^2\cos^2 \psi=4\omega^2/v^2$ \\
+      \hline
+      \parbox{1in}{zero-offset\\diffraction}\rule[-4ex]{0ex}{8ex} &
+      $k_z\rightarrow\omega_0$ &
+      $k_y^2+k_z^2=4\omega_0^2/v^2$ \\
+      \hline
+      DMO+NMO\rule[-2ex]{0in}{5ex} & $\omega\rightarrow\omega_0$ & $\frac{1}{4}
+      v^2k_y^2\sin^2\psi+\omega_0^2\cos^2\psi=\omega^2$ \\
+      \hline
+      radial DMO\rule[-2ex]{0in}{5ex} & $\omega\rightarrow\omega_s$ &
+      $\frac{1}{4}v^2k_y^2\sin^2\psi+\omega_s^2=\omega^2$\\
+      \hline
+      radial NMO\rule[-2ex]{0in}{5ex} & $\omega_s\rightarrow\omega_0$ &
+      $\omega_0\cos\psi=\omega_s$\\
+      \hline
+    \end{tabular}
+  \end{center}
+}
+
+% include bibliography
+\bibliographystyle{segnat} % the style file is segnat.bst
+\bibliography{example}     % the bibliography file is example.bib
+
+\end{document}

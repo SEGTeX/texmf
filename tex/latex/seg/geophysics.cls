@@ -1,119 +1,117 @@
+%%
+%% This is file `geophysics.cls',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% geophysics.dtx  (with options: `class')
+%% 
+%% This is an automatically generated file. Do not edit it directly!
+%% 
+%%    Copyright (C) 2004 by Sergey Fomel
+%% 
+%%     This work may be distributed and/or modified under the
+%%     conditions of the LaTeX Project Public License, either version 1.3
+%%     of this license or (at your option) any later version.
+%%     The latest version of this license is in
+%%       http://www.latex-project.org/lppl.txt
+%%     and version 1.3 or later is part of all distributions of LaTeX
+%%     version 2003/12/01 or later.
+%% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{geophysics}[2003/04/22 v0.1 Geophysics paper]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Author: Sergey Fomel sergey@sep.stanford.edu
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesClass{geophysics}[2004/06/22 v1.0 Geophysics paper]
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
 
+\RequirePackage{ifthen}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
 
 \LoadClass[11pt]{article}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% SEG-style vectors and tensors
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \providecommand{\sv}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
         $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
         $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
 \providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  Figures and Tables
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \providecommand{\@pathname}{.}
 \providecommand{\inputdir}[1]{\renewcommand{\@pathname}{#1}}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@pathname/\figdir/#1}
-
-\RequirePackage{graphicx}    % for \plot 
-\providecommand{\plot}[4][X]{%
-\AtEndDocument{%
-\begin{figure}[p]
-\centering
-\includegraphics[#3]{\fig@file{#2}}
-\caption[#4]{}
-\label{fig:#2}
-\end{figure}\clearpage}}
-
-\AtEndDocument{%
-\newpage
-%\protect\ifthenelse{\value{table} > 0}{\listoftables}{}%
-%\protect\ifthenelse{\value{figure} > 0}{\listoffigures}{}%
-%\listoftables
-\listoffigures
-\setcounter{figure}{0}%
-\renewcommand{\thefigure}{\arabic{figure}}}%
-
-% copied from article.cls and hacked
+\RequirePackage{graphicx}
+\newcounter{@plots}
+\setcounter{@plots}{0}
+\providecommand{\plot}[4][X]{
+  \stepcounter{@plots}
+  \AtEndDocument{
+    \begin{figure}[p]
+      \centering
+      \includegraphics[#3]{\fig@file{#2}}
+      \caption[#4]{}
+      \label{fig:#2}
+    \end{figure}\clearpage
+  }
+}
+\newcounter{@tabls}
+\setcounter{@tabls}{0}
+\providecommand{\tabl}[4][X]{
+  \stepcounter{@tabls}
+  \AtEndDocument{
+    \begin{table}[p]
+      #4
+      \caption[#3]{}
+      \label{tbl:#2}
+    \end{table}\clearpage
+  }
+}
 \long\def\@makecaption#1#2{%
   \vskip\abovecaptionskip
   \sbox\@tempboxa{#1.}%
   \ifdim \wd\@tempboxa >\hsize
-    #1.\par
+  #1.\par
   \else
-    \global \@minipagefalse
-    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \global \@minipagefalse
+  \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
   \fi
   \vskip\belowcaptionskip}
-
-% copied from article.cls and hacked
-\renewcommand\listoffigures{%
-    \section{\listfigurename
-      \@mkboth{\MakeUppercase\listfigurename}%
-              {\MakeUppercase\listfigurename}}%
-    \@starttoc{lof}%
-    }
-
-\renewcommand\listoftables{%
-    \section{\listtablename
-      \@mkboth{\MakeUppercase\listtablename}%
-              {\MakeUppercase\listtablename}}%
-    \@starttoc{lot}%
-    \clearpage
-    }
-
-% to suppress page numbers from lof
 \renewcommand*{\l@figure}[2]{%
   \setlength{\@tempdima}{2.3em}%
   \noindent\hspace*{1.5em}#1\hfil\newline}
 \let\l@table\l@figure
-
-\providecommand{\tabl}[1]{%
-\AtEndDocument{%
-\begin{table}[p]
-#1
-\end{table}\clearpage}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  References
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{natbib}        % for \cite
-\bibpunct[,]{(}{)}{;}{a}{,}{,} % default
+\renewcommand\listoffigures{%
+  \section{\listfigurename
+    \@mkboth{\MakeUppercase\listfigurename}%
+    {\MakeUppercase\listfigurename}}%
+  \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+  \section{\listtablename
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\MakeUppercase\listtablename}}%
+  \@starttoc{lot}%
+}
+\AtEndDocument{
+  \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
+  \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
+}
+\RequirePackage{natbib}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
 \renewcommand\bibsection{\newpage\section{\refname}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  Fonts
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{times}       % postscript fonts
-\RequirePackage{mathptm}     % postscript math fonts
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Paper layout
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{times}
+\RequirePackage{mathptm}
 \renewcommand{\baselinestretch}{2.0} % double spacing
 \pagestyle{plain}
 \thispagestyle{plain}
@@ -125,12 +123,6 @@
 \setlength{\topmargin}{-.51in}
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
 \setlength{\headsep}{0.5in}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Section headings
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \let\seg@large\large
 \let\seg@Large\Large
 \renewcommand{\Large}{\protect\seg@large}
@@ -141,12 +133,6 @@
 \renewcommand{\section}[2][]{\segsection{\MakeUppercase{#2}}}%
 \def\subsection{\seg@subsection*}%
 \def\subsubsection{\seg@subsubsection*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Title and Author
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
 \vspace{.3in}\begin{minipage}{\textwidth}%
@@ -156,7 +142,6 @@
 \renewcommand{\seg@title}{%
 \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
 {\smallskip #1}\end{geo@title}}}
-
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
 \providecommand{\seg@author}{}
@@ -168,29 +153,8 @@
   \seg@address \\
   (\today) \\
 \end{centering}}}
-
 \renewcommand{\maketitle}{\seg@author}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% abstract is an environment, ABS is a command
-% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\providecommand{\ABS}[1]{%
-\section{ABSTRACT} 
-#1
-\newpage}
-\renewenvironment{abstract}{%
-%\begin{minipage}{\textwidth}
-\section{ABSTRACT}}
-{%\end{minipage}
-\newpage}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-% Appendix - needs cleaning
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
 \newcounter{@append}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
@@ -201,3 +165,6 @@
 \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
 \renewcommand{\thefigure}{\append@name-\arabic{figure}}\stepcounter{@append}}
 \providecommand{\APPENDIX}[1]{\appendname{#1}\appendix\section{APPENDIX\ #1}}
+\endinput
+%%
+%% End of file `geophysics.cls'.
