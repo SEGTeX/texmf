@@ -37,9 +37,13 @@
 %%   Right brace   \}     Tilde         \~}
 
 \RequirePackage{ifthen}
+\newcommand{\@type}{}
+\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
+\DeclareOption{paper}{\renewcommand{\@type}{paper}}
+\DeclareOption{book}{\renewcommand{\@type}{book}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ExecuteOptions{paper}
 \ProcessOptions*
-
 \LoadClass[11pt]{article}
 \providecommand{\sv}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
@@ -109,12 +113,16 @@
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\newpage\section{\refname}}
+\ifthenelse{\equal{\@type}{manuscript}}
+{\renewcommand\bibsection{\newpage\section{\refname}}}
+{\renewcommand\bibsection{\section{\refname}}}
 \RequirePackage{times}
 \RequirePackage{mathptm}
-\renewcommand{\baselinestretch}{2.0} % double spacing
-\pagestyle{plain}
-\thispagestyle{plain}
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewcommand{\baselinestretch}{2.0}
+}{
+  \renewcommand{\baselinestretch}{1.0}
+}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
 \setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
@@ -136,8 +144,7 @@
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
 \vspace{.3in}\begin{minipage}{\textwidth}%
-\bfseries\seg@Large\centering}
-{\end{minipage}\vspace{.2in}}
+\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
 \renewcommand{\title}[1]{%
 \renewcommand{\seg@title}{%
 \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
@@ -146,15 +153,53 @@
 \providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
-\renewcommand{\seg@author}{%
-  \seg@title
-\begin{centering}
-  \textbf{#1} \\
-  \seg@address \\
-  (\today) \\
-\end{centering}}}
+  \renewcommand{\seg@author}{%
+    \seg@title
+      \begin{centering}
+        \ifthenelse{\equal{\@type}{manuscript}}{%
+          \textbf{#1} \\
+          \seg@address\ \\
+          (\today) \\
+        }{\textit{#1} \\ \ }
+      \end{centering}
+    }}
 \renewcommand{\maketitle}{\seg@author}
-\renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+}
+{
+  \newsavebox{\seg@abstract}
+  \setlength{\fboxsep}{10pt}
+  \renewenvironment{abstract}{
+    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+        \centerline{\textbf{ABSTRACT}}\medskip}{%
+        \medskip\end{minipage}\end{lrbox}%
+    \noindent\fbox{\usebox{\seg@abstract}}
+  }
+}
+\newcommand{\seg@rhead}{}
+\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
+\newcommand{\seg@lhead}{}
+\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
+\newcommand{\seg@foot}{}
+\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
+\newcommand{\seg@head}{}
+\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
+\ifthenelse{\equal{\@type}{manuscript}}
+{\pagestyle{plain}\thispagestyle{plain}}
+{\newcommand{\ps@seg}{%
+\renewcommand{\@oddhead}{%
+\makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
+\makebox[2.5in][r]{\textit{\seg@rhead}}}%
+\renewcommand{\@evenhead}{\@oddhead}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\newcommand{\ps@segone}{%
+\renewcommand{\@oddhead}{}%
+\renewcommand{\@evenhead}{}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\pagestyle{seg}\thispagestyle{segone}}
 \newcounter{@append}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}

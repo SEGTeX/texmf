@@ -117,11 +117,21 @@
 %    \begin{macrocode}
 \RequirePackage{ifthen}
 %    \end{macrocode}
+% Different types: can prepare a manuscript, a paper, or a book.
+%    \begin{macrocode}
+\newcommand{\@type}{}
+\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
+\DeclareOption{paper}{\renewcommand{\@type}{paper}}
+\DeclareOption{book}{\renewcommand{\@type}{book}}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+%    \end{macrocode}
+% We will use paper and 11pt fonts by default.
+%    \begin{macrocode}
+\ExecuteOptions{paper}
 \ProcessOptions*
-
 \LoadClass[11pt]{article}
 %    \end{macrocode}
 %
@@ -260,7 +270,12 @@
 % Redefine the reference section name.
 %    \begin{macrocode}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\newpage\section{\refname}}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode}
+% In manuscripts, references appear at a separate page
+%    \begin{macrocode}
+{\renewcommand\bibsection{\newpage\section{\refname}}}
+{\renewcommand\bibsection{\section{\refname}}}
 %    \end{macrocode}
 %
 % \subsection{Fonts}
@@ -271,16 +286,15 @@
 %    \end{macrocode}
 %
 % \subsection{Page layout}
-% Do double spacing.
+% Do double spacing for manuscripts.
 %    \begin{macrocode}
-\renewcommand{\baselinestretch}{2.0} % double spacing
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewcommand{\baselinestretch}{2.0}
+}{
+  \renewcommand{\baselinestretch}{1.0}
+}
 %    \end{macrocode}
-% Use plain page style.
-%    \begin{macrocode}
-\pagestyle{plain}
-\thispagestyle{plain}
-%    \end{macrocode}
-% Specify page dimensions.
+% Specify page dimensions. \emph{This should be adjusted for A4 paper format.}
 %    \begin{macrocode}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
@@ -313,8 +327,7 @@
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
 \vspace{.3in}\begin{minipage}{\textwidth}%
-\bfseries\seg@Large\centering}
-{\end{minipage}\vspace{.2in}}
+\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
 \renewcommand{\title}[1]{%
 \renewcommand{\seg@title}{%
 \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
@@ -333,13 +346,16 @@
 %    \begin{macrocode}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
-\renewcommand{\seg@author}{%
-  \seg@title
-\begin{centering}
-  \textbf{#1} \\
-  \seg@address \\
-  (\today) \\
-\end{centering}}}
+  \renewcommand{\seg@author}{%
+    \seg@title
+      \begin{centering}
+        \ifthenelse{\equal{\@type}{manuscript}}{%
+          \textbf{#1} \\
+          \seg@address\ \\
+          (\today) \\
+        }{\textit{#1} \\ \ }
+      \end{centering}
+    }}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
@@ -349,11 +365,82 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{abstract}
-% The abstract environment is simply a section.
+% For manuscripts, the abstract environment is simply a section.
 %    \begin{macrocode}
-\renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+\ifthenelse{\equal{\@type}{manuscript}}{
+  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+}
+%    \end{macrocode}
+% For papers, the abstract apears in a box.
+%    \begin{macrocode}
+{
+  \newsavebox{\seg@abstract}
+  \setlength{\fboxsep}{10pt}
+  \renewenvironment{abstract}{
+    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+        \centerline{\textbf{ABSTRACT}}\medskip}{%
+        \medskip\end{minipage}\end{lrbox}%
+    \noindent\fbox{\usebox{\seg@abstract}}
+  }
+} 
 %    \end{macrocode}
 % \end{macro}
+% \subsection{Headers and footers}
+% Internal storage
+%    \begin{macrocode}
+%    \end{macrocode}
+% \begin{macro}{\righthead}
+% Right header
+%    \begin{macrocode}
+\newcommand{\seg@rhead}{}
+\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\lefthead}
+% Left header
+%    \begin{macrocode}
+\newcommand{\seg@lhead}{}
+\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\footer}
+% Footer
+%    \begin{macrocode}
+\newcommand{\seg@foot}{}
+\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\header}
+% Header
+%    \begin{macrocode}
+\newcommand{\seg@head}{}
+\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Page style}
+%    \begin{macrocode}
+\ifthenelse{\equal{\@type}{manuscript}}
+%    \end{macrocode}
+% For manuscript, use plain page style.
+%    \begin{macrocode}
+{\pagestyle{plain}\thispagestyle{plain}}
+%    \end{macrocode}
+% For paper, define a page style
+%    \begin{macrocode}
+{\newcommand{\ps@seg}{%
+\renewcommand{\@oddhead}{%
+\makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
+\makebox[2.5in][r]{\textit{\seg@rhead}}}%
+\renewcommand{\@evenhead}{\@oddhead}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\newcommand{\ps@segone}{%
+\renewcommand{\@oddhead}{}%
+\renewcommand{\@evenhead}{}%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\pagestyle{seg}\thispagestyle{segone}}
+%    \end{macrocode}
 % \subsection{Appendix}
 % Clean this mess later.
 %    \begin{macrocode}
