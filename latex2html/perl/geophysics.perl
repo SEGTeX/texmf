@@ -31,7 +31,7 @@ sub caption {
     $dash = '-' if ($append ne '');	
     join ('',"<STRONG>",
 	  "<A HREF = \"$fig.png\">$figname<\/A>",
-	  "<BR>Figure ",$append,$dash,$fignum,"<\/STRONG> ",$caption);
+	  "<BR>Figure ",$append,$dash,$fignum,".<\/STRONG> ",$caption);
 }
 
 sub buttons {
@@ -95,7 +95,7 @@ sub do_cmd_inputdir {
 
 sub do_cmd_append {
     my $rest = shift;
-    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
+    $rest =~ s/$next_pair_pr_rx//o;
     my $section = $2;
     $latex_body .= &revert_to_raw_tex("\\append{$2}\n");
     if ($seg::append eq '') {
@@ -104,7 +104,6 @@ sub do_cmd_append {
 	$seg::append++;
     }
     $seg::fignum = 0;
-    &extract_pure_text("liberal");
     join("\n",
 	 '<H1>',"Appendix ",$seg::append,'</H1>',
 	 '<H1>',$section,'</H1>') . $rest;
