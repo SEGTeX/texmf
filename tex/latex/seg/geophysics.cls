@@ -50,10 +50,11 @@
         $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
         $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
 \providecommand{\st}[1]{\ensuremath{\under@tilde{\sv{#1}}}}
-\providecommand{\@pathname}{.}
-\providecommand{\inputdir}[1]{\renewcommand{\@pathname}{#1}}
-\providecommand{\figdir}{.}
-\providecommand{\fig@file}[1]{\@pathname/\figdir/#1}
+\newcommand{\@path}{.}
+\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+\newcommand{\@subpath}{.}
+\newcommand{\subdir}[1]{\renewcommand{\@subpath}{#1}}
+\newcommand{\fig@file}[1]{\@path/\@subpath/#1}
 \RequirePackage{graphicx}
 \newcounter{@plots}
 \setcounter{@plots}{0}
@@ -88,7 +89,7 @@
   }}
 \ifthenelse{\equal{\@type}{manuscript}}
 {\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
-{\providecommand{\sideplot}[4][htbp]{%
+{\newcommand{\sideplot}[4][htbp]{%
     \begin{figure*}[#1]
       \makebox{%
         \begin{minipage}{0.4\textwidth}
