@@ -67,20 +67,12 @@
       \begin{figure}[p]
         \centering
         \includegraphics[#3]{\fig@file{#2}}
-        \caption[#4]{}
+        \caption{#4}
         \label{fig:#2}
       \end{figure}\clearpage
     }}
-  \long\def\@makecaption#1#2{%
-    \vskip\abovecaptionskip
-    \sbox\@tempboxa{#1.}%
-    \ifdim \wd\@tempboxa >\hsize
-    #1.\par
-    \else
-    \global \@minipagefalse
-    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
-    \fi
-    \vskip\belowcaptionskip}}
+  \setlength\abovecaptionskip{50\p@}
+}
 {\newcommand{\plot}[4][htbp]{%
     \begin{figure*}[#1]
       \centering
@@ -127,7 +119,7 @@
           \label{fig:\item@i}}
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
         \repeat
-        \caption[#5]{}
+        \caption{#5}
         \label{fig:#3}
       \end{figure}\clearpage
 }}}
@@ -158,7 +150,7 @@
     \AtEndDocument{
       \begin{table}[p]
         #4
-        \caption[#3]{}
+        \caption{#3}
         \label{tbl:#2}
       \end{table}\clearpage
     }
