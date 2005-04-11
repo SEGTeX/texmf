@@ -122,16 +122,17 @@
 \renewcommand{\normalsize}{\protect\scriptsize}
 \renewcommand{\footnotesize}{\protect\tiny}
 \scriptsize
-\let\seg@section\section
 \let\seg@subsection\subsection
-\newcommand{\segsection}[2][]{%
-\seg@section*{\protect\parbox[t]{\columnwidth}{%
-\textbf{\MakeUppercase{#2}}\\*}}}
+\newcommand{\segsection}{%
+\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1ex \@plus .2ex}%
+{\normalfont\Large\bfseries\MakeUppercase}}
 \newcommand{\segsubsection}[2][]{%
 \begin{minipage}{\columnwidth}
 \textbf{#2}
 \end{minipage}}
-\def\section{\@ifstar{\segsection}{\segsection}}
+\def\section{\@ifstar{\segsection*}{\segsection*}}%
 \def\subsection{\@ifstar{\segsubsection}{\segsubsection}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
 \newcommand{\seg@title}{}
