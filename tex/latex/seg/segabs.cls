@@ -88,7 +88,7 @@
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
       \label{fig:\item@i}}
-    \ifthenelse{\value{sub@fig} = #2}{ \setcounter{sub@fig}{0}}{}
+    \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
     \caption{#5}
     \label{fig:#3}

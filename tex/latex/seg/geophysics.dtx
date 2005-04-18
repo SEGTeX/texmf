@@ -195,7 +195,7 @@
 % In manuscripts, each figure appears on a separate page at the
 % end of the paper.
 %    \begin{macrocode}
-{\newcommand{\plot}[4][X]{
+{\newcommand{\fullplot}[4][X]{
     \stepcounter{@plots}
     \AtEndDocument{
       \begin{figure}[p]
@@ -221,7 +221,7 @@
 %    \end{macrocode}
 %In papers, an optional argument places the figure.
 %    \begin{macrocode}
-{\newcommand{\plot}[4][htbp]{%
+{\newcommand{\fullplot}[4][htbp]{%
     \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
@@ -229,6 +229,7 @@
       \label{fig:#2}
     \end{figure*}
   }}
+\def\plot{\@ifstar{\fullplot}{\fullplot}}
 %    \end{macrocode} 
 % \end{macro}
 % \begin{macro}{\sideplot}

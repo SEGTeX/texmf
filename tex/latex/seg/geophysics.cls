@@ -61,7 +61,7 @@
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\equal{\@type}{manuscript}}
-{\newcommand{\plot}[4][X]{
+{\newcommand{\fullplot}[4][X]{
     \stepcounter{@plots}
     \AtEndDocument{
       \begin{figure}[p]
@@ -73,7 +73,7 @@
     }}
   \setlength\abovecaptionskip{50\p@}
 }
-{\newcommand{\plot}[4][htbp]{%
+{\newcommand{\fullplot}[4][htbp]{%
     \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
@@ -81,6 +81,7 @@
       \label{fig:#2}
     \end{figure*}
   }}
+\def\plot{\@ifstar{\fullplot}{\fullplot}}
 \ifthenelse{\equal{\@type}{manuscript}}
 {\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
 {\newcommand{\sideplot}[4][htbp]{%
