@@ -103,7 +103,7 @@
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
 \ifthenelse{\equal{\@type}{manuscript}}
-{\newcommand{\multiplot}[5][X]{
+{\newcommand{\seg@multiplot}[5][X]{
     \stepcounter{@plots}
     \AtEndDocument{
       \begin{figure}[p]
@@ -124,7 +124,7 @@
         \label{fig:#3}
       \end{figure}\clearpage
 }}}
-{\newcommand{\multiplot}[5][htbp]{
+{\newcommand{\seg@multiplot}[5][htbp]{
     \begin{figure*}[#1]
         \centering
         \setcounter{sub@fig}{0}
@@ -143,6 +143,7 @@
         \label{fig:#3}
     \end{figure*}
 }}
+\def\multiplot{\@ifstar{\seg@multiplot}{\seg@multiplot}}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
 \ifthenelse{\equal{\@type}{manuscript}}{
