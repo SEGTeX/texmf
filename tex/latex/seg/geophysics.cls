@@ -36,13 +36,20 @@
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
 \RequirePackage{ifthen}
-\newcommand{\@type}{}
-\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
-\DeclareOption{paper}{\renewcommand{\@type}{paper}}
+\newboolean{@manu}
+\setboolean{@manu}{false}
+\DeclareOption{manuscript}{\setboolean{@manu}{true}}
+\DeclareOption{paper}{\setboolean{@manu}{false}}
+\newboolean{@twoc}
+\setboolean{@twoc}{false}
+\DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
+\DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper}
+\ExecuteOptions{paper,onecolumn}
 \ProcessOptions*
-\LoadClass[11pt]{article}
+\ifthenelse{\boolean{@twoc}}{%
+  \LoadClass[9pt]{article}}{%
+  \LoadClass[11pt]{article}}
 \RequirePackage{seg}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
@@ -60,7 +67,7 @@
    \fi
 \newcounter{@plots}
 \setcounter{@plots}{0}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 {\newcommand{\fullplot}[4][X]{
     \stepcounter{@plots}
     \AtEndDocument{
@@ -71,6 +78,7 @@
         \label{fig:#2}
       \end{figure}\clearpage
     }}
+  \def\plot{\@ifstar{\fullplot}{\fullplot}}
   \setlength\abovecaptionskip{50\p@}
 }
 {\newcommand{\fullplot}[4][htbp]{%
@@ -81,28 +89,40 @@
       \label{fig:#2}
     \end{figure*}
   }}
-\def\plot{\@ifstar{\fullplot}{\fullplot}}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 {\newcommand{\sideplot}[4][X]{\plot[#1]{#2}{#3}{#4}}}
 {\newcommand{\sideplot}[4][htbp]{%
-    \begin{figure*}[#1]
-      \makebox{%
-        \begin{minipage}{0.4\textwidth}
-          \caption{#4}
-          \label{fig:#2}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.6\textwidth}
-          \flushright
-          \includegraphics[#3]{\fig@file{#2}}
-        \end{minipage}}
-    \end{figure*}
-  }}
+    \ifthenelse{\boolean{@twoc}}{%
+      \begin{figure}[#1]
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
+        \caption{#4}
+        \label{fig:#2}
+      \end{figure}
+    }{%
+      \begin{figure*}[#1]
+        \makebox{%
+          \begin{minipage}{0.4\textwidth}
+            \caption{#4}
+            \label{fig:#2}
+          \end{minipage}
+          \hfill
+          \begin{minipage}{0.6\textwidth}
+            \flushright
+            \includegraphics[#3]{\fig@file{#2}}
+          \end{minipage}}
+      \end{figure*}
+    }
+  }
+  \ifthenelse{\boolean{@twoc}}{%
+    \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
+    \def\plot{\@ifstar{\fullplot}{\fullplot}}}
+}
 \RequirePackage{subfigure}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 {\newcommand{\seg@multiplot}[5][X]{
     \stepcounter{@plots}
     \AtEndDocument{
@@ -123,30 +143,54 @@
         \caption{#5}
         \label{fig:#3}
       \end{figure}\clearpage
-}}}
-{\newcommand{\seg@multiplot}[5][htbp]{
-    \begin{figure*}[#1]
-        \centering
-        \setcounter{sub@fig}{0}
-        \edef\list@i{#3}
-        \loop
-        \edef\item@i{\expandafter\next@item\list@i,\empty?}
-        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
-        \ifx\item@i\empty
-        \else
-        \stepcounter{sub@fig}
-        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-          \label{fig:\item@i}}
-        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
-        \repeat
-        \caption{#5}
-        \label{fig:#3}
-    \end{figure*}
 }}
 \def\multiplot{\@ifstar{\seg@multiplot}{\seg@multiplot}}
+}{%
+  \newcommand{\seg@fullmultiplot}[5][htbp]{
+    \begin{figure*}[#1]
+      \centering
+      \setcounter{sub@fig}{0}
+      \edef\list@i{#3}
+      \loop
+      \edef\item@i{\expandafter\next@item\list@i,\empty?}
+      \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+      \ifx\item@i\empty
+      \else
+      \stepcounter{sub@fig}
+      \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+        \label{fig:\item@i}}
+      \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+      \repeat
+      \caption{#5}
+      \label{fig:#3}
+    \end{figure*}
+  }
+  \newcommand{\seg@sidemultiplot}[5][htbp]{
+    \begin{figure}[#1]
+      \centering
+      \setcounter{sub@fig}{0}
+      \edef\list@i{#3}
+      \loop
+      \edef\item@i{\expandafter\next@item\list@i,\empty?}
+      \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+      \ifx\item@i\empty
+      \else
+      \stepcounter{sub@fig}
+      \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+        \label{fig:\item@i}}
+      \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+      \repeat
+      \caption{#5}
+      \label{fig:#3}
+    \end{figure}
+  }
+  \ifthenelse{\boolean{@twoc}}{%
+    \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
+    \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
+}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
-\ifthenelse{\equal{\@type}{manuscript}}{
+\ifthenelse{\boolean{@manu}}{
   \providecommand{\tabl}[4][X]{
     \stepcounter{@tabls}
     \AtEndDocument{
@@ -158,13 +202,21 @@
     }
   }
 }{
-  \providecommand{\tabl}[4][htbp]{
+  \providecommand{\seg@sidetabl}[4][htbp]{
     \begin{table}[#1]
       #4
       \caption{#3}
       \label{tbl:#2}
     \end{table}
   }
+  \providecommand{\seg@fulltabl}[4][htbp]{
+    \begin{table*}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table*}
+  }
+  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 }
 \renewcommand*{\l@figure}[2]{%
   \setlength{\@tempdima}{2.3em}%
@@ -189,12 +241,12 @@
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{\section{\refname}}}
 \newcommand{\shortcite}[1]{\citeyearpar{#1}}
 \RequirePackage{mathptmx}
-\ifthenelse{\equal{\@type}{manuscript}}{
+\ifthenelse{\boolean{@manu}}{
   \renewcommand{\baselinestretch}{2.0}
 }{
   \renewcommand{\baselinestretch}{1.0}
@@ -235,7 +287,7 @@
   \renewcommand{\seg@author}{%
     \seg@title
       \begin{center}
-        \ifthenelse{\equal{\@type}{manuscript}}{%
+        \ifthenelse{\boolean{@manu}}{%
           \textbf{#1} \\
           \seg@address\ \\
           (\today) \\
@@ -244,18 +296,24 @@
         }
       \end{center}
     }}
-\renewcommand{\maketitle}{\seg@author}
-\ifthenelse{\equal{\@type}{manuscript}}{
-  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+\renewcommand{\maketitle}{}%\seg@author}
+\ifthenelse{\boolean{@manu}}{
+  \renewenvironment{abstract}{\seg@author
+    \section{ABSTRACT}}{\newpage}
 }
 {
+  \ifthenelse{\boolean{@twoc}}{\RequirePackage{multicol}}{}
   \newsavebox{\seg@abstract}
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\textbf{ABSTRACT}}\medskip}{%
-        \medskip\end{minipage}\end{lrbox}%
-    \noindent\fbox{\usebox{\seg@abstract}}
+        \centerline{\textbf{ABSTRACT}}\medskip%
+        \ifthenelse{\boolean{@twoc}}{\begin{multicols}{2}}{}}{%
+          \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}%
+      \end{minipage}\end{lrbox}%
+    \ifthenelse{\boolean{@twoc}}{%
+      \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
+      \seg@author\noindent\fbox{\usebox{\seg@abstract}}}
   }
 }
 \newcommand{\seg@rhead}{}
@@ -266,7 +324,7 @@
 \newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
 \newcommand{\seg@head}{}
 \newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 {\pagestyle{plain}\thispagestyle{plain}}
 {\newcommand{\ps@seg}{%
 \renewcommand{\@oddhead}{%
@@ -282,7 +340,7 @@
 \renewcommand{\@evenfoot}{\@oddfoot}}
 \pagestyle{seg}\thispagestyle{segone}}
 \newcounter{@append}
-\ifthenelse{\equal{\@type}{manuscript}}{%
+\ifthenelse{\boolean{@manu}}{%
   \AtEndDocument{\setcounter{@append}{0}}}{}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
@@ -291,7 +349,7 @@
     \renewcommand{\append@name}{\Alph{@append}}}{}
   \setcounter{equation}{0}%
   \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-  \ifthenelse{\equal{\@type}{manuscript}}{%
+  \ifthenelse{\boolean{@manu}}{%
     \AtEndDocument{
       \setcounter{figure}{0}%
       \renewcommand{\thefigure}{\append@name-\arabic{figure}}%

@@ -1,4 +1,4 @@
-\documentclass{segabs}
+\documentclass[paper,twocolumn]{geophysics}
 
 % An example of defining macros
 \newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
@@ -6,21 +6,30 @@
 
 \begin{document}
 
-\title{An example SEG expanded abstract}
+\title{An example \emph{Geophysics} article, \\ with a two-line title}
 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}} 
 
-\author{Joe Dellinger\footnotemark[1], BP and Sergey Fomel, University of Texas at Austin}
+\address{
+\footnotemark[1]BP UTG, \\
+200 Westlake Park Blvd, \\
+Houston, TX, 77079 \\
+\footnotemark[2]Bureau of Economic Geology, \\
+John A. and Katherine G. Jackson School of Geosciences \\
+The University of Texas at Austin \\
+University Station, Box X \\
+Austin, TX 78713-8972}
+\author{Joe Dellinger\footnotemark[1] and Sergey Fomel\footnotemark[2]}
 
 \footer{Example}
 \lefthead{Dellinger \& Fomel}
-\righthead{SEG abstract example}
+\righthead{\emph{Geophysics} example}
 
-\maketitle
+%\maketitle is unneccessary
 
 \begin{abstract}
-  This is an example of using \textsf{segabs.cls} for writing
-  SEG expanded abstracts.
+  This is an example of using \textsf{geophysics.cls} for writing
+  \emph{Geophysics} papers.
 \end{abstract}
 
 \section{Introduction}
@@ -78,9 +87,9 @@ Sometimes it is convenient to put two or more figures from different
 files in an array (see Figure~\ref{fig:exph,exgr}). Individual plots
 are Figures~\ref{fig:exph} and~\ref{fig:exgr}.
 
-\multiplot{2}{exph,exgr}{width=0.4\textwidth}
-{This figure is specified in the document by \texttt{
-    $\backslash$multiplot\{2\}\{exph,exgr\}\{width=0.4$\backslash$textwidth\}\{This caption.\}}.
+\multiplot{2}{exph,exgr}{width=0.8\columnwidth}
+{This figure is specified in the document by \newline \texttt{
+    $\backslash$multiplot\{2\}\{exph,exgr\}\{width=0.8$\backslash$co\-lu\-mn\-width\}\{This caption.\}}.
 }
 
 The first argument of the \texttt{multiplot} command specifies the
@@ -90,8 +99,8 @@ number of plots per row.
 
 The discussion is summarized in Table~\ref{tbl:example}.
 
-\tabl{example}{This table is specified in the document by \texttt{
-    $\backslash$tabl\{example\}\{This caption.\}\{\ldots\}}.
+\tabl*{example}{This table is specified in the document by \texttt{
+    $\backslash$tabl*\{example\}\{This caption.\}\{\ldots\}}.
 }{
   \begin{center}
     \begin{tabular}{|c|c|c|}
@@ -157,10 +166,22 @@ Too lazy to type a different equation but note the numeration.
 
 The error comparison is provided in Figure~\ref{fig:errgrp}.
 
-\plot*{errgrp}{width=0.8\textwidth} {This figure is specified in the document
-  by \texttt{
-    $\backslash$plot*\{errgrp\}\{width=0.8$\backslash$textwidth\}\{This
-    caption.\}}.  }
+\plot*{errgrp}{width=0.9\textwidth}
+{This figure is specified in the document by \texttt{
+    $\backslash$plot*\{errgrp\}\{width=0.9$\backslash$text\-width\}\{This caption.\}}.
+}
+
+\onecolumn
+
+\append{The source of this document}
+
+\verbatiminput{geophysics_twocolumn.ltx}
+
+\append{The source of the bibliography}
+
+\verbatiminput{example.bib}
+
+\twocolumn
 
 \bibliographystyle{seg}  % style file is seg.bst
 \bibliography{example}

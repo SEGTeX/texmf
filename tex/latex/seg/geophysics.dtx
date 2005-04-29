@@ -130,19 +130,29 @@
 %    \end{macrocode}
 % Different types: can prepare a manuscript or a paper.
 %    \begin{macrocode}
-\newcommand{\@type}{}
-\DeclareOption{manuscript}{\renewcommand{\@type}{manuscript}}
-\DeclareOption{paper}{\renewcommand{\@type}{paper}}
+\newboolean{@manu}
+\setboolean{@manu}{false}
+\DeclareOption{manuscript}{\setboolean{@manu}{true}}
+\DeclareOption{paper}{\setboolean{@manu}{false}}
+%    \end{macrocode}
+% Catch the twocolumn option to implement it internally.
+%    \begin{macrocode}
+\newboolean{@twoc}
+\setboolean{@twoc}{false}
+\DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
+\DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
 %    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
-% We will use paper and 11pt fonts by default.
+% We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper}
+\ExecuteOptions{paper,onecolumn}
 \ProcessOptions*
-\LoadClass[11pt]{article}
+\ifthenelse{\boolean{@twoc}}{%
+  \LoadClass[9pt]{article}}{%
+  \LoadClass[11pt]{article}}
 %    \end{macrocode}
 % Load SEG style package
 %    \begin{macrocode}
@@ -190,7 +200,7 @@
 % \begin{macro}{\plot}
 % Define commands for figure inclusion.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 %    \end{macrocode} 
 % In manuscripts, each figure appears on a separate page at the
 % end of the paper.
@@ -205,6 +215,7 @@
         \label{fig:#2}
       \end{figure}\clearpage
     }}
+  \def\plot{\@ifstar{\fullplot}{\fullplot}}
   \setlength\abovecaptionskip{50\p@}
 % Deprecated code for suppressing captions.
 %  \long\def\@makecaption#1#2{%
@@ -229,13 +240,12 @@
       \label{fig:#2}
     \end{figure*}
   }}
-\def\plot{\@ifstar{\fullplot}{\fullplot}}
 %    \end{macrocode} 
 % \end{macro}
 % \begin{macro}{\sideplot}
 % Unless in manuscript mode, |\sideplot| puts figures on the side 
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 %    \end{macrocode} 
 % In manuscripts, there is no difference.
 %    \begin{macrocode}
@@ -244,19 +254,32 @@
 %to put the figure on the side.
 %    \begin{macrocode}
 {\newcommand{\sideplot}[4][htbp]{%
-    \begin{figure*}[#1]
-      \makebox{%
-        \begin{minipage}{0.4\textwidth}
-          \caption{#4}
-          \label{fig:#2}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.6\textwidth}
-          \flushright
-          \includegraphics[#3]{\fig@file{#2}}
-        \end{minipage}}
-    \end{figure*}
-  }}
+    \ifthenelse{\boolean{@twoc}}{%
+      \begin{figure}[#1]
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
+        \caption{#4}
+        \label{fig:#2}
+      \end{figure}
+    }{%
+      \begin{figure*}[#1]
+        \makebox{%
+          \begin{minipage}{0.4\textwidth}
+            \caption{#4}
+            \label{fig:#2}
+          \end{minipage}
+          \hfill
+          \begin{minipage}{0.6\textwidth}
+            \flushright
+            \includegraphics[#3]{\fig@file{#2}}
+          \end{minipage}}
+      \end{figure*}
+    }
+  }
+  \ifthenelse{\boolean{@twoc}}{%
+    \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
+    \def\plot{\@ifstar{\fullplot}{\fullplot}}}
+}
 %    \end{macrocode} 
 % \end{macro}
 % Multiple plots from different files in one figure\footnote{Thanks to 
@@ -267,7 +290,7 @@
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 %    \end{macrocode} 
 %    \begin{macrocode}
 {\newcommand{\seg@multiplot}[5][X]{
@@ -290,27 +313,51 @@
         \caption{#5}
         \label{fig:#3}
       \end{figure}\clearpage
-}}}
-{\newcommand{\seg@multiplot}[5][htbp]{
-    \begin{figure*}[#1]
-        \centering
-        \setcounter{sub@fig}{0}
-        \edef\list@i{#3}
-        \loop
-        \edef\item@i{\expandafter\next@item\list@i,\empty?}
-        \edef\list@i{\expandafter\rest@item\list@i,\empty?}
-        \ifx\item@i\empty 
-        \else
-        \stepcounter{sub@fig}
-        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-          \label{fig:\item@i}}
-        \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
-        \repeat
-        \caption{#5}
-        \label{fig:#3}
-    \end{figure*}
 }}
 \def\multiplot{\@ifstar{\seg@multiplot}{\seg@multiplot}}
+}{%
+  \newcommand{\seg@fullmultiplot}[5][htbp]{
+    \begin{figure*}[#1]
+      \centering
+      \setcounter{sub@fig}{0}
+      \edef\list@i{#3}
+      \loop
+      \edef\item@i{\expandafter\next@item\list@i,\empty?}
+      \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+      \ifx\item@i\empty 
+      \else
+      \stepcounter{sub@fig}
+      \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+        \label{fig:\item@i}}
+      \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
+      \repeat
+      \caption{#5}
+      \label{fig:#3}
+    \end{figure*}
+  }
+  \newcommand{\seg@sidemultiplot}[5][htbp]{
+    \begin{figure}[#1]
+      \centering
+      \setcounter{sub@fig}{0}
+      \edef\list@i{#3}
+      \loop
+      \edef\item@i{\expandafter\next@item\list@i,\empty?}
+      \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+      \ifx\item@i\empty 
+      \else
+      \stepcounter{sub@fig}
+      \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+        \label{fig:\item@i}}
+      \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
+      \repeat
+      \caption{#5}
+      \label{fig:#3}
+    \end{figure}
+  }
+  \ifthenelse{\boolean{@twoc}}{%
+    \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
+    \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
+}
 %    \end{macrocode}
 % \end{macro}
 % Count tables.
@@ -321,7 +368,7 @@
 % \begin{macro}{\tabl}
 % Define the |\tabl| macro for handling tables.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
+\ifthenelse{\boolean{@manu}}{
   \providecommand{\tabl}[4][X]{
     \stepcounter{@tabls}
     \AtEndDocument{
@@ -333,13 +380,21 @@
     }
   }
 }{
-  \providecommand{\tabl}[4][htbp]{
+  \providecommand{\seg@sidetabl}[4][htbp]{
     \begin{table}[#1]
       #4
       \caption{#3}
       \label{tbl:#2}
     \end{table}
   }
+  \providecommand{\seg@fulltabl}[4][htbp]{
+    \begin{table*}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table*}
+  }
+  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -384,7 +439,7 @@
 % Redefine the reference section name.
 %    \begin{macrocode}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 %    \end{macrocode}
 % In manuscripts, references appear at a separate page
 %    \begin{macrocode}
@@ -405,7 +460,7 @@
 % \subsection{Page layout}
 % Do double spacing for manuscripts.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
+\ifthenelse{\boolean{@manu}}{
   \renewcommand{\baselinestretch}{2.0}
 }{
   \renewcommand{\baselinestretch}{1.0}
@@ -476,7 +531,7 @@
   \renewcommand{\seg@author}{%
     \seg@title
       \begin{center}
-        \ifthenelse{\equal{\@type}{manuscript}}{%
+        \ifthenelse{\boolean{@manu}}{%
           \textbf{#1} \\
           \seg@address\ \\
           (\today) \\
@@ -488,29 +543,34 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
-% Redefined |\maketitle| is dumping the |\seg@author|.
+%   |\maketitle| is disabled
 %    \begin{macrocode}
-\renewcommand{\maketitle}{\seg@author}
+\renewcommand{\maketitle}{}%\seg@author}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{abstract}
 % For manuscripts, the abstract environment is simply a section.
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}{
-  \renewenvironment{abstract}{\section{ABSTRACT}}{\newpage}
+\ifthenelse{\boolean{@manu}}{
+  \renewenvironment{abstract}{\seg@author
+    \section{ABSTRACT}}{\newpage}
 }
 %    \end{macrocode}
 % For papers, the abstract apears in a box.
 %    \begin{macrocode}
 {
+  \ifthenelse{\boolean{@twoc}}{\RequirePackage{multicol}}{}
   \newsavebox{\seg@abstract}
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\textbf{ABSTRACT}}\medskip}{%
-        \medskip\end{minipage}\end{lrbox}%
-%    \twocolumn[\noindent\fbox{\usebox{\seg@abstract}}]
-    \noindent\fbox{\usebox{\seg@abstract}}
+        \centerline{\textbf{ABSTRACT}}\medskip%
+        \ifthenelse{\boolean{@twoc}}{\begin{multicols}{2}}{}}{%
+          \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}% 
+      \end{minipage}\end{lrbox}%
+    \ifthenelse{\boolean{@twoc}}{%
+      \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
+      \seg@author\noindent\fbox{\usebox{\seg@abstract}}}
   }
 } 
 %    \end{macrocode}
@@ -549,7 +609,7 @@
 % \end{macro}
 % \subsection{Page style}
 %    \begin{macrocode}
-\ifthenelse{\equal{\@type}{manuscript}}
+\ifthenelse{\boolean{@manu}}
 %    \end{macrocode}
 % For manuscript, use plain page style.
 %    \begin{macrocode}
@@ -575,7 +635,7 @@
 % Clean this mess later.
 %    \begin{macrocode}
 \newcounter{@append}
-\ifthenelse{\equal{\@type}{manuscript}}{%
+\ifthenelse{\boolean{@manu}}{%
   \AtEndDocument{\setcounter{@append}{0}}}{}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
@@ -584,7 +644,7 @@
     \renewcommand{\append@name}{\Alph{@append}}}{}
   \setcounter{equation}{0}%
   \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-  \ifthenelse{\equal{\@type}{manuscript}}{%
+  \ifthenelse{\boolean{@manu}}{%
     \AtEndDocument{      
       \setcounter{figure}{0}%
       \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
