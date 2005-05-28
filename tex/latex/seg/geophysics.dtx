@@ -142,13 +142,20 @@
 \DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
 \DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
 %    \end{macrocode}
+% A short paper option 
+%    \begin{macrocode}
+\newboolean{@shrt}
+\setboolean{@shrt}{false}
+\DeclareOption{short}{\setboolean{@shrt}{true}}
+\DeclareOption{long}{\setboolean{@shrt}{false}}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
 % We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper,onecolumn}
+\ExecuteOptions{paper,onecolumn,long}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -468,6 +475,18 @@
 %    \end{macrocode}
 % Specify page dimensions. \emph{This should be adjusted for A4 paper format!}
 %    \begin{macrocode}
+\ifthenelse{\boolean{@twoc}}{%
+\setlength{\textheight}{9.625in}
+\setlength{\textwidth}{7in}
+\setlength{\footskip}{0in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\columnsep}{0.3125in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+}{%
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
 \setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
@@ -475,7 +494,7 @@
 \setlength{\evensidemargin}{.26in}
 \setlength{\topmargin}{-.51in}
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
-\setlength{\headsep}{0.5in}
+\setlength{\headsep}{0.5in}}
 %    \end{macrocode}
 % \subsection{Section headings}
 % Capitalize section headings and redefine their size from 
@@ -500,9 +519,10 @@
 %    \begin{macrocode}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
-\vspace{.3in}\begin{minipage}{\textwidth}%
-\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
-\renewcommand{\title}[1]{%
+  \vspace{.3in}\begin{minipage}{\textwidth}%
+    \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
+	       {\end{minipage}\vspace{.2in}}%
+	       \renewcommand{\title}[1]{%
 \renewcommand{\seg@title}{%
 \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
 {\smallskip #1}\end{geo@title}}}
@@ -545,7 +565,8 @@
 % \begin{macro}{\maketitle}
 %   |\maketitle| is disabled
 %    \begin{macrocode}
-\renewcommand{\maketitle}{}%\seg@author}
+\renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
+    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{abstract}
@@ -563,14 +584,15 @@
   \newsavebox{\seg@abstract}
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
-    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\textbf{ABSTRACT}}\medskip%
+     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+        \centerline{\Large\textbf{ABSTRACT}}\medskip%
         \ifthenelse{\boolean{@twoc}}{\begin{multicols}{2}}{}}{%
-          \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}% 
-      \end{minipage}\end{lrbox}%
-    \ifthenelse{\boolean{@twoc}}{%
-      \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
-      \seg@author\noindent\fbox{\usebox{\seg@abstract}}}
+    \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}% 
+     \end{minipage}\end{lrbox}%
+     \ifthenelse{\boolean{@shrt}}{}{%
+       \ifthenelse{\boolean{@twoc}}{%
+	 \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
+	 \seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
   }
 } 
 %    \end{macrocode}
@@ -618,16 +640,28 @@
 % For paper, define a page style
 %    \begin{macrocode}
 {\newcommand{\ps@seg}{%
+\ifthenelse{\boolean{@twoc}}{%
+\renewcommand{\@oddhead}{%
+\seg@foot\hfill\textbf{\seg@rhead}\hfill\textbf{\thepage}}
+\renewcommand{\@evenhead}{%
+\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill\sep@foot}
+\renewcommand{\@oddfoot}{}
+\renewcommand{\@evenfoot}{}}{%
 \renewcommand{\@oddhead}{%
 \makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
 \makebox[2.5in][r]{\textit{\seg@rhead}}}%
 \renewcommand{\@evenhead}{\@oddhead}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
-\renewcommand{\@evenfoot}{\@oddfoot}}
+\renewcommand{\@evenfoot}{\@oddfoot}}}
+%    \end{macrocode}
+  % In general, there is a different page style on the first page.
+%    \begin{macrocode}
 \newcommand{\ps@segone}{%
 \renewcommand{\@oddhead}{}%
 \renewcommand{\@evenhead}{}%
-\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\ifthenelse{\boolean{@twoc}}{%
+  \renewcommand{\@oddfoot}{\hfill\textbf{\thepage}\hfill}
+}{\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}}%
 \renewcommand{\@evenfoot}{\@oddfoot}}
 \pagestyle{seg}\thispagestyle{segone}}
 %    \end{macrocode}

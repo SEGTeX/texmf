@@ -44,8 +44,12 @@
 \setboolean{@twoc}{false}
 \DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
 \DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
+\newboolean{@shrt}
+\setboolean{@shrt}{false}
+\DeclareOption{short}{\setboolean{@shrt}{true}}
+\DeclareOption{long}{\setboolean{@shrt}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper,onecolumn}
+\ExecuteOptions{paper,onecolumn,long}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -251,6 +255,18 @@
 }{
   \renewcommand{\baselinestretch}{1.0}
 }
+\ifthenelse{\boolean{@twoc}}{%
+\setlength{\textheight}{9.625in}
+\setlength{\textwidth}{7in}
+\setlength{\footskip}{0in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\columnsep}{0.3125in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+}{%
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
 \setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
@@ -258,7 +274,7 @@
 \setlength{\evensidemargin}{.26in}
 \setlength{\topmargin}{-.51in}
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
-\setlength{\headsep}{0.5in}
+\setlength{\headsep}{0.5in}}
 \let\seg@large\large
 \let\seg@Large\Large
 \renewcommand{\Large}{\protect\seg@large}
@@ -296,7 +312,8 @@
         }
       \end{center}
     }}
-\renewcommand{\maketitle}{}%\seg@author}
+\renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
+    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
 \ifthenelse{\boolean{@manu}}{
   \renewenvironment{abstract}{\seg@author
     \section{ABSTRACT}}{\newpage}
@@ -306,14 +323,15 @@
   \newsavebox{\seg@abstract}
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
-    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\textbf{ABSTRACT}}\medskip%
+     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+        \centerline{\Large\textbf{ABSTRACT}}\medskip%
         \ifthenelse{\boolean{@twoc}}{\begin{multicols}{2}}{}}{%
-          \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}%
-      \end{minipage}\end{lrbox}%
-    \ifthenelse{\boolean{@twoc}}{%
-      \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
-      \seg@author\noindent\fbox{\usebox{\seg@abstract}}}
+    \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}%
+     \end{minipage}\end{lrbox}%
+     \ifthenelse{\boolean{@shrt}}{}{%
+       \ifthenelse{\boolean{@twoc}}{%
+ \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
+ \seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
   }
 }
 \newcommand{\seg@rhead}{}
@@ -327,18 +345,25 @@
 \ifthenelse{\boolean{@manu}}
 {\pagestyle{plain}\thispagestyle{plain}}
 {\newcommand{\ps@seg}{%
+\ifthenelse{\boolean{@twoc}}{%
+\renewcommand{\@oddhead}{%
+\seg@foot\hfill\textbf{\seg@rhead}\hfill\textbf{\thepage}}
+\renewcommand{\@evenhead}{%
+\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill\sep@foot}
+\renewcommand{\@oddfoot}{}
+\renewcommand{\@evenfoot}{}}{%
 \renewcommand{\@oddhead}{%
 \makebox[2.5in][l]{\textit{\seg@lhead}}\hfill\thepage\hfill%
 \makebox[2.5in][r]{\textit{\seg@rhead}}}%
 \renewcommand{\@evenhead}{\@oddhead}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
-\renewcommand{\@evenfoot}{\@oddfoot}}
+\renewcommand{\@evenfoot}{\@oddfoot}}}
 \newcommand{\ps@segone}{%
 \renewcommand{\@oddhead}{}%
 \renewcommand{\@evenhead}{}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
 \renewcommand{\@evenfoot}{\@oddfoot}}
-\pagestyle{seg}\thispagestyle{segone}}
+\pagestyle{seg}\ifthenelse{\boolean{@twoc}}{}{\thispagestyle{segone}}}
 \newcounter{@append}
 \ifthenelse{\boolean{@manu}}{%
   \AtEndDocument{\setcounter{@append}{0}}}{}
