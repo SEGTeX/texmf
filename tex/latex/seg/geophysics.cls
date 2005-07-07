@@ -48,27 +48,34 @@
 \setboolean{@shrt}{false}
 \DeclareOption{short}{\setboolean{@shrt}{true}}
 \DeclareOption{long}{\setboolean{@shrt}{false}}
+\newboolean{@eflt}
+\setboolean{@eflt}{false}
+\DeclareOption{endfloat}{\setboolean{@eflt}{true}}
+\DeclareOption{noendfloat}{\setboolean{@eflt}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper,onecolumn,long}
+\ExecuteOptions{paper,onecolumn,long,noendfloat}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
   \LoadClass[11pt]{article}}
 \RequirePackage{seg}
+\ifthenelse{\boolean{@eflt}}{
+  \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
+}{
+\newif\ifpdf
+\ifx\pdfoutput\undefined \pdffalse
+\else \pdfoutput=1 \pdftrue \fi
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
-\newif\ifpdf
-   \ifx\pdfoutput\undefined \pdffalse
-     \else \pdfoutput=1 \pdftrue \fi
-   \ifpdf
-     \RequirePackage[pdftex]{graphicx}
-     \DeclareGraphicsExtensions{.pdf,.png}
-   \else
-     \usepackage{graphicx}
-     \DeclareGraphicsExtensions{.eps,.ps}
-   \fi
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \ifthenelse{\boolean{@manu}}
@@ -241,7 +248,7 @@
 \AtEndDocument{
   \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
   \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
-}
+}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}

@@ -149,13 +149,20 @@
 \DeclareOption{short}{\setboolean{@shrt}{true}}
 \DeclareOption{long}{\setboolean{@shrt}{false}}
 %    \end{macrocode}
+% An endfloat option
+%    \begin{macrocode}
+\newboolean{@eflt}
+\setboolean{@eflt}{false}
+\DeclareOption{endfloat}{\setboolean{@eflt}{true}}
+\DeclareOption{noendfloat}{\setboolean{@eflt}{false}}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
 % We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper,onecolumn,long}
+\ExecuteOptions{paper,onecolumn,long,noendfloat}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -167,6 +174,27 @@
 %    \end{macrocode}
 %
 % \subsection{Figures and Tables}
+% Either load the endfloat package or define special plotting commands
+%    \begin{macrocode}
+\ifthenelse{\boolean{@eflt}}{
+  \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
+}{
+%    \end{macrocode}
+% Load the \textsf{graphicx} package for included figures.
+% Possible suffices for graphics files depend on whether 
+% we are running pdflatex or latex.
+%    \begin{macrocode}
+\newif\ifpdf
+\ifx\pdfoutput\undefined \pdffalse              
+\else \pdfoutput=1 \pdftrue \fi
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
+%    \end{macrocode}
 % \begin{macro}{\@path}
 % |\@path| is an internal variable to store the top directory.
 % \begin{macro}{\inputdir}
@@ -184,21 +212,6 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 %    \end{macrocode}
 % \end{macro}
-% Load the \textsf{graphicx} package for included figures.
-% Possible suffices for graphics files depend on whether 
-% we are running pdflatex or latex.
-%    \begin{macrocode}
-\newif\ifpdf
-   \ifx\pdfoutput\undefined \pdffalse              
-     \else \pdfoutput=1 \pdftrue \fi
-   \ifpdf
-     \RequirePackage[pdftex]{graphicx}
-     \DeclareGraphicsExtensions{.pdf,.png}
-   \else
-     \usepackage{graphicx}
-     \DeclareGraphicsExtensions{.eps,.ps}
-   \fi
-%    \end{macrocode}
 % Count figures.
 %    \begin{macrocode}
 \newcounter{@plots}
@@ -432,7 +445,7 @@
 \AtEndDocument{
   \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
   \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
-}
+}}
 %    \end{macrocode}
 % \subsection{References}
 % Load the \textsf{natbib} package for natural-science-style citations.
