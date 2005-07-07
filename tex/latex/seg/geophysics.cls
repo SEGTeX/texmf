@@ -249,7 +249,6 @@
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{\section{\refname}}}
 \newcommand{\shortcite}[1]{\citeyearpar{#1}}
-\RequirePackage{mathptmx}
 \ifthenelse{\boolean{@manu}}{
   \renewcommand{\baselinestretch}{2.0}
 }{
@@ -288,9 +287,10 @@
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
-\vspace{.3in}\begin{minipage}{\textwidth}%
-\bfseries\seg@Large\centering}{\end{minipage}\vspace{.2in}}
-\renewcommand{\title}[1]{%
+  \vspace{.3in}\begin{minipage}{\textwidth}%
+    \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
+       {\end{minipage}\vspace{.2in}}%
+       \renewcommand{\title}[1]{%
 \renewcommand{\seg@title}{%
 \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
 {\smallskip #1}\end{geo@title}}}
@@ -358,12 +358,15 @@
 \renewcommand{\@evenhead}{\@oddhead}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
 \renewcommand{\@evenfoot}{\@oddfoot}}}
+  % In general, there is a different page style on the first page.
 \newcommand{\ps@segone}{%
 \renewcommand{\@oddhead}{}%
 \renewcommand{\@evenhead}{}%
-\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\ifthenelse{\boolean{@twoc}}{%
+  \renewcommand{\@oddfoot}{\hfill\textbf{\thepage}\hfill}
+}{\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}}%
 \renewcommand{\@evenfoot}{\@oddfoot}}
-\pagestyle{seg}\ifthenelse{\boolean{@twoc}}{}{\thispagestyle{segone}}}
+\pagestyle{seg}\thispagestyle{segone}}
 \newcounter{@append}
 \ifthenelse{\boolean{@manu}}{%
   \AtEndDocument{\setcounter{@append}{0}}}{}
