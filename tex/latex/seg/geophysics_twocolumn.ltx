@@ -1,4 +1,4 @@
-\documentclass[paper,twocolumn]{geophysics}
+\documentclass[paper,twocolumn,twoside]{geophysics}
 
 % An example of defining macros
 \newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
@@ -87,9 +87,9 @@ Sometimes it is convenient to put two or more figures from different
 files in an array (see Figure~\ref{fig:exph,exgr}). Individual plots
 are Figures~\ref{fig:exph} and~\ref{fig:exgr}.
 
-\multiplot{2}{exph,exgr}{width=0.8\columnwidth}
+\multiplot*{2}{exph,exgr}{width=0.8\columnwidth}
 {This figure is specified in the document by \newline \texttt{
-    $\backslash$multiplot\{2\}\{exph,exgr\}\{width=0.8$\backslash$co\-lu\-mn\-width\}\{This caption.\}}.
+    $\backslash$multiplot*\{2\}\{exph,exgr\}\{width=0.8$\backslash$co\-lu\-mn\-width\}\{This caption.\}}.
 }
 
 The first argument of the \texttt{multiplot} command specifies the
@@ -166,19 +166,17 @@ Too lazy to type a different equation but note the numeration.
 
 The error comparison is provided in Figure~\ref{fig:errgrp}.
 
-\plot*{errgrp}{width=0.9\textwidth}
+\plot{errgrp}{width=0.9\columnwidth}
 {This figure is specified in the document by \texttt{
-    $\backslash$plot*\{errgrp\}\{width=0.9$\backslash$text\-width\}\{This caption.\}}.
+    $\backslash$plot\{errgrp\}\{width=0.9$\backslash$column\-width\}\{This caption.\}}.
 }
 
 \onecolumn
 
 \append{The source of this document}
-
 \verbatiminput{geophysics_twocolumn.ltx}
 
 \append{The source of the bibliography}
-
 \verbatiminput{example.bib}
 
 \twocolumn

@@ -262,16 +262,15 @@
   \renewcommand{\baselinestretch}{1.0}
 }
 \ifthenelse{\boolean{@twoc}}{%
-\setlength{\textheight}{9.625in}
-\setlength{\textwidth}{7in}
-\setlength{\footskip}{0in}
-\setlength{\oddsidemargin}{-0.25in}
-\setlength{\evensidemargin}{-0.25in}
+\setlength{\textheight}{9.375in}
+\setlength{\textwidth}{7.5in}
+\setlength{\oddsidemargin}{-0.5in}
+\setlength{\evensidemargin}{-0.5in}
 \setlength{\columnsep}{0.3125in}
-\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
-\setlength{\topmargin}{-.51in}
+\setlength{\parskip}{1ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\topmargin}{-.71in}
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
-\setlength{\headsep}{0.5in}
+\setlength{\headsep}{0.2in}
 }{%
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
@@ -287,38 +286,47 @@
 \let\seg@section\section
 \let\seg@subsection\subsection
 \let\seg@subsubsection\subsubsection
-\newcommand{\segsection}[2][]{%
-\seg@section*{\protect\centering\MakeUppercase{#2}}}
-\def\section{\@ifstar{\segsection}{\segsection}}
+\newcommand{\segsection}{%
+\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1ex \@plus .2ex}%
+{\normalfont\Large\bfseries\MakeUppercase}}
+\def\section{\@ifstar{\segsection*}{\segsection*}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
-  \vspace{.3in}\begin{minipage}{\textwidth}%
+  \begin{minipage}{\textwidth}%
     \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
        {\end{minipage}\vspace{.2in}}%
-       \renewcommand{\title}[1]{%
-\renewcommand{\seg@title}{%
-\noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-{\smallskip #1}\end{geo@title}}}
+\renewcommand{\title}[1]{%
+  \renewcommand{\seg@title}{%
+    \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
+   {\smallskip #1}\end{geo@title}}}
 \providecommand{\seg@address}{}
-\providecommand{\address}[1]{\renewcommand{\seg@address}{\emph{#1}}}
+\providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
 \providecommand{\seg@email}{.}
 \providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
-    \seg@title
+    \ifthenelse{\boolean{@twoc}}{%
+      \seg@title \\
+      \begin{flushleft}
+\Large #1\footnote{\seg@address}
+      \end{flushleft}\vspace{0.2in}
+    }{%
+      \seg@title
       \begin{center}
         \ifthenelse{\boolean{@manu}}{%
           \textbf{#1} \\
-          \seg@address\ \\
+          \emph{\seg@address}\ \\
           (\today) \\
         }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
             \footnote{\textbf{e-mail: }\seg@email}} \\ \
         }
       \end{center}
-    }}
+    }}}
 \renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
     \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
 \ifthenelse{\boolean{@manu}}{
@@ -337,8 +345,9 @@
      \end{minipage}\end{lrbox}%
      \ifthenelse{\boolean{@shrt}}{}{%
        \ifthenelse{\boolean{@twoc}}{%
- \twocolumn[\seg@author\noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
- \seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
+ \twocolumn[\vspace{1.8in}\seg@author%
+   \noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
+ \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
   }
 }
 \newcommand{\seg@rhead}{}
@@ -356,7 +365,7 @@
 \renewcommand{\@oddhead}{%
 \seg@foot\hfill\textbf{\seg@rhead}\hfill\textbf{\thepage}}
 \renewcommand{\@evenhead}{%
-\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill\sep@foot}
+\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill\seg@foot}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}{%
 \renewcommand{\@oddhead}{%
