@@ -44,7 +44,7 @@ sub do_cmd_lstinputlisting {
     my $RDR = gensym();  # and another one
 
     open2 ($RDR,$WTR,
-	   'enscript --color -Whtml --output=- --pretty-print=' . 
+	   'enscript --color --language=html --output=- --pretty-print=' . 
 	   $listings::language);
     while (<FILE>) {
 	if ($. >= $firstline && $. <= $lastline) {
