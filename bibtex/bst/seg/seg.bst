@@ -1,6 +1,6 @@
 % BibTeX `seglike' bibliography style (24-Jan-88 version)
 % Adapted from the `apalike' style, version 0.99a; for BibTeX version 0.99a.
-% Copyright (C) 2004, all rights reserved.
+% Copyright (C) 2004, Soc. of Expl. Geophys. & Joerg Schleicher, all rights reserved.
 % Copying of this file is allowed, provided that if you make any changes at all
 % you name it something other than `seglike.bst'.
 % This restriction helps ensure that all copies are identical.
@@ -16,10 +16,15 @@
 %   24-jan-88	(OP)	Updated for BibTeX version 0.99a, from alpha.bst 0.99a;
 %			apalike now sorts by author, then year, then title;
 %   12-aug-04	(JS)	First adapted 'seglike' version, by Joerg Schleicher.
-%			Parts from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
-%			and from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher
+%			Parts are from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
+%			and from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
 %			'seglike' follows the SEG style according to the
 %			'Instructions to Authors', Geophysics, Jan/Feb 2004.
+%   29-dec-04	(JS)	Abbr. tp for Tectonophysics added, and format.author
+%                       modified to correct name format
+%   09-aug-05	(JS)	Last correction (in inproceedings: use booktitle, give
+%                       priority of meeting over type, and don't change case
+%                       of booktitle and meeting)
 %			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -33,7 +38,7 @@ ENTRY
     institution
     journal
     key
-%    month		not used in apalike
+%    month		not used in apalike  %% nor seglike.bst
     meeting		%% introduced in accordance to SEG's seg.bst	
     meetingnr		%% introduced in adaptation of geophys.bst	
     note
@@ -44,6 +49,7 @@ ENTRY
     issue
     organization
     pages
+    proceedingstitle	%% only in seglike.bst
     publisher
     school
     series
@@ -212,13 +218,45 @@ FUNCTION {emphasize}
 
 INTEGERS { nameptr namesleft numnames }
 
-FUNCTION {format.names}
+FUNCTION {format.names.old}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr "{vv~}{ll}{, jj}{, f.}" format.name$ 't :=   % last name first
+      nameptr #1 >
+	{ namesleft #1 >
+	    { ", " * t * }
+	    { numnames #2 >
+		{ "," * }
+		'skip$
+	      if$
+	      t "others" =
+		{ " et~al." * }
+		{ " and " * t * }
+	      if$
+	    }
+	  if$
+	}
+	't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {format.names}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { numnames namesleft =
+        { s nameptr "{vv~}{ll}{, jj}{, f.}" format.name$ 't := }  % last name first 
+        { s nameptr "{f. }{vv~}{ll}{, jj}" format.name$ 't := }  % first name first
+      if$
       nameptr #1 >
 	{ namesleft #1 >
 	    { ", " * t * }
@@ -266,10 +304,11 @@ FUNCTION {format.editors}
     { "" }
     { editor format.names
       editor num.names$ #1 >
-        { " (eds.)" * }
-        { " (ed.)" * }
+%%	{ ", editors" * }   
+%%	{ ", editor" * }
+        { ", eds." * }
+        { ", ed." * }
       if$
-      ", " *
     }
   if$
 }
@@ -395,8 +434,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-	{ "pages" pages n.dashify tie.or.space.connect }
-	{ "page" pages tie.or.space.connect }
+	{ "" pages n.dashify tie.or.space.connect }
+	{ "" pages tie.or.space.connect }
       if$
     }
   if$
@@ -449,7 +488,7 @@ FUNCTION {format.in.ed.booktitle}
 %	{ "In " format.editors * ", " * booktitle emphasize * }
 %%			%% modified according to seg.bst
         { "{\it in} " booktitle * }
-        { "{\it in} " format.editors * ", " * booktitle * ":" * }
+        { "{\it in} " format.editors * ", " * booktitle * }
       if$
     }
   if$
@@ -518,11 +557,11 @@ FUNCTION {number.to.counter}
 }
 
 %%						%% from geophys.bst
-FUNCTION {format.type}
-{ type empty$
+FUNCTION {format.meeting}                       %% modified to give meeting
+{ meeting empty$                                %% priority over type
     'skip$
     { pop$
-      type "t" change.case$
+      meeting                                   %% and no change of case
     }
   if$
 }
@@ -537,24 +576,27 @@ FUNCTION {format.booktitle}
 
 %%						%% from geophys.bst
 FUNCTION {format.proceedings}
-{ booktitle empty$
+{ proceedingstitle empty$
     'skip$
     { pop$
-      booktitle
+      proceedingstitle
     }
   if$
 }
 
 FUNCTION {format.meeting.ad.ab}
-{ "Presented at the "
+{ pages empty$
+    { "Presented at the " }
+    { "" }
+  if$
   meetingnr empty$
     { "" * }
     { meetingnr number.to.counter *
     }
   if$
-  meeting empty$
-    { "Annual International Meeting" format.type * }
-    { meeting format.type *
+  type empty$                                           %% modified to give
+    { "Annual International Meeting" format.meeting * } %% meeting priority
+    { type format.meeting *                             %% over type
     }
   if$
   organization empty$
@@ -566,9 +608,12 @@ FUNCTION {format.meeting.ad.ab}
   pages empty$
     { "" * }
     { ", " *
-      "Expanded Abstracts" format.proceedings *
+      booktitle empty$                                  %% included to
+        { "Expanded Abstracts" format.proceedings * } 
+        { booktitle format.proceedings * }              %% make booktitle
+      if$                                               %% work
       ", " *
-      pages *
+      format.pages *
     }
   if$
 }
@@ -980,7 +1025,11 @@ MACRO {sg} {"Surveys in Geophysics"}
 
 MACRO {sgg} {"Soviet Geology and Geophysics"}
 
+MACRO {sgeg} {"Studia Geophysica et Geodaetica"}
+
 MACRO {tle} {"The Leading Edge"}
+
+MACRO {tp} {"Tectonophysics"}
 
 MACRO {tocs} {"ACM Transactions on Computer Systems"}
 
