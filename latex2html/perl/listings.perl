@@ -11,10 +11,12 @@ sub do_cmd_lstset {
     my $rest = shift;
     $rest = ~ s/$next_pair_pr_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     my $options = $2;
+    print "in lstset\n";
     if ($options =~ /language=([^\,\}]+)/) {
 	$listings::language=lc($1);
 	$listings::language =~ s/c\+\+/cpp/;
     }
+    print "got $listings::language \n";
     $rest;
 }
 
@@ -42,6 +44,9 @@ sub do_cmd_lstinputlisting {
 
     my $WTR = gensym();  # get a reference to a typeglob
     my $RDR = gensym();  # and another one
+
+    print "enscript --color --language=html --output=- --pretty-print=" . 
+	$listings::language . "\n";
 
     open2 ($RDR,$WTR,
 	   'enscript --color --language=html --output=- --pretty-print=' . 

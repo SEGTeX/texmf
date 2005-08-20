@@ -52,8 +52,12 @@
 \setboolean{@eflt}{false}
 \DeclareOption{endfloat}{\setboolean{@eflt}{true}}
 \DeclareOption{noendfloat}{\setboolean{@eflt}{false}}
+\newboolean{@revd}
+\setboolean{@revd}{false}
+\DeclareOption{revised}{\setboolean{@revd}{true}}
+\DeclareOption{new}{\setboolean{@revd}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper,onecolumn,long,noendfloat}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -249,6 +253,14 @@
   \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
   \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
 }}
+\ifthenelse{\boolean{@revd}}{
+  \RequirePackage{color}%
+  \RequirePackage{ulem}%
+  \normalem
+}{}
+\newcommand{\new}[1]{%
+  \ifthenelse{\boolean{@revd}}{\textit{\textcolor{red}{#1}}}{#1}}
+\newcommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{green}{\sout{#1}}}{}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}

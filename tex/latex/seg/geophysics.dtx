@@ -156,13 +156,20 @@
 \DeclareOption{endfloat}{\setboolean{@eflt}{true}}
 \DeclareOption{noendfloat}{\setboolean{@eflt}{false}}
 %    \end{macrocode}
+% An revision option
+%    \begin{macrocode}
+\newboolean{@revd}
+\setboolean{@revd}{false}
+\DeclareOption{revised}{\setboolean{@revd}{true}}
+\DeclareOption{new}{\setboolean{@revd}{false}}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
 % We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper,onecolumn,long,noendfloat}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -446,6 +453,24 @@
   \ifthenelse{\value{@tabls} > 0}{\newpage\listoftables}{}
   \ifthenelse{\value{@plots} > 0}{\newpage\listoffigures}{}
 }}
+%    \end{macrocode}
+% \subsection{Revision changes}
+% In a revised paper, load the \textsf{ulem} package and make sure
+% it does not alter the emphasis commands. Also load the
+% \textsf{color} package to change the text color.
+%    \begin{macrocode}
+\ifthenelse{\boolean{@revd}}{
+  \RequirePackage{color}%
+  \RequirePackage{ulem}%
+  \normalem
+}{}
+%    \end{macrocode}
+% In a revised paper, changes are marked with |\new| and appear in red, and
+% removed parts are marked with |\old| and appear crossed out.
+%    \begin{macrocode}
+\newcommand{\new}[1]{%
+  \ifthenelse{\boolean{@revd}}{\textit{\textcolor{red}{#1}}}{#1}}
+\newcommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{green}{\sout{#1}}}{}}
 %    \end{macrocode}
 % \subsection{References}
 % Load the \textsf{natbib} package for natural-science-style citations.
