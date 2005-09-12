@@ -38,7 +38,38 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions*
 \LoadClass[11pt]{report}
+\RequirePackage{ifthen}
 \RequirePackage{seg}
+\RequirePackage{chapterbib}
+\newlength{\toc@width}%
+\setlength{\toc@width}{\textwidth}%
+\addtolength{\toc@width}{-6em}%
+\newcommand{\TOCentry}[3][.]{
+  \noindent\hspace*{4em}{\begin{minipage}[b]{\toc@width}
+      \setlength{\parindent}{-5em}%
+      \ifthenelse{\equal{#1}{.}}{}{\textit {#1}, }%
+      #2\dotfill\
+    \end{minipage}\hfill#3}\par}
+\newcommand{\REPORT}{}
+\newcommand{\GROUP}{}
+\newcommand{\GEOcopyr}[2]{%
+\author{Copyright \copyright\ #1}
+\author{by #2}
+\vfill \ \newpage}
+\newcommand{\geo@head}{}
+\newcommand{\geo@header}{}
+\newcommand{\header}[1]{\renewcommand{\geo@head}{#1}}
+\newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
+\newcommand{\paper@name}{}
+\newcommand{\GEOpaper}[1]{%
+  \setcounter{equation}{0}\setcounter{figure}{0}%
+  \setcounter{table}{0}\setcounter{footnote}{0}%
+  \renewcommand{\theequation}{\arabic{equation}}%
+  \renewcommand{\thefigure}{\arabic{figure}}%
+  \renewcommand{\thetable}{\arabic{table}}%
+  \header{, pages \pageref{#1.start}--\pageref{#1.end}}%
+  \renewcommand{\paper@name}{#1}
+}
 \endinput
 %%
 %% End of file `georeport.cls'.
