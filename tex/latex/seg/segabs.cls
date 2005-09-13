@@ -39,8 +39,6 @@
 \ProcessOptions*
 \LoadClass[11pt]{article}
 \RequirePackage{seg}
-\newcommand{\@path}{.}
-\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \newif\ifpdf
@@ -171,14 +169,6 @@
 \begin{minipage}[t]{\columnwidth}
 \textbf{SUMMARY}\\*}{%
 \end{minipage}\vspace{2ex}}
-\newcommand{\seg@rhead}{}
-\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
-\newcommand{\seg@lhead}{}
-\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
-\newcommand{\seg@foot}{}
-\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
-\newcommand{\seg@head}{}
-\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
 \newcommand{\ps@seg}{%
 \renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
 \renewcommand{\@evenhead}{\@oddhead}

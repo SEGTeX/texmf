@@ -86,5 +86,54 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \subsection{Headers and footers}
+% Internal storage
+% \begin{macro}{\righthead}
+% Right header
+%    \begin{macrocode}
+\newcommand{\seg@rhead}{}
+\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\lefthead}
+% Left header
+%    \begin{macrocode}
+\newcommand{\seg@lhead}{}
+\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\footer}
+% Footer
+%    \begin{macrocode}
+\newcommand{\seg@foot}{}
+\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\header}
+% Header
+%    \begin{macrocode}
+\newcommand{\seg@head}{}
+\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Title and author}
+% \begin{macro}{\email}
+% The |\email| macro will save the e-mail address in the internal 
+% |\seg@email|.
+%    \begin{macrocode}
+\providecommand{\seg@email}{.}
+\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Included files}
+% \begin{macro}{\@path}
+% |\@path| is an internal variable to store the top directory.
+% \begin{macro}{\inputdir}
+%    \begin{macrocode}
+\newcommand{\@path}{.}
+\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
 % \Finale
 \endinput

@@ -56,9 +56,7 @@
 \author{Copyright \copyright\ #1}
 \author{by #2}
 \vfill \ \newpage}
-\newcommand{\geo@head}{}
 \newcommand{\geo@header}{}
-\newcommand{\header}[1]{\renewcommand{\geo@head}{#1}}
 \newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
 \newcommand{\paper@name}{}
 \newcommand{\GEOpaper}[1]{%

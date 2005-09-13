@@ -35,6 +35,18 @@
 %%   Right brace   \}     Tilde         \~}
 \renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
 \providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
+\newcommand{\seg@rhead}{}
+\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
+\newcommand{\seg@lhead}{}
+\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
+\newcommand{\seg@foot}{}
+\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
+\newcommand{\seg@head}{}
+\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
+\providecommand{\seg@email}{.}
+\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
+\newcommand{\@path}{.}
+\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \endinput
 %%
 %% End of file `seg.sty'.

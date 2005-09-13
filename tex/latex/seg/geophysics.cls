@@ -76,8 +76,6 @@
 \usepackage{graphicx}
 \DeclareGraphicsExtensions{.eps,.ps}
 \fi
-\newcommand{\@path}{.}
-\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \newcounter{@plots}
@@ -317,8 +315,6 @@
    {\smallskip #1}\end{geo@title}}}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
-\providecommand{\seg@email}{.}
-\providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
@@ -362,14 +358,6 @@
  \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
   }
 }
-\newcommand{\seg@rhead}{}
-\newcommand{\righthead}[1]{\renewcommand{\seg@rhead}{#1}}
-\newcommand{\seg@lhead}{}
-\newcommand{\lefthead}[1]{\renewcommand{\seg@lhead}{#1}}
-\newcommand{\seg@foot}{}
-\newcommand{\footer}[1]{\renewcommand{\seg@foot}{#1}}
-\newcommand{\seg@head}{}
-\newcommand{\header}[1]{\renewcommand{\seg@head}{#1}}
 \ifthenelse{\boolean{@manu}}
 {\pagestyle{plain}\thispagestyle{plain}}
 {\newcommand{\ps@seg}{%
