@@ -76,6 +76,8 @@
 \usepackage{graphicx}
 \DeclareGraphicsExtensions{.eps,.ps}
 \fi
+\ifthenelse{\boolean{@manu}}{
+  \renewcommand{\inputdir}[1]{\AtEndDocument{\renewcommand{\@path}{#1}}}}{}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \newcounter{@plots}

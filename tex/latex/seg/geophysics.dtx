@@ -206,6 +206,8 @@
 % |\figdir| is a variable. It will need to be redefined to specify the figure
 % directory. 
 %    \begin{macrocode}
+\ifthenelse{\boolean{@manu}}{
+  \renewcommand{\inputdir}[1]{\AtEndDocument{\renewcommand{\@path}{#1}}}}{}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 %    \end{macrocode}
