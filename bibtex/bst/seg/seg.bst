@@ -1,6 +1,7 @@
-% BibTeX `seglike' bibliography style (24-Jan-88 version)
+% BibTeX `seglike' bibliography style (03-Oct-05 version)
 % Adapted from the `apalike' style, version 0.99a; for BibTeX version 0.99a.
-% Copyright (C) 2004, Soc. of Expl. Geophys. & Joerg Schleicher, all rights reserved.
+% Copyright (C) 2004, 2005 Soc. of Expl. Geophys. & Joerg Schleicher,
+% all rights reserved.
 % Copying of this file is allowed, provided that if you make any changes at all
 % you name it something other than `seglike.bst'.
 % This restriction helps ensure that all copies are identical.
@@ -22,9 +23,13 @@
 %			'Instructions to Authors', Geophysics, Jan/Feb 2004.
 %   29-dec-04	(JS)	Abbr. tp for Tectonophysics added, and format.author
 %                       modified to correct name format
-%   09-aug-05	(JS)	Last correction (in inproceedings: use booktitle, give
-%                       priority of meeting over type, and don't change case
-%                       of booktitle and meeting)
+%   09-aug-05	(JS)	Corrections of inproceedings: use of booktitle
+%                       (proceedingstitle has priority), priority of meeting
+%                       over type, no case change of booktitle and meeting
+%			Rules updated to follow the SEG style according to the
+%			'Instructions to Authors', Geophysics, Jan/Feb 2005.
+%   03-oct-05	(JS)	Last correction: Allow additional field segeditor
+%                       in book and inbook
 %			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -52,6 +57,7 @@ ENTRY
     proceedingstitle	%% only in seglike.bst
     publisher
     school
+    segeditor           %% to allow for author and editor in SEG books
     series
     title
     type
@@ -299,6 +305,20 @@ FUNCTION {format.key}			% this function is just for apalike
   if$
 }
 
+FUNCTION {format.segeditors}            %% this function is just for seglike
+{ segeditor empty$                      %% it formats the segeditor field
+    { "" }                              %% allowed in book and inbook
+    { segeditor format.names
+      segeditor num.names$ #1 >
+%%	{ ", editors" * }   
+%%	{ ", editor" * }
+        { ", eds." * }                  %% SEG style
+        { ", ed." * }                   %% SEG style
+      if$
+    }
+  if$
+}
+
 FUNCTION {format.editors}
 { editor empty$
     { "" }
@@ -306,8 +326,8 @@ FUNCTION {format.editors}
       editor num.names$ #1 >
 %%	{ ", editors" * }   
 %%	{ ", editor" * }
-        { ", eds." * }
-        { ", ed." * }
+        { ", eds." * }                  %% SEG style
+        { ", ed." * }                   %% SEG style
       if$
     }
   if$
@@ -644,13 +664,13 @@ FUNCTION {article}
 FUNCTION {book}
 { output.bibitem
   author empty$
-    { format.editors "author and editor" output.check
+    { format.editors  "author and editor" output.check
       editor format.key output
     }
     { format.authors output.nonnull
-      crossref missing$
-	{ "author and editor" editor either.or.check }
-	'skip$
+      crossref missing$                                  %% Don't allow both
+        { "author and editor" editor either.or.check }   %% author and editor
+        'skip$
       if$
     }
   if$
@@ -662,6 +682,7 @@ FUNCTION {book}
     { format.bvolume output
       new.block
       format.number.series output
+      format.segeditors output                     %% Allow segeditor
 %      new.sentence
       new.colon					%% colon for seglike
       publisher "publisher" output.check
@@ -700,9 +721,9 @@ FUNCTION {inbook}
       editor format.key output
     }
     { format.authors output.nonnull
-      crossref missing$
-	{ "author and editor" editor either.or.check }
-	'skip$
+      crossref missing$                                  %% Don't allow both
+        { "author and editor" editor either.or.check }   %% author and editor
+        'skip$
       if$
     }
   if$
@@ -715,6 +736,7 @@ FUNCTION {inbook}
       format.chapter.pages "chapter and pages" output.check
       new.block
       format.number.series output
+      format.segeditors output                  %% allow segeditor
       new.sentence
       publisher "publisher" output.check
 %      address output				%% address suppressed

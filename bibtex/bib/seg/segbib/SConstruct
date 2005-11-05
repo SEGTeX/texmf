@@ -1,19 +1,28 @@
 import os, re, sys, signal
 
-env = Environment(TARFLAGS = 'cvz',
-                  TARSUFFIX = '.tar.gz',
-                  ZIPCOM=WhereIs('gzip') + ' -c $SOURCE > $TARGET')
+env = Environment()
 
-env.Command('SEG.bib',Split('segbib.py preamble strings.bib segDCI.txt'),
+## TARFLAGS = 'cvz',
+## TARSUFFIX = '.tar.gz',
+## ZIPCOM=WhereIs('gzip') + ' -c $SOURCE > $TARGET')
+
+## env.Command('SEG.bib',Split('segbib.py preamble strings.bib segDCI.txt'),
+##             '''
+##             cat ${SOURCES[1]} > $TARGET 
+##             cat ${SOURCES[2]} >> $TARGET
+##             python ${SOURCES[0]} < ${SOURCES[3]} >> $TARGET
+##             ''')
+
+## env.Tar('scripts',Split('segbib.py segtex.py'))
+## env.Zip('SEG.bib.gz','SEG.bib')
+## env.Alias('compress',['scripts.tar.gz','SEG.bib.gz'])
+
+env.Command('SEG2005.bib',Split('segbib2005.py preamble2005 strings.bib dci20050915.txt'),
             '''
             cat ${SOURCES[1]} > $TARGET 
             cat ${SOURCES[2]} >> $TARGET
             python ${SOURCES[0]} < ${SOURCES[3]} >> $TARGET
             ''')
-
-env.Tar('scripts',Split('segbib.py segtex.py'))
-env.Zip('SEG.bib.gz','SEG.bib')
-env.Alias('compress',['scripts.tar.gz','SEG.bib.gz'])
 
 latex = WhereIs('pdflatex')
 bibtex = WhereIs('bibtex')
@@ -72,7 +81,7 @@ for i in xrange(len(blocks)-1):
     ltx = test + '.ltx'
     pdf = test + '.pdf'
 
-    env.Command(ltx,['segtex.py','SEG.bib'],
+    env.Command(ltx,['segtex.py','SEG2005.bib','../../../bst/seg/seglike.bst'],
                 './segtex.py %s > $TARGET' % range)
     env.Pdf(pdf,ltx)
     env.Install('PDF',pdf)

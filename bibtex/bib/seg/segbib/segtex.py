@@ -14,8 +14,8 @@ print r'''\documentclass{article}
 \maketitle
 ''' % limits
 
-bib = open("SEG.bib","r")
-key = re.compile(r'^\s*\@[^\{]+{([^\,]+)')
+bib = open("SEG2005.bib","r")
+key = re.compile(r'^\s*\@[^\{]+{([^\,]+)\,')
 count = 0
 for line in bib:
     match = key.search(line)
@@ -30,7 +30,7 @@ bib.close()
 
 print r'''
 \bibliographystyle{seglike}
-\bibliography{SEG}
+\bibliography{SEG2005}
 \end{document}'''
 
 
