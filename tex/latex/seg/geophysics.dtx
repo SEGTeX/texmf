@@ -191,9 +191,7 @@
 % Possible suffices for graphics files depend on whether 
 % we are running pdflatex or latex.
 %    \begin{macrocode}
-\newif\ifpdf
-\ifx\pdfoutput\undefined \pdffalse              
-\else \pdfoutput=1 \pdftrue \fi
+\RequirePackage{ifpdf}
 \ifpdf
 \RequirePackage[pdftex]{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png}

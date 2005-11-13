@@ -66,9 +66,7 @@
 \ifthenelse{\boolean{@eflt}}{
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
-\newif\ifpdf
-\ifx\pdfoutput\undefined \pdffalse
-\else \pdfoutput=1 \pdftrue \fi
+\RequirePackage{ifpdf}
 \ifpdf
 \RequirePackage[pdftex]{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png}
