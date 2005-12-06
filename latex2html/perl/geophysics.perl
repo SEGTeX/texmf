@@ -13,8 +13,9 @@ $right = '';
 sub figure {
     my ($figname,$size) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
+    my $type = $main::IMAGE_TYPE;
     print "Translating plot $fig... \n";
-    my $out = join ('', "<IMG SRC = \"$fig.png\" border=\"0\"");
+    my $out = join ('', "<IMG SRC = \"$fig.$type\" border=\"0\"");
     foreach $dimension ("width","height") {
         if ($size =~ /$dimension=(\d*\.?\d*)in/) {
             $out .= sprintf (" %s=%d",$dimension,$1*75);
@@ -29,43 +30,73 @@ sub caption {
     my ($figname,$caption) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
     my $dash = '';
+    my $type = $main::IMAGE_TYPE;
     $dash = '-' if ($append ne '');	
     join ('',"<STRONG>",
-	  "<A HREF = \"$fig.png\">$figname<\/A>",
+	  "<A HREF = \"$fig.$type\">$figname<\/A>",
+	  "<BR>Figure ",$append,$dash,$fignum,".<\/STRONG> ",$caption);
+}
+
+sub multicaption {
+    my ($figname,$caption) = @_;
+    my @names = split(',',$figname);
+    my @figs;
+    my $type = $main::IMAGE_TYPE;
+    foreach $name (@names) {	
+	my $fig = join('/','..',$path,$figdir,$name);
+	push(@figs,"<A HREF = \"$name.$type\">$name<\/A>");
+    }
+    my $dash = '';
+    $dash = '-' if ($append ne '');	
+    join ('',"<STRONG>",join(',',@figs),
 	  "<BR>Figure ",$append,$dash,$fignum,".<\/STRONG> ",$caption);
 }
 
 sub buttons {
     my $figname = shift;
-    my $fig = join('/','..',$path,$figdir,$figname);
+    my @names = split(',',$figname);
+    my $out = '';
     my $type = $main::IMAGE_TYPE;
-    my $out = join(''," <a href=\"$fig.pdf\">", 
-		   "<img src=\"$main::ICONSERVER/pdf.$type\" border=\"0\"",
-		   " alt=\"[pdf]\" width=\"32\" height=\"32\"></a>");
+    my @figs;
+    foreach $name (@names) {
+	push(@figs,join('/','..',$path,$figdir,$name));
+    }
+    foreach $fig (@figs) {
+	$out .= join(''," <a href=\"$fig.pdf\">", 
+		     "<img src=\"$main::ICONSERVER/pdf.$type\" border=\"0\"",
+		     " alt=\"[pdf]\" width=\"32\" height=\"32\"></a>");
+    }
     if ($path ne '.') {
 	$out .= join(''," <a href=\"../$path.tgz\">", 
 		     "<img src=\"$main::ICONSERVER/tgz.$type\" border=\"0\"", 
 		     " alt=\"[tgz]\" width=\"32\" height=\"32\"></a>");
     }
-    $out .= join(''," <a href=\"$fig.$type\">", 
-		 "<img src=\"$main::ICONSERVER/viewmag.$type\" border=\"0\"",
-		 " alt=\"[$type]\" width=\"32\" height=\"32\"></a>");
+    foreach $fig (@figs) {
+	$out .= join(''," <a href=\"$fig.$type\">", 
+		     "<img src=\"$main::ICONSERVER/viewmag.$type\" ",
+		     "border=\"0\"",
+		     " alt=\"[$type]\" width=\"32\" height=\"32\"></a>");
+    }
     if ($path eq 'Math') {
-	my $math = join('/','..',$path,$figname . '.ma');
-	if (-f $math) {
-	    $out .= join(''," <a href=\"$math\">", 
-			 "<img src=\"$main::ICONSERVER/mathematica.$type\"",
-			 " border=\"0\"", 
-			 " alt=\"[mathematica]\"",
-			 "width=\"32\" height=\"32\"></a>");
+	foreach $name (@names) {
+	    my $math = join('/','..',$path,$name . '.ma');
+	    if (-f $math) {
+		$out .= join(''," <a href=\"$math\">", 
+			     "<img src=\"$main::ICONSERVER/mathematica.$type\"",
+			     " border=\"0\"", 
+			     " alt=\"[mathematica]\"",
+			     "width=\"32\" height=\"32\"></a>");
+	    }
 	}
     } elsif ($path eq 'XFig') {
-	my $xfig = join('/','..',$path,$figname . '.fig');
-	if (-f $xfig) {
-	    $out .= join(''," <a href=\"$xfig\">", 
-			 "<img src=\"$main::ICONSERVER/xfig.$type\"",
-			 " border=\"0\"", 
-			 " alt=\"[xfig]\" width=\"32\" height=\"32\"></a>");
+	foreach $name (@names) {
+	    my $xfig = join('/','..',$path,$name . '.fig');
+	    if (-f $xfig) {
+		$out .= join(''," <a href=\"$xfig\">", 
+			     "<img src=\"$main::ICONSERVER/xfig.$type\"",
+			     " border=\"0\"", 
+			     " alt=\"[xfig]\" width=\"32\" height=\"32\"></a>");
+	    }
 	}
     } elsif ($path ne '.') {
 	$out .= join(''," <a href=\"../$path.html\">", 
@@ -125,6 +156,32 @@ sub do_cmd_plot {
           "<TABLE BORDER=0>","<TR><TH>",
           &seg::figure  ($figname,$size),"<TR><TH>",
           &seg::caption ($figname,$caption),"<TR><TH>",
+	  &seg::buttons ($figname),
+	  "<\/TABLE>",
+	  "<BR><\/CENTER><\/P>", $_);
+}
+
+sub do_cmd_multiplot {
+    local ($_) = @_;
+    &get_next_optional_argument;
+    $seg::fignum++;
+    my ($nfig, $figname, $size, $caption);
+    foreach $arg ($nfig, $figname, $size, $caption) {
+        s/$next_pair_pr_rx//o;
+        $arg = $2;
+    }
+    my $label = 'fig:' . $figname;
+    my $figs = '';
+    my @figs = split(',',$figname);
+    foreach $fig (@figs) {	
+	$figs .= join("\n",		      
+		      &anchor_label('fig:' . $fig,$CURRENT_FILE,''),
+		      &seg::figure($fig,$size));
+    }
+    join ("\n","<P><CENTER>",
+          &anchor_label($label,$CURRENT_FILE,''),
+          "<TABLE BORDER=0>","<TR><TH>",$figs,"<TR><TH>",
+          &seg::multicaption ($figname,$caption),"<TR><TH>",
 	  &seg::buttons ($figname),
 	  "<\/TABLE>",
 	  "<BR><\/CENTER><\/P>", $_);
