@@ -16,12 +16,18 @@ sub figure {
     my $type = $main::IMAGE_TYPE;
     print "Translating plot $fig... \n";
     my $out = join ('', "<IMG SRC = \"$fig.$type\" border=\"0\"");
-    foreach $dimension ("width","height") {
+    foreach $dimension ("width","height") {	
         if ($size =~ /$dimension=(\d*\.?\d*)in/) {
             $out .= sprintf (" %s=%d",$dimension,$1*75);
         } elsif ($size =~ /$dimension=(\d*\.?\d*)cm/) {
             $out .= sprintf (" %s=%d",$dimension,$1*30);
-        }
+        } elsif ($size =~ /$dimension=(\d*\.?\d*)\\(text|column)(width|height)/) {
+	    if ($3 == 'height') {
+		$out .= sprintf (" %s=%d",$dimension,$1*9*75);
+	    } else {
+		$out .= sprintf (" %s=%d",$dimension,$1*6*75);
+	    }
+	}
     }
     $out .= " ALT = \"$figname\">\n";
 }
@@ -44,7 +50,7 @@ sub multicaption {
     my $type = $main::IMAGE_TYPE;
     foreach $name (@names) {	
 	my $fig = join('/','..',$path,$figdir,$name);
-	push(@figs,"<A HREF = \"$name.$type\">$name<\/A>");
+	push(@figs,"<A HREF = \"$fig.$type\">$name<\/A>");
     }
     my $dash = '';
     $dash = '-' if ($append ne '');	
