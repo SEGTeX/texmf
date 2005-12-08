@@ -1,0 +1,141 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2005 by Sergey Fomel 
+%  
+%    This work may be distributed and/or modified under the
+%    conditions of the LaTeX Project Public License, either version 1.3
+%    of this license or (at your option) any later version.
+%    The latest version of this license is in
+%      http://www.latex-project.org/lppl.txt
+%    and version 1.3 or later is part of all distributions of LaTeX
+%    version 2003/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<class>\NeedsTeXFormat{LaTeX2e}
+%<class>\ProvidesClass{eage}[2005/04/03 v1.0 SEG expanded abstract]
+%
+%<*driver>
+\ProvidesFile{eage.dtx}[2005/12/07 v1.0 eage class]
+\documentclass{ltxdoc}
+\GetFileInfo{eage.dtx}
+\EnableCrossrefs
+\RecordChanges
+\CodelineIndex
+\begin{document}
+\DocInput{eage.dtx}
+\end{document}
+%</driver>
+%\fi
+%
+% \CheckSum{0}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \changes{v1.0}{2005/12/07}{Initial version}
+%
+% \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
+% \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand,
+% \providecommand,\renewcommand}
+%
+% \title{The \textsf{eage} class for 
+% writing EAGE expanded abstracts\thanks{This document corresponds to
+% \textsf{eage.cls}~\fileversion, dated~\filedate.}}
+% \author{Sergey Fomel \\ \texttt{sergey.fomel@beg.utexas.edu}}
+% \maketitle
+% \begin{abstract}
+% This package provides a \LaTeX2e\ class for writing EAGE expanded abstracts.
+% \end{abstract}
+%
+% \section{Introduction}
+% \LaTeX\ is a powerful document typesetting system. The new
+% \texttt{eage.cls} package conforms to the \LaTeX2e\ standard.
+%
+% \section{Usage}
+%
+%\subsection{Options}
+%
+% Two options control the appearance...
+%
+%\subsection{Appearance}
+%
+% \DescribeEnv{abstract}
+% The |abstract| environment...
+%
+% The following macros are defined in the package:
+%
+% \StopEventually{\PrintIndex\PrintChanges}
+%
+% \section{Implementation}
+% Our package is a derivative of the \texttt{geophysics} class.
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{geophysics}}
+%    \end{macrocode}
+% We will use 11pt fonts by default.
+%    \begin{macrocode}
+\ProcessOptions*
+\LoadClass[12pt,a4paper]{geophysics}
+%    \end{macrocode}
+%
+% \subsection{Page layout}
+% Specify page dimensions. 
+%    \begin{macrocode}
+\setlength{\oddsidemargin}{-0.25cm}
+\setlength{\evensidemargin}{-0.25cm}
+\setlength{\textwidth}{16.5cm}
+\setlength{\textheight}{19.2cm}
+\setlength{\parindent}{0em}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex}
+\setlength{\topmargin}{-1cm}
+%    \end{macrocode}
+%
+% \subsection{Title and author}
+% \begin{macro}{\title}
+%   |\title| is removed.
+%    \begin{macrocode}
+\renewcommand{\title}[1]{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\author}
+%   |\author| is removed.
+%    \begin{macrocode}
+\renewcommand{\author}[1]{%
+  \clearpage\setlength\textheight{25cm}\onecolumn}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{abstract}
+%   The abstract environment produces a section.
+%    \begin{macrocode}
+\renewenvironment{abstract}{\section{ABSTRACT}}{}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Page style}
+% Define a page style
+%    \begin{macrocode}
+\newcommand{\ps@eage}{%
+\setlength{\headheight}{4.6cm}%
+\renewcommand{\@oddhead}{}%
+\renewcommand{\@evenhead}{}%
+\renewcommand{\@oddfoot}{}%
+\renewcommand{\@evenfoot}{}}
+\thispagestyle{eage}
+\pagestyle{empty}
+%    \end{macrocode}
+% \Finale
+\endinput

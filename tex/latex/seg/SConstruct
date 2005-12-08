@@ -8,11 +8,11 @@ makeindex = WhereIs('makeindex')
 bibtex = WhereIs('bibtex')
 epstopdf = WhereIs('epstopdf')
 
-env.Command(Split('seg.sty geophysics.cls georeport.cls segabs.cls'),
-            Split('seg.ins seg.dtx geophysics.dtx georeport.dtx segabs.dtx'),
+env.Command(Split('seg.sty geophysics.cls georeport.cls segabs.cls eage.cls'),
+            Split('seg.ins seg.dtx geophysics.dtx georeport.dtx segabs.dtx eage.dtx'),
             '%s $SOURCE' % latex)
 
-for cls in ('geophysics','georeport','segabs'):
+for cls in ('geophysics','georeport','segabs','eage'):
     env.Command([cls+'.pdf',cls+'.aux',cls+'.gls',
                  cls+'.glo',cls+'.ind',cls+'.idx'],
                 cls+'.dtx',
@@ -79,6 +79,8 @@ for case in ('paper','twocolumn','endfloat'):
             ['geophysics_%s.ltx' % case,'geophysics.cls',
              'example.bib','Fig/exgr.pdf'])
 
-env.Pdf('segabs_example.pdf',
-        ['segabs_example.ltx','segabs.cls',
-         'example.bib','Fig/exgr.pdf'])
+for case in ('segabs','eage'):
+    env.Pdf(case+'_example.pdf',
+            [case+'_example.ltx',case+'.cls',
+             'example.bib','Fig/exgr.pdf'])
+
