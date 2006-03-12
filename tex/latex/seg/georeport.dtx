@@ -71,13 +71,26 @@
 %
 % \section{Implementation}
 % Our package is a derivative of the standard \texttt{report} class.
+% Load \textsf{ifthen} package for conditionals.
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
+% Catch the twocolumn option to implement it internally.
+%    \begin{macrocode}
+\newboolean{@twoc}
+\setboolean{@twoc}{false}
+\DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
+\DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 %    \end{macrocode}
 % We will use 11pt fonts by default.
 %    \begin{macrocode}
+\ExecuteOptions{onecolumn}
 \ProcessOptions*
-\LoadClass[11pt]{report}
+\ifthenelse{\boolean{@twoc}}{%
+  \LoadClass[9pt]{report}}{%
+  \LoadClass[11pt]{report}}
 %    \end{macrocode}
 % Load \textsf{ifthen} package for conditionals.
 %    \begin{macrocode}
@@ -135,5 +148,64 @@
   \renewcommand{\paper@name}{#1}
 }
 %    \end{macrocode}
+% \subsection{Figures and Tables}
+% Load the \textsf{graphicx} package for included figures.
+% Possible suffices for graphics files depend on whether 
+% we are running pdflatex or latex.
+%    \begin{macrocode}
+\RequirePackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
+%    \end{macrocode}
+% |\figdir| is a variable. It will need to be redefined to specify the figure
+% directory. 
+%    \begin{macrocode}
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\paper@name/\@path/\figdir/#1}
+%    \end{macrocode}
+% \begin{macro}{\plot}
+% Define commands for figure inclusion.
+%    \begin{macrocode}
+\newcommand{\fullplot}[4][htbp]{%
+  \begin{figure*}[#1]
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption{#4}
+    \label{fig:#2}
+  \end{figure*}
+}
+\newcommand{\sideplot}[4][htbp]{%
+  \ifthenelse{\boolean{@twoc}}{%
+    \begin{figure}[#1]
+      \centering
+      \includegraphics[#3]{\fig@file{#2}}
+      \caption{#4}
+      \label{fig:#2}
+    \end{figure}
+  }{%
+    \begin{figure*}[#1]
+      \makebox{%
+        \begin{minipage}{0.4\textwidth}
+          \caption{#4}
+          \label{fig:#2}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.6\textwidth}
+          \flushright
+          \includegraphics[#3]{\fig@file{#2}}
+        \end{minipage}}
+    \end{figure*}
+  }
+}
+\ifthenelse{\boolean{@twoc}}{%
+  \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
+  \def\plot{\@ifstar{\fullplot}{\fullplot}}}
+%    \end{macrocode} 
+% \end{macro}
 % \Finale
 \endinput

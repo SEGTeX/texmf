@@ -407,8 +407,6 @@
 }
 \providecommand{\append}[1]{%
 \appendix\section{Appendix \append@name}\section{#1}}
-\RequirePackage{verbatim}
-\RequirePackage{moreverb}
 \endinput
 %%
 %% End of file `geophysics.cls'.

@@ -35,9 +35,17 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
+\RequirePackage{ifthen}
+\newboolean{@twoc}
+\setboolean{@twoc}{false}
+\DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
+\DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\ExecuteOptions{onecolumn}
 \ProcessOptions*
-\LoadClass[11pt]{report}
+\ifthenelse{\boolean{@twoc}}{%
+  \LoadClass[9pt]{report}}{%
+  \LoadClass[11pt]{report}}
 \RequirePackage{ifthen}
 \RequirePackage{seg}
 \RequirePackage{chapterbib}
@@ -68,6 +76,50 @@
   \header{, pages \pageref{#1.start}--\pageref{#1.end}}%
   \renewcommand{\paper@name}{#1}
 }
+\RequirePackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
+\providecommand{\figdir}{.}
+\providecommand{\fig@file}[1]{\paper@name/\@path/\figdir/#1}
+\newcommand{\fullplot}[4][htbp]{%
+  \begin{figure*}[#1]
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption{#4}
+    \label{fig:#2}
+  \end{figure*}
+}
+\newcommand{\sideplot}[4][htbp]{%
+  \ifthenelse{\boolean{@twoc}}{%
+    \begin{figure}[#1]
+      \centering
+      \includegraphics[#3]{\fig@file{#2}}
+      \caption{#4}
+      \label{fig:#2}
+    \end{figure}
+  }{%
+    \begin{figure*}[#1]
+      \makebox{%
+        \begin{minipage}{0.4\textwidth}
+          \caption{#4}
+          \label{fig:#2}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.6\textwidth}
+          \flushright
+          \includegraphics[#3]{\fig@file{#2}}
+        \end{minipage}}
+    \end{figure*}
+  }
+}
+\ifthenelse{\boolean{@twoc}}{%
+  \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
+  \def\plot{\@ifstar{\fullplot}{\fullplot}}}
 \endinput
 %%
 %% End of file `georeport.cls'.
