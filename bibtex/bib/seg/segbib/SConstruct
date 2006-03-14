@@ -17,7 +17,8 @@ env = Environment()
 ## env.Zip('SEG.bib.gz','SEG.bib')
 ## env.Alias('compress',['scripts.tar.gz','SEG.bib.gz'])
 
-env.Command('SEG2005.bib',Split('segbib2005.py preamble2005 strings.bib dci20050915.txt'),
+env.Command('SEG2005.bib',
+            Split('segbib2005.py preamble2005 strings.bib dci20050915.txt'),
             '''
             cat ${SOURCES[1]} > $TARGET 
             cat ${SOURCES[2]} >> $TARGET

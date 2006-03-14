@@ -4,8 +4,22 @@ import sys, re, string
 key = re.compile('\@([^\{]+)\{(\w+(?:\s+[\w\.\-]+)+)\,')
 author = re.compile('\s+(author|editor)\s*=\s*\{([^\}]+)')
 title = re.compile('\s+title\s*=\s*\{([^\}]+)')
+year = re.compile('\s+year\s*=\s*\{([^\}]+)')
 special_character = re.compile(r'([^\\])([\&\#\$\_])')
 needs_braces = re.compile(r'([^\{])([A-Z])')
+
+is_book = re.compile('('+'|'.join([
+    'SSS00 00 07320732',
+    'ANI00 00 00010425',
+    'CAP00 00 00010343',
+    'RGM00 00 00010454',
+    'ASA00 00 00010725',
+    'SAA00 00 00010633',
+    'MG101 00 00010492',
+    'MG202 00 00010708',
+    'DEC00 00 04820482',
+    'DED00 00 07260726',
+    ])+')')
 
 is_repeated = re.compile('('+'|'.join([
     'GEO52 06 08150815',
@@ -50,7 +64,10 @@ is_repeated = re.compile('('+'|'.join([
 def fix_special(string):
     string = string.replace("","{\\'{e}}").replace("","{\\\"{o}}")
     string = string.replace("","{\\\"{u}}")
-    return special_character.sub(r'\1\\\2',string)
+    string = special_character.sub(r'\1\\\2',string)
+    string = string.replace("{T}^2","$T^2$")
+    string = string.replace("{X}^2","$X^2$")
+    return string
 
 def fix_author(string):
     authors = []
@@ -68,8 +85,12 @@ def fix_author(string):
 
 def convert():
     is_article = False
+    book = False
+
     oldname = ''
     repeat = {}
+    authors = {}
+    
     while True:
         line = sys.stdin.readline()
         if not line:
@@ -92,15 +113,27 @@ def convert():
                 line = line.replace(',',chr(ord('a') + repeat[name])+',')
             else:
                 oldname = name
+                
+            line = line.replace('unknown','incollection')
+
+            book = is_book.match(name)
+            if book:
+                line = line.replace('incollection','book')
         else:
             has_author = author.search(line)
             if has_author:
-                line = '   %s = {%s},' % (has_author.group(1),fix_author(has_author.group(2)))
+                line = '   %s = {%s},' % (has_author.group(1),
+                                          fix_author(has_author.group(2)))
+                authors[head] = 1
             elif title.search(line):
                 line = needs_braces.sub(r'\1{\2}',line)
+            elif year.search(line) and not authors.get(head):
+                line = '   author = {SEG},\n' + line
             elif is_article:
                 line = line.replace('booktitle','journal')
-
+            elif book:
+                line = line.replace('booktitle','title')
+                
         line = fix_special(line)
 
         print line
