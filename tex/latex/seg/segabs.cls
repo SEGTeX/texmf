@@ -142,19 +142,25 @@
 \renewcommand{\normalsize}{\protect\scriptsize}
 \renewcommand{\footnotesize}{\protect\tiny}
 \scriptsize
-\let\seg@subsection\subsection
-\newcommand{\segsection}{%
+\newcommand{\seg@section}{%
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
 {1ex \@plus .2ex}%
 {\normalfont\Large\bfseries\MakeUppercase}}
-\newcommand{\segsubsection}[2][]{%
+\newcommand{\seg@subsection}[2][]{%
 \begin{minipage}{\columnwidth}
 \textbf{#2}
 \end{minipage}}
-\def\section{\@ifstar{\segsection*}{\segsection*}}%
-\def\subsection{\@ifstar{\segsubsection}{\segsubsection}}%
-\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+\newcommand{\seg@subsubsection}[2][]{%
+\begin{minipage}{\columnwidth}
+\textit{#2}
+\end{minipage}}
+\newcommand{\seg@subsubsubsection}[2][]{%
+\underline{#2}.--}
+\def\section{\@ifstar{\seg@section*}{\seg@section*}}%
+\def\subsection{\@ifstar{\seg@subsection}{\seg@subsection}}%
+\def\subsubsection{\@ifstar{\seg@subsubsection}{\seg@subsubsection}}
+\def\subsubsubsection{\@ifstar{\seg@subsubsubsection}{\seg@subsubsubsection}}
 \newcommand{\seg@title}{}
 \renewcommand{\title}[1]{\renewcommand{\seg@title}{#1}}
 \providecommand{\seg@address}{}

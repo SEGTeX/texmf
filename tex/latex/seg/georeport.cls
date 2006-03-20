@@ -66,7 +66,7 @@
 \vfill \ \newpage}
 \newcommand{\geo@header}{}
 \newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
-\newcommand{\paper@name}{}
+\newcommand{\paper@name}{.}
 \newcommand{\GEOpaper}[1]{%
   \setcounter{equation}{0}\setcounter{figure}{0}%
   \setcounter{table}{0}\setcounter{footnote}{0}%
@@ -120,6 +120,101 @@
 \ifthenelse{\boolean{@twoc}}{%
   \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
   \def\plot{\@ifstar{\fullplot}{\fullplot}}}
+  \providecommand{\seg@sidetabl}[4][htbp]{
+    \begin{table}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table}
+  }
+  \providecommand{\seg@fulltabl}[4][htbp]{
+    \begin{table*}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table*}
+  }
+  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
+\newcommand{\new}[1]{#1}
+\newcommand{\old}[1]{}
+\def\first@char#1#2\end{#1}
+\def\geo@input#1{\ifthenelse{\equal{\paper@name}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\paper@name/#1}}
+\def\input{\@ifnextchar\bgroup\geo@input\@@input}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\oddsidemargin}{.26in}
+\setlength{\evensidemargin}{.26in}
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+\newcommand{\seg@title}{}
+\newenvironment{geo@title}{%
+  \begin{minipage}{\textwidth}%
+    \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
+       {\end{minipage}\vspace{.2in}}%
+\renewcommand{\title}[1]{%
+  \renewcommand{\seg@title}{%
+    \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
+   {\smallskip #1}\end{geo@title}}}
+\providecommand{\seg@address}{}
+\providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
+\providecommand{\seg@author}{}
+\renewcommand{\author}[1]{%
+  \renewcommand{\seg@author}{%
+    \seg@title
+    \begin{center}
+      \textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
+        \footnote{\textbf{e-mail: }\seg@email}} \\ \
+    \end{center}
+  }}
+\renewcommand{\maketitle}{}
+\newsavebox{\seg@abstract}
+\setlength{\fboxsep}{10pt}
+\renewenvironment{abstract}{
+  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+      \centerline{\Large\textbf{ABSTRACT}}\medskip}{%
+      \medskip\end{minipage}\end{lrbox}%
+  \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}}
+\newcommand{\ps@georeport}{%
+\renewcommand{\@oddhead}{%
+\seg@foot\hfill\textit{\seg@rhead}\hfill\thepage}
+\renewcommand{\@evenhead}{%
+\thepage\hfill\textit{\seg@lhead}\hfill\seg@foot}
+\renewcommand{\@oddfoot}{}\renewcommand{\@evenfoot}{}}
+\pagestyle{georeport}
+\let\seg@large\large
+\let\seg@Large\Large
+\renewcommand{\Large}{\protect\seg@large}
+\let\seg@section\section
+\let\seg@subsection\subsection
+\let\seg@subsubsection\subsubsection
+\newcommand{\segsection}{%
+\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1ex \@plus .2ex}%
+{\normalfont\Large\bfseries\MakeUppercase}}
+\def\section{\@ifstar{\segsection*}{\segsection*}}
+\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+\newcounter{@append}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+  \ifthenelse{\equal{\append@name}{A}}{%
+    \renewcommand{\append@name}{\Alph{@append}}}{}
+  \setcounter{equation}{0}%
+  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  \stepcounter{@append}
+}
+\providecommand{\append}[1]{%
+  \appendix\section{Appendix \append@name}\section{#1}}
+\RequirePackage{natbib}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+\DeclareRobustCommand{\refname}{REFERENCES}
+\renewcommand\bibsection{\section{\refname}}
 \endinput
 %%
 %% End of file `georeport.cls'.

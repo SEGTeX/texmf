@@ -74,9 +74,12 @@ Figure~\ref{fig:waves} shows what it is about.
     $\backslash$plot\{waves\}\{width=$\backslash$columnwidth\}\{This caption.\}}.
 }
 
-Sometimes it is convenient to put two or more figures from different
-files in an array (see Figure~\ref{fig:exph,exgr}). Individual plots
-are Figures~\ref{fig:exph} and~\ref{fig:exgr}.
+\subsubsection{Multiplot} 
+
+Sometimes it is convenient to put two or
+more figures from different files in an array (see
+Figure~\ref{fig:exph,exgr}). Individual plots are
+Figures~\ref{fig:exph} and~\ref{fig:exgr}.
 
 \multiplot{2}{exph,exgr}{width=0.4\textwidth}
 {This figure is specified in the document by \texttt{
@@ -140,7 +143,7 @@ According to the new SEG standard, appendices come before references.
 \frac{\partial U}{\partial t}
 \label{eqn:partial}
 \end{equation}
-It is important to get equation~(\ref{eqn:partial}) right.
+It is important to get equation~\ref{eqn:partial} right.
 
 \append{Another appendix}
 

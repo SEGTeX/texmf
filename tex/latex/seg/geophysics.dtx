@@ -530,17 +530,23 @@
 \renewcommand{\Large}{\protect\seg@large}
 \let\seg@section\section
 \let\seg@subsection\subsection
-\let\seg@subsubsection\subsubsection
-%\newcommand{\segsection}[2][]{%
-%\seg@section*{\protect\centering\MakeUppercase{#2}}}
 \newcommand{\segsection}{%
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
 {1ex \@plus .2ex}%
-{\normalfont\Large\bfseries\MakeUppercase}}
+{\ifthenelse{\boolean{@manu}}{\centering}{}%
+\normalfont\Large\bfseries\MakeUppercase}}
+\newcommand{\segsubsubsection}{%
+\@startsection{subsubsection}{3}{\z@}%
+{-3.25ex\@plus -1ex \@minus -.2ex}%
+{1.5ex \@plus .2ex}%
+{\normalfont\normalsize\itshape}}
+\newcommand{\seg@subsubsubsection}[2][]{%
+\underline{#2}.--}
 \def\section{\@ifstar{\segsection*}{\segsection*}}
-\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
-\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}
+\def\subsubsection{\@ifstar{\segsubsubsection*}{\segsubsubsection*}}
+\def\subsubsubsection{\@ifstar{\seg@subsubsubsection}{\seg@subsubsubsection}}
 %    \end{macrocode}
 % \subsection{Title and author}
 % \begin{macro}{\title}

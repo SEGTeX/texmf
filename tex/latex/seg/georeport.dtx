@@ -137,7 +137,7 @@
 % \end{macro}
 % Including papers
 %    \begin{macrocode}
-\newcommand{\paper@name}{}
+\newcommand{\paper@name}{.}
 \newcommand{\GEOpaper}[1]{%
   \setcounter{equation}{0}\setcounter{figure}{0}%
   \setcounter{table}{0}\setcounter{footnote}{0}%
@@ -207,5 +207,171 @@
   \def\plot{\@ifstar{\fullplot}{\fullplot}}}
 %    \end{macrocode} 
 % \end{macro}
+% Tables.
+% \begin{macro}{\tabl}
+%    \begin{macrocode}
+  \providecommand{\seg@sidetabl}[4][htbp]{
+    \begin{table}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table}
+  }
+  \providecommand{\seg@fulltabl}[4][htbp]{
+    \begin{table*}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{table*}
+  }
+  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
+%    \end{macrocode} 
+% \end{macro}
+% \subsection{Collecting papers}
+% Ignoring old and accepting new
+%    \begin{macrocode}
+\newcommand{\new}[1]{#1}
+\newcommand{\old}[1]{}
+%    \end{macrocode}
+% Redefine input
+% \begin{macro}{\input}
+%    \begin{macrocode}
+\def\first@char#1#2\end{#1}
+\def\geo@input#1{\ifthenelse{\equal{\paper@name}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\paper@name/#1}}
+\def\input{\@ifnextchar\bgroup\geo@input\@@input}
+%    \end{macrocode} 
+% \end{macro}
+% \subsection{Page layout}
+% Specify page dimensions. \emph{This should be adjusted for A4 paper format!}
+%    \begin{macrocode}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6in}
+\setlength{\parskip}{1.5ex plus0.1ex minus0.1ex} % should be a *rubber* length
+\setlength{\oddsidemargin}{.26in}
+\setlength{\evensidemargin}{.26in}
+\setlength{\topmargin}{-.51in}
+\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
+\setlength{\headsep}{0.5in}
+%    \end{macrocode}
+% \subsection{Title and author}
+% \begin{macro}{\title}
+% |\title| is redefined for consistency. It changes the internal |\seg@title|.
+%    \begin{macrocode}
+\newcommand{\seg@title}{}
+\newenvironment{geo@title}{%
+  \begin{minipage}{\textwidth}%
+    \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
+	       {\end{minipage}\vspace{.2in}}%
+\renewcommand{\title}[1]{%
+  \renewcommand{\seg@title}{%
+    \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
+		   {\smallskip #1}\end{geo@title}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\address}
+% The |\address| macro will save the address in the internal |\seg@address|.
+%    \begin{macrocode}
+\providecommand{\seg@address}{}
+\providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\author}
+% Finally, everything goes to \author and is stored in |\seg@author|.
+%    \begin{macrocode}
+\providecommand{\seg@author}{}
+\renewcommand{\author}[1]{%
+  \renewcommand{\seg@author}{%
+    \seg@title
+    \begin{center}
+      \textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
+        \footnote{\textbf{e-mail: }\seg@email}} \\ \ 
+    \end{center}
+  }}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\maketitle}
+%   |\maketitle| is disabled
+%    \begin{macrocode}
+\renewcommand{\maketitle}{}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{abstract}
+%   The abstract apears in a box.
+%    \begin{macrocode}
+\newsavebox{\seg@abstract}
+\setlength{\fboxsep}{10pt}
+\renewenvironment{abstract}{
+  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
+      \centerline{\Large\textbf{ABSTRACT}}\medskip}{%
+      \medskip\end{minipage}\end{lrbox}%
+  \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}} 
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Page style}
+% Define a page style
+%    \begin{macrocode}
+\newcommand{\ps@georeport}{%
+\renewcommand{\@oddhead}{%
+\seg@foot\hfill\textit{\seg@rhead}\hfill\thepage}
+\renewcommand{\@evenhead}{%
+\thepage\hfill\textit{\seg@lhead}\hfill\seg@foot}
+\renewcommand{\@oddfoot}{}\renewcommand{\@evenfoot}{}}
+\pagestyle{georeport}
+%    \end{macrocode}
+% \subsection{Section headings}
+% Capitalize section headings and redefine their size from 
+% |\Large| to |\large|%
+%\footnote{Thanks to Joerg Schleicher for the ifstar trick.}.
+%    \begin{macrocode}
+\let\seg@large\large
+\let\seg@Large\Large
+\renewcommand{\Large}{\protect\seg@large}
+\let\seg@section\section
+\let\seg@subsection\subsection
+\let\seg@subsubsection\subsubsection
+%\newcommand{\segsection}[2][]{%
+%\seg@section*{\protect\centering\MakeUppercase{#2}}}
+\newcommand{\segsection}{%
+\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1ex \@plus .2ex}%
+{\normalfont\Large\bfseries\MakeUppercase}}
+\def\section{\@ifstar{\segsection*}{\segsection*}}
+\def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+%    \end{macrocode}
+% \subsection{Appendix}
+% \begin{macro}{\append}
+%    \begin{macrocode}
+\newcounter{@append}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+  \ifthenelse{\equal{\append@name}{A}}{%
+    \renewcommand{\append@name}{\Alph{@append}}}{}
+  \setcounter{equation}{0}%
+  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  \stepcounter{@append}
+}
+\providecommand{\append}[1]{%
+  \appendix\section{Appendix \append@name}\section{#1}}
+%    \end{macrocode} 
+% \end{macro}
+% \subsection{References}
+% Load the \textsf{natbib} package for natural-science-style citations.
+%    \begin{macrocode}
+\RequirePackage{natbib}
+%    \end{macrocode}
+% The following is \textsf{natbib}'s default.
+%    \begin{macrocode}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+%    \end{macrocode}
+% Redefine the reference section name.
+%    \begin{macrocode}
+\DeclareRobustCommand{\refname}{REFERENCES}
+\renewcommand\bibsection{\section{\refname}}
+%    \end{macrocode}
 % \Finale
 \endinput

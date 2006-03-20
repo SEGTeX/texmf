@@ -34,10 +34,11 @@ Austin, TX 78713-8972}
 
 \section{Introduction}
 
-This is an introduction. \LaTeX\ is a powerful document typesetting
-system \cite[]{lamport}. An excellent reference is \cite[]{kopka}. The
-new \textsf{geophysics.cls} class complies with the \LaTeX2e\
-standard.
+This is an introduction. \LaTeX\ is a \new{powerful} document
+typesetting system \cite[]{lamport}. An excellent reference is
+\cite[]{kopka}. The new \textsf{geophysics.cls} class complies with
+the \LaTeX2e\ standard. \old{We had something else written here but
+  decided to get rid of it}.
 
 \section*{Theory}
 
@@ -82,6 +83,8 @@ Figure~\ref{fig:waves} shows what it is about.
 {This figure is specified in the document by \texttt{
     $\backslash$plot\{waves\}\{width=$\backslash$columnwidth\}\{This caption.\}}.
 }
+
+\subsubsection{Multiplot} 
 
 Sometimes it is convenient to put two or more figures from different
 files in an array (see Figure~\ref{fig:exph,exgr}). Individual plots
@@ -149,7 +152,7 @@ According to the new SEG standard, appendices come before references.
 \frac{\partial U}{\partial t}
 \label{eqn:partial}
 \end{equation}
-It is important to get equation~(\ref{eqn:partial}) right.
+It is important to get equation~\ref{eqn:partial} right.
 
 \append{Another appendix}
 
