@@ -17,7 +17,7 @@
 %   24-jan-88	(OP)	Updated for BibTeX version 0.99a, from alpha.bst 0.99a;
 %			apalike now sorts by author, then year, then title;
 %   12-aug-04	(JS)	First adapted 'seglike' version, by Joerg Schleicher.
-%			Parts are from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
+%			Parts from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
 %			and from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
 %			'seglike' follows the SEG style according to the
 %			'Instructions to Authors', Geophysics, Jan/Feb 2004.
@@ -28,8 +28,10 @@
 %                       over type, no case change of booktitle and meeting
 %			Rules updated to follow the SEG style according to the
 %			'Instructions to Authors', Geophysics, Jan/Feb 2005.
-%   03-oct-05	(JS)	Last correction: Allow additional field segeditor
-%                       in book and inbook
+%   03-oct-05	(JS)	Additional field segeditor in book and inbook
+%   07-jan-06	(JS)	Last correction: Reorganized use of meetingnr, meeting,
+%                       organization, proceedingstitle as an higher-priority
+%                       alternative to booktitle in inproceedings
 %			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -57,7 +59,7 @@ ENTRY
     proceedingstitle	%% only in seglike.bst
     publisher
     school
-    segeditor           %% to allow for author and editor in SEG books
+    segeditor           %% allow for author and editor in SEG books
     series
     title
     type
@@ -594,12 +596,27 @@ FUNCTION {format.booktitle}
   if$
 }
 
-%%						%% from geophys.bst
-FUNCTION {format.proceedings}
-{ proceedingstitle empty$
-    'skip$
-    { pop$
-      proceedingstitle
+%%                                                  new in seglike.bst
+FUNCTION {format.meeting.seg}
+{ meeting empty$                                 %% if no meeting given
+    { "Annual International Meeting" }           %% "Ann. Int. Meet."
+    { meeting                                    %% use meeting
+    }
+  if$
+  organization empty$
+    { "" * }
+    { ", " *
+      organization *
+    }
+  if$
+  proceedingstitle empty$                    %% if no proceedingstitle
+    { pages empty$                              %% if no pages
+        { "" * }                                %% nothing
+        { ", Expanded Abstracts" * }            %% else "Exp. Abst"
+      if$
+    }
+    { ", " *                                 %% else
+      proceedingstitle *                     %% use proceedingstitle
     }
   if$
 }
@@ -609,37 +626,32 @@ FUNCTION {format.meeting.ad.ab}
     { "Presented at the " }
     { "" }
   if$
-  meetingnr empty$
-    { "" * }
-    { meetingnr number.to.counter *
+  meetingnr empty$                                     %% if no meetingnr given
+    { meeting empty$                                   %% and no meeting given
+        { booktitle empty$
+            { "empty booktitle in " cite$ * warning$
+              "" *
+            }
+            { booktitle * }                              %% use booktitle
+          if$
+        }
+        { format.meeting.seg * }                       %% else use meeting
+      if$                                              %% organization,
+    }                                                  %% proceedingstitle, and
+    { meetingnr number.to.counter *                    %% meetingnr (if exists)
+      format.meeting.seg *
     }
   if$
-  type empty$                                                %% modified to give
-    { "Annual International Meeting" format.booktitle.pr * } %% booktitle priority
-    { type format.booktitle.pr *                             %% over type
-    }
-  if$
-  organization empty$
+  pages empty$
     { "" * }
-    { ", " *
-      organization *
+    { "," *
+      format.pages *
     }
   if$
   publisher empty$
     { "" * }
     { ", " *
       publisher *
-    }
-  if$
-  pages empty$
-    { "" * }
-    { ", " *
-%%      booktitle empty$                                  %% included to
-%%        { "Expanded Abstracts" format.proceedings * } 
-%%        { booktitle format.proceedings * }              %% make booktitle
-%%      if$                                               %% work
-%%      ", " *
-      format.pages *
     }
   if$
 }
@@ -680,15 +692,15 @@ FUNCTION {book}
       if$
     }
   if$
-  output.year.check				% special for apalike
-% new.block					%% no period for seglike
-%  format.btitle "title" output.check		%% treat book titles like 
-  format.title "title" output.check		%% any titles in seglike
+  output.year.check                             % special for apalike
+% new.block                                     %% no period for seglike
+%  format.btitle "title" output.check	        %% treat book titles like 
+  format.title "title" output.check             %% any titles in seglike
   crossref missing$
     { format.bvolume output
       new.block
       format.number.series output
-      format.segeditors output                     %% Allow segeditor
+      format.segeditors output                  %% Allow segeditor
 %      new.sentence
       new.colon					%% colon for seglike
       publisher "publisher" output.check
@@ -1392,3 +1404,4 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
+
