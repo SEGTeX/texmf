@@ -175,7 +175,7 @@
 \renewcommand{\maketitle}{\seg@author}
 \renewenvironment{abstract}{%
 \begin{minipage}[t]{\columnwidth}
-\textbf{SUMMARY}\\*}{%
+\textbf{SUMMARY\\}\\*}{%
 \end{minipage}\vspace{2ex}}
 \newcommand{\ps@seg}{%
 \renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
