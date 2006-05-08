@@ -500,16 +500,65 @@
 % Specify page dimensions. \emph{This should be adjusted for A4 paper format!}
 %    \begin{macrocode}
 \ifthenelse{\boolean{@twoc}}{%
-\setlength{\textheight}{9.375in}
-\setlength{\textwidth}{7.5in}
-%\setlength{\footskip}{0in}
-\setlength{\oddsidemargin}{-0.5in}
-\setlength{\evensidemargin}{-0.5in}
-\setlength{\columnsep}{0.3125in}
-\setlength{\parskip}{1ex plus0.1ex minus0.1ex} % should be a *rubber* length
-\setlength{\topmargin}{-.71in}
-\setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
-\setlength{\headsep}{0.2in}
+\setlength\parindent{1em}
+\setlength\headheight{12.5\p@}
+\setlength\headsep   {11.9\p@}
+\setlength\topskip   {3\p@}
+\setlength\footskip{19pt}
+\setlength\maxdepth{4\p@}
+\setlength\@maxdepth\maxdepth
+\setlength\textwidth{42pc}
+\addtolength\textwidth{2em}
+\newdimen\typeheight \typeheight55.5pc
+\advance\typeheight-2.215pt
+\setlength\textheight{\typeheight}
+\addtolength\textheight{\headheight}
+\addtolength\textheight{\headsep}
+\setlength\columnsep{24pt}
+\setlength\columnseprule{0\p@}
+\setlength\oddsidemargin{-18pt}
+\setlength\evensidemargin{-18pt}
+\addtolength\oddsidemargin{-1em}
+\addtolength\evensidemargin{-1em}
+\setlength\marginparwidth {.75in}
+\setlength\marginparsep {\z@}
+\setlength\marginparpush{5\p@}
+\setlength\topmargin{-29.5pt}
+\addtolength{\topmargin}{-\headheight}
+\addtolength{\topmargin}{-\headsep}
+\setlength\footnotesep{5.65\p@}%{4pt}%
+\setlength{\skip\footins}{12\p@ \@plus 2\p@}%
+\setlength\floatsep    {16\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\textfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\intextsep   {12\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\dblfloatsep    {12\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\dbltextfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\@fptop{0\p@ \@plus 1fil}
+\setlength\@fpsep{8\p@ \@plus 2fil}
+\setlength\@fpbot{0\p@ \@plus 1fil}
+\setlength\@dblfptop{0\p@ \@plus 1fil}
+\setlength\@dblfpsep{8\p@ \@plus 2fil}
+\setlength\@dblfpbot{0\p@ \@plus 1fil}
+\setlength\partopsep{2\p@ \@plus 1\p@ \@minus 1\p@}
+\setlength\lineskip{\z@}%
+\setlength\normallineskip{\z@}%
+\setlength\parskip{0\p@}
+\@lowpenalty   51
+\@medpenalty  151
+\@highpenalty 301
+\setlength\leftmargini  {2.4em}
+\setlength\leftmarginii  {2.2em}
+\setlength\leftmarginiii {1.87em}
+\setlength\leftmarginiv  {1.7em}
+\setlength\leftmarginv  {.5em}
+\setlength\leftmarginvi {.5em}
+\setlength\leftmargin    {\leftmargini}
+\setlength  \labelsep  {.5em}
+\setlength  \labelwidth{\leftmargini}
+\addtolength\labelwidth{-\labelsep}
+\@beginparpenalty -\@lowpenalty
+\@endparpenalty   -\@lowpenalty
+\@itempenalty     -\@lowpenalty
 }{%
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
@@ -534,8 +583,8 @@
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
 {1ex \@plus .2ex}%
-{\ifthenelse{\boolean{@manu}}{\centering}{}%
-\normalfont\Large\bfseries\MakeUppercase}}
+{\ifthenelse{\boolean{@manu}\or\boolean{@twoc}}{\centering}{}%
+\normalfont\ifthenelse{\boolean{@twoc}}{}{\Large}\bfseries\MakeUppercase}}
 \newcommand{\segsubsubsection}{%
 \@startsection{subsubsection}{3}{\z@}%
 {-3.25ex\@plus -1ex \@minus -.2ex}%
@@ -613,21 +662,15 @@
 % For papers, the abstract apears in a box.
 %    \begin{macrocode}
 {
-  \ifthenelse{\boolean{@twoc}}{\RequirePackage{multicol}}{}
   \newsavebox{\seg@abstract}
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
-     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-        \centerline{\Large\textbf{ABSTRACT}}\medskip%
-        \ifthenelse{\boolean{@twoc}}{\begin{multicols}{2}}{}}{%
-    \ifthenelse{\boolean{@twoc}}{\end{multicols}}{\medskip}% 
-     \end{minipage}\end{lrbox}%
-     \ifthenelse{\boolean{@shrt}}{}{%
-       \ifthenelse{\boolean{@twoc}}{%	 
-	 \twocolumn[\vspace{1.8in}\seg@author%
-	   \noindent\fbox{\usebox{\seg@abstract}}\bigskip]}{%
-	 \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}}}
-  }
+    \ifthenelse{\boolean{@twoc}}{%
+      \twocolumn[\vspace{1.8in}\seg@author]}{\vspace{0.3in}\seg@author}
+    \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
+         \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
+    \medskip\end{minipage}\end{lrbox}%
+    \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
 } 
 %    \end{macrocode}
 % \end{macro}
@@ -643,10 +686,8 @@
 %    \begin{macrocode}
 {\newcommand{\ps@seg}{%
 \ifthenelse{\boolean{@twoc}}{%
-\renewcommand{\@oddhead}{%
-\seg@foot\hfill\textbf{\seg@rhead}\hfill\textbf{\thepage}}
-\renewcommand{\@evenhead}{%
-\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill\seg@foot}
+\renewcommand{\@oddhead}{\hfill\textbf{\seg@rhead}\hfill\textbf{\thepage}}
+\renewcommand{\@evenhead}{\textbf{\thepage}\hfill\textbf{\seg@lhead}\hfill}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}{%
 \renewcommand{\@oddhead}{%
