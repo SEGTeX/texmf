@@ -96,7 +96,7 @@ sub buttons {
 	}
     } elsif ($path eq 'Matlab') {
 	foreach $name (@names) {
-	    my $matl = join('/','..',$path,$name . '.ma');
+	    my $matl = join('/','..',$path,$name . '.ml');
 	    if (-f $matl) {
 		$out .= join(''," <a href=\"$matl\">", 
 			     "<img src=\"$main::ICONSERVER/matlab.$type\"",
