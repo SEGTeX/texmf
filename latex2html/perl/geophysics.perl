@@ -94,6 +94,17 @@ sub buttons {
 			     "width=\"32\" height=\"32\"></a>");
 	    }
 	}
+    } elsif ($path eq 'Matlab') {
+	foreach $name (@names) {
+	    my $matl = join('/','..',$path,$name . '.ma');
+	    if (-f $matl) {
+		$out .= join(''," <a href=\"$matl\">", 
+			     "<img src=\"$main::ICONSERVER/matlab.$type\"",
+			     " border=\"0\"", 
+			     " alt=\"[matlab]\"",
+			     "width=\"34\" height=\"32\"></a>");
+	    }
+	}
     } elsif ($path eq 'XFig') {
 	foreach $name (@names) {
 	    my $xfig = join('/','..',$path,$name . '.fig');
