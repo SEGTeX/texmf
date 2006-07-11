@@ -22,10 +22,15 @@ sub figure {
         } elsif ($size =~ /$dimension=(\d*\.?\d*)cm/) {
             $out .= sprintf (" %s=%d",$dimension,$1*30);
         } elsif ($size =~ /$dimension=(\d*\.?\d*)/) {
-	    if ($3 == 'height') {
-		$out .= sprintf (" %s=%d",$dimension,$1*9*75);
+	    if ($1) {
+		$dim = $1;
 	    } else {
-		$out .= sprintf (" %s=%d",$dimension,$1*6*75);
+		$dim = 1;
+	    }
+	    if ($3 == 'height') {
+		$out .= sprintf (" %s=%d",$dimension,$dim*9*75);
+	    } else {
+		$out .= sprintf (" %s=%d",$dimension,$dim*6*75);
 	    }
 	}
     }
