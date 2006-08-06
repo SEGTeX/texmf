@@ -1,10 +1,7 @@
-package listings;
-
-$language = 'c';
-
 package jfc;
 
 $RSF = '../..';
+$listings::language='c';
 
 package main;
 
@@ -38,13 +35,27 @@ sub do_cmd_opdex {
         s/$next_pair_pr_rx//o;
         $arg = $2;
     }
-    my $file = join('/','..',$jfc::RSF,$dir,$prog+'.c');
+    my $file = join('/','../..',$jfc::RSF,$dir,$prog.'.c');
     $code = &listings::list($file,$first,$last);
     
     join(' ',
 	 &anchor_label("lst:".$prog,$CURRENT_FILE,''), 
 	 $code,
 	 $_);
+}
+
+sub do_cmd_moddex {
+    local ($_) = @_;
+    do_cmd_opdex($_);
+}
+
+sub do_cmd_boxit {
+    my $text = shift;
+    $text =~ s/$next_pair_pr_rx//o;
+    local ($_) = $2;
+    &extract_pure_text("liberal");
+    join ("\n","<P>","<TABLE BORDER=\"1\">","<TD>",$_,
+	  "<\/TD>","<\/TABLE>","<\/P>\n",$text); 
 }
 
 1;                              # This must be the last line
