@@ -17,15 +17,13 @@ sub list {
     $rest = $_;
     open (FILE,$file);
 
-    my $WTR = gensym();  # get a reference to a typeglob
-    my $RDR = gensym();  # and another one
+    my $WTR = &main::gensym();  # get a reference to a typeglob
+    my $RDR = &main::gensym();  # and another one
 
-    print "enscript --color --language=html --output=- --pretty-print=" . 
-	$listings::language . "\n";
+    print "enscript --color --language=html --output=- --pretty-print=" . $language . "\n";
 
     open2 ($RDR,$WTR,
-	   'enscript --color --language=html --output=- --pretty-print=' . 
-	   $listings::language);
+	   'enscript --color --language=html --output=- --pretty-print=' . $language);
     while (<FILE>) {
 	if ($. >= $firstline && $. <= $lastline) {
 	    print $WTR $_;
