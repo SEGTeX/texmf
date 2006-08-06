@@ -1,8 +1,10 @@
-$package jfc;
+package jfc;
 
 $RSF = '../..';
 
 package main;
+
+use listings;
 
 &ignore_commands( <<_IGNORED_CMDS_);
 sx # {}
