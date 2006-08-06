@@ -5,35 +5,10 @@ package listings;
 
 $language = 'html';
 
-package main;
-
-sub do_cmd_lstset {
-    my $rest = shift;
-    $rest = ~ s/$next_pair_pr_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
-    my $options = $2;
-    print "in lstset\n";
-    if ($options =~ /language=([^\,\}]+)/) {
-	$listings::language=lc($1);
-	$listings::language =~ s/c\+\+/cpp/;
-    }
-    print "got $listings::language \n";
-    $rest;
-}
-
-sub do_cmd_lstinputlisting {
-    local ($_) = @_;
-    my ($options,$file) = &get_next_optional_argument;
-    s/$next_pair_pr_rx//o;
-    $file = $2;
-    $file = '../' . $file unless $file =~ /^[\/]/;
-    my $firstline=1;
-    if ($options =~ /firstline=(\d+)/) {
-	$firstline = $1;
-    }
-    my $lastline=9999;
-    if ($options =~ /lastline=(\d+)/) {
-	$lastline = $1;
-    }
+sub list {
+    my $file = shift;
+    my $firstline = shift;
+    my $lastline = shift;
     if (-f $file) {
 	print "Listing file $file... [$firstline...$lastline]\n";
     } else {
@@ -67,6 +42,39 @@ sub do_cmd_lstinputlisting {
     close(FILE);
     close ($WTR);
     close ($RDR);
+    $code;
+}
+
+package main;
+
+sub do_cmd_lstset {
+    my $rest = shift;
+    $rest = ~ s/$next_pair_pr_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
+    my $options = $2;
+    print "in lstset\n";
+    if ($options =~ /language=([^\,\}]+)/) {
+	$listings::language=lc($1);
+	$listings::language =~ s/c\+\+/cpp/;
+    }
+    print "got $listings::language \n";
+    $rest;
+}
+
+sub do_cmd_lstinputlisting {
+    local ($_) = @_;
+    my ($options,$file) = &get_next_optional_argument;
+    s/$next_pair_pr_rx//o;
+    $file = $2;
+    $file = '../' . $file unless $file =~ /^[\/]/;
+    my $firstline=1;
+    if ($options =~ /firstline=(\d+)/) {
+	$firstline = $1;
+    }
+    my $lastline=9999;
+    if ($options =~ /lastline=(\d+)/) {
+	$lastline = $1;
+    }
+    $code = &listings::list($file,$firstline,$lastline);
     $code . $rest;
 }
 
