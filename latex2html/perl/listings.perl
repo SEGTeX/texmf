@@ -1,7 +1,7 @@
+package listings;
+
 use IPC::Open2;
 use Symbol;
-
-package listings;
 
 $language = 'html';
 
@@ -17,8 +17,8 @@ sub list {
     $rest = $_;
     open (FILE,$file);
 
-    my $WTR = &main::gensym();  # get a reference to a typeglob
-    my $RDR = &main::gensym();  # and another one
+    my $WTR = gensym();  # get a reference to a typeglob
+    my $RDR = gensym();  # and another one
 
     print "enscript --color --language=html --output=- --pretty-print=" . $language . "\n";
 
