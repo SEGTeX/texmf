@@ -1,40 +1,35 @@
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{jfc}[1997/01/01 v0.1 Jon F. Claerbout's macros]
+\RequirePackage{listings}
+\lstset{language=c,numbers=left,numberstyle=\tiny,frame=single,showstringspaces=false}
 
-\newcommand{\bs}{$\backslash$}
-\newcounter{exercount}
+\RequirePackage{varioref}
 
-\newenvironment{exer}{%
-\ifthenelse{\boolean{@report}}%
-{\subsubsection{{\rmfamily EXERCISES:}}}
-{\subsubsection*{{\rmfamily EXERCISES:}}}
-\begin{list}{\arabic{exercount}}
-{\usecounter{exercount}\setcounter{exercount}{0}
-\setlength{\leftmargin}{20pt}
-\setlength{\labelsep}{10pt}}}{\end{list}}
+% make bold and index
+\newcommand{\bx}[1]{\textbf{#1}\index{#1}} 
+% secondary index entries
+\newcommand{\sx}[1]{\index{#1}}
+% bold first, index second
+\newcommand{\bxbx}[2]{\textbf{#1}\index{#2}}
+\newcommand{\opdex}[5]{\index{#1 operator module}%
+  \index{operator!\texttt{#1}, #2}%
+  \lstinputlisting[float=htbp,label=lst:#1,title=#5/#1.c,firstline=#3,lastline=#4]{\RSF/#5/#1.c}
+}
+\newcommand{\moddex}[5]{\index{#1 module}%
+  \index{operator!\texttt{#1}, #2}%
+  \lstinputlisting[float=htbp,label=lst:#1,title=#5/#1.c,firstline=#3,lastline=#4]{\RSF/#5/#1.c}
+}
+
+\newcommand{\bold}[1]{\mathbf{#1}}
 \newcommand{\eq}{\quad=\quad}
-\newcommand{\sgn}{{\rm sgn}}
-\newcommand{\E}{{\rm E}}
-\newcommand{\FGDP}{Fundamentals of Geophysical Data Processing}
-\newcommand{\IEI}{Imaging the Earth's Interior}
-\newcommand{\PVI}{Earth soundings analysis: processing versus inversion}
-\newcommand{\progref}[1]{\PROG{#1}}
+\newcommand{\boxit}[1]{\noindent\fbox{\parbox{0.95\textwidth}{#1}}}
 
-\newcommand{\bx}[1]{\textbf{#1}\index{#1}}%      % make bold and index
-\newcommand{\bxbx}[2]{\textbf{#1}\index{#2}}%     % bold first, index second.
-\newcommand{\sx}[1]{\index{#1}}%                  % secondary index entries
-\newcommand{\progdex}[2]{\index{#1 subroutine}%
-\index{subroutine!\texttt{#1}, #2}%
-\gprogblock{#1}{\LIB/#1.rt}}%
-\newcommand{\opdex}[2]{\index{#1 operator module}%
-\index{operator!\texttt{#1}, #2}%
-\gprogblock{#1}{\OPS/#1.lop}}
-\newcommand{\moddex}[3][r90]{\index{#2 module}%
-\index{module!\texttt{#2}, #3}%
-\gprogblock{#2}{\OPS/#2.#1}}
+\newcommand{\FIG}[1]{\ref{fig:#1}}
+\newcommand{\EQN}[1]{(\ref{eqn:#1})}
 
-\newcommand{\todo}[1]{}
-\newcommand{\LIB}{../Lib} % Lib77?
-\newcommand{\OPS}{../Lib/book}
-
-\setcounter{tocdepth}{1}
+\newcounter{exercount}
+\newenvironment{exer}{%
+  \subsubsection*{{\rmfamily EXERCISES:}}
+  \begin{list}{\arabic{exercount}}
+    {\usecounter{exercount}\setcounter{exercount}{0}
+      \setlength{\leftmargin}{20pt}
+      \setlength{\labelsep}{10pt}}}
+  {\end{list}}

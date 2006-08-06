@@ -77,11 +77,11 @@ sub buttons {
 		     "<img src=\"$main::ICONSERVER/pdf.$type\" border=\"0\"",
 		     " alt=\"[pdf]\" width=\"32\" height=\"32\"></a>");
     }
-    if ($path ne '.') {
-	$out .= join(''," <a href=\"../$path.tgz\">", 
-		     "<img src=\"$main::ICONSERVER/tgz.$type\" border=\"0\"", 
-		     " alt=\"[tgz]\" width=\"32\" height=\"32\"></a>");
-    }
+#    if ($path ne '.') {
+#	$out .= join(''," <a href=\"../$path.tgz\">", 
+#		     "<img src=\"$main::ICONSERVER/tgz.$type\" border=\"0\"", 
+#		     " alt=\"[tgz]\" width=\"32\" height=\"32\"></a>");
+#    }
     foreach $fig (@figs) {
 	$out .= join(''," <a href=\"$fig.$type\">", 
 		     "<img src=\"$main::ICONSERVER/viewmag.$type\" ",
