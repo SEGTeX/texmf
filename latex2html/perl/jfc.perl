@@ -36,15 +36,15 @@ sub do_cmd_opdex {
         s/$next_pair_pr_rx//o;
         $arg = $2;
     }
-    $prog = join('/',$dir,$prog.'.c');
-    my $file = join('/','../..',$jfc::RSF,$prog);
+    my $fullprog = join('/',$dir,$prog.'.c');
+    my $file = join('/','../..',$jfc::RSF,$fullprog);
     $code = &listings::list($file,$first,$last);
     
     join(' ',
 	 &anchor_label("lst:".$prog,$CURRENT_FILE,''),
-	 "<CENTER>",
+	 "<CENTER><A HREF=\"$jfc::repos/$fullprog?view=markup\"><FONT SIZE=\"-2\">$prog</FONT></A>\n",
 	 $code,
-	 "<A HREF=\"$jfc::repos/$prog?view=markup\"><FONT SIZE=\"-2\">$prog</FONT></A></CENTER>\n",
+	 "</CENTER>",
 	 $_);
 }
 
