@@ -2,6 +2,7 @@ package jfc;
 
 $RSF = '../..';
 $listings::language='c';
+$repos = 'http://svn.sourceforge.net/viewcvs.cgi/rsf/trunk';
 
 package main;
 
@@ -41,9 +42,9 @@ sub do_cmd_opdex {
     
     join(' ',
 	 &anchor_label("lst:".$prog,$CURRENT_FILE,''),
-	 "<CENTER><A HREF=\"$jfc::repos/$prog?view=markup\">$prog</A>\n",
+	 "<CENTER>",
 	 $code,
-	 "</CENTER>",
+	 "<A HREF=\"$jfc::repos/$prog?view=markup\"><FONT SIZE=\"-2\">$prog</FONT></A></CENTER>\n",
 	 $_);
 }
 
