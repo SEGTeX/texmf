@@ -48,8 +48,7 @@ sub do_cmd_opdex {
 }
 
 sub do_cmd_moddex {
-    local ($_) = @_;
-    do_cmd_opdex($_);
+    &do_cmd_opdex;
 }
 
 sub do_cmd_boxit {
@@ -60,5 +59,10 @@ sub do_cmd_boxit {
     join ("\n","<P>","<TABLE BORDER=\"1\">","<TD>",$_,
 	  "<\/TD>","<\/TABLE>","<\/P>\n",$text); 
 }
+
+sub do_cmd_vpageref {
+    &do_cmd_pageref;
+}
+
 
 1;                              # This must be the last line
