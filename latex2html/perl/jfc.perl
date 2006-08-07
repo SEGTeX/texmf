@@ -30,22 +30,22 @@ sub do_cmd_bxbx {
 }
 
 sub do_cmd_opdex {
-    local ($_) = @_;
+    my $rest = shift;
     my ($prog, $comment, $first, $last, $dir);
     foreach $arg ($prog, $comment, $first, $last, $dir) {
-        s/$next_pair_pr_rx//o;
+        $rest =~ s/$next_pair_pr_rx//o;
         $arg = $2;
     }
     my $fullprog = join('/',$dir,$prog.'.c');
     my $file = join('/','../..',$jfc::RSF,$fullprog);
-    $code = &listings::list($file,$first,$last);
+    my $code = &listings::list($file,$first,$last);
     
     join(' ',
 	 &anchor_label("lst:".$prog,$CURRENT_FILE,''),
 	 "<CENTER><A HREF=\"$jfc::repos/$fullprog?view=markup\"><FONT SIZE=\"-2\">$prog</FONT></A>\n",
 	 $code,
 	 "</CENTER>",
-	 $_);
+	 $rest);
 }
 
 sub do_cmd_moddex {
