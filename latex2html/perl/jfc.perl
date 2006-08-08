@@ -42,7 +42,7 @@ sub do_cmd_opdex {
     
     join(' ',
 	 &anchor_label("lst:".$prog,$CURRENT_FILE,''),
-	 "<CENTER><A HREF=\"$jfc::repos/$fullprog?view=markup\"><FONT SIZE=\"-2\">$prog</FONT></A>\n",
+	 "<CENTER><A HREF=\"$jfc::repos/$fullprog?view=markup\"><FONT SIZE=\"-1\">$fullprog</FONT></A>\n",
 	 $code,
 	 "</CENTER>",
 	 $rest);
@@ -65,5 +65,10 @@ sub do_cmd_vpageref {
     &do_cmd_pageref;
 }
 
+sub do_cmd_reference {
+    local ($_) = @_;
+    s/$next_pair_pr_rx//o; 
+    join ('','<UL><LI>',$2,'</LI></UL>',"\n",$_);
+}
 
 1;                              # This must be the last line
