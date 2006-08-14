@@ -71,4 +71,11 @@ sub do_cmd_reference {
     join ('','<UL><LI>',$2,'</LI></UL>',"\n",$_);
 }
 
+sub do_cmd_todo {
+    local($_) = @_;
+    s/$next_pair_pr_rx//o; 
+    print STDERR "**************\n$_\n------------------\n";
+    print STDERR "**************\n$2\n------------------\n";
+}
+
 1;                              # This must be the last line

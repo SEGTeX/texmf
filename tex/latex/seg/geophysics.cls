@@ -121,7 +121,7 @@
           \end{minipage}
           \hfill
           \begin{minipage}{0.6\textwidth}
-            \flushright
+            \centering
             \includegraphics[#3]{\fig@file{#2}}
           \end{minipage}}
       \end{figure*}
