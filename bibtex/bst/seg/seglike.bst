@@ -29,9 +29,11 @@
 %			Rules updated to follow the SEG style according to the
 %			'Instructions to Authors', Geophysics, Jan/Feb 2005.
 %   03-oct-05	(JS)	Additional field segeditor in book and inbook
-%   07-jan-06	(JS)	Last correction: Reorganized use of meetingnr, meeting,
-%                       organization, proceedingstitle as an higher-priority
-%                       alternative to booktitle in inproceedings
+%   07-jan-06	(JS)	Reorganized use of meetingnr, meeting, organization,
+%                       proceedingstitle as an higher-priority alternative to
+%                       booktitle in inproceedings
+%   13-oct-06	(JS)	Last correction: added comma after three-em dash
+%                       representing identical author names
 %			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -291,7 +293,7 @@ FUNCTION {format.authors}
 { author empty$
     { "" }
     { dash.label "-"  =
-        { "--------" }
+        { "--------," }
         { author format.names
          ", " *
         }
@@ -1404,4 +1406,3 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
-
