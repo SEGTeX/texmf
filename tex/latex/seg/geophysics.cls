@@ -87,7 +87,10 @@
       \begin{figure}[p]
         \centering
         \includegraphics[#3]{\fig@file{#2}}
-        \caption{#4}
+        \caption[#4]{#4 \\
+  \textbf{\seg@lhead} --
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number} --
+  #2}
 \label{fig:\@path-#2}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -158,7 +161,9 @@
           \label{fig:\item@i}}
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
         \repeat
-        \caption{#5}
+        \caption[#5]{#5 \\
+  \textbf{\seg@lhead} --
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number} -- #3}
 \label{fig:\@path-#3}
         \label{fig:#3}
       \end{figure}\clearpage
@@ -372,6 +377,8 @@
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}
 \def\subsubsection{\@ifstar{\segsubsubsection*}{\segsubsubsection*}}
 \def\subsubsubsection{\@ifstar{\seg@subsubsubsection}{\seg@subsubsubsection}}
+\newcommand{\ms@number}{Manuscript}
+\newcommand{\ms}[1]{\renewcommand{\ms@number}{\textbf{#1}}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
   \begin{minipage}{\textwidth}%
@@ -398,6 +405,7 @@
           \textbf{#1} \\
           \emph{\seg@address}\ \\
           (\today) \\
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number \\}
         }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
             \footnote{\textbf{e-mail: }\seg@email}} \\ \
         }
