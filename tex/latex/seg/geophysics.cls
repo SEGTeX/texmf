@@ -473,8 +473,13 @@
   }
   \stepcounter{@append}
 }
-\providecommand{\append}[1]{%
-\appendix\section{Appendix \append@name}\section{#1}}
+\providecommand{\append}[2][\append@name]{%
+  \appendix\section{Appendix \append@name}\section{#2}
+  \begingroup
+  \def\@currentlabel{\append@name}%
+  \label{#1}%
+  \endgroup
+}
 \endinput
 %%
 %% End of file `geophysics.cls'.
