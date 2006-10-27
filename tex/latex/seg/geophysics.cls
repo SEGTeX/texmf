@@ -271,9 +271,9 @@
   \RequirePackage{ulem}%
   \normalem
 }{}
-\newcommand{\new}[1]{%
+\DeclareRobustCommand{\new}[1]{%
   \ifthenelse{\boolean{@revd}}{\textit{\textcolor{red}{#1}}}{#1}}
-\newcommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\sout{#1}}}{}}
+\DeclareRobustCommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\sout{#1}}}{}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
