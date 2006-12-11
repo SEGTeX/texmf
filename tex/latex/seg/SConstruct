@@ -84,3 +84,4 @@ for case in ('segabs','eage'):
             [case+'_example.ltx',case+'.cls',
              'example.bib','Fig/exgr.pdf'])
 
+env.Pdf('segabs_final.pdf',['segabs_final.ltx','segabs_example.pdf'])

@@ -122,7 +122,7 @@
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\section{\refname}}
+\renewcommand\bibsection{\clearpage\section{\refname}}
 \newcommand{\shortcite}[1]{\citeyearpar{#1}}
 \RequirePackage{mathptmx}
 \setlength{\oddsidemargin}{0in}

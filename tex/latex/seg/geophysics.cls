@@ -406,6 +406,7 @@
           \emph{\seg@address}\ \\
           (\today) \\
   \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number \\}
+  Running head: \textbf{\seg@rhead} \\
         }{\textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
             \footnote{\textbf{e-mail: }\seg@email}} \\ \
         }

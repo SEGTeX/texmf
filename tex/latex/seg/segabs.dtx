@@ -259,7 +259,7 @@
 % Redefine the reference section name.
 %    \begin{macrocode}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\section{\refname}}
+\renewcommand\bibsection{\clearpage\section{\refname}}
 %    \end{macrocode}
 % For backward compatibility: shortcite refers to the year
 %    \begin{macrocode}
