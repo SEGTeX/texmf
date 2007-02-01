@@ -89,8 +89,7 @@
         \includegraphics[#3]{\fig@file{#2}}
         \caption[#4]{#4 \\
   \textbf{\seg@lhead} --
-  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number} --
-  #2}
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
 \label{fig:\@path-#2}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -163,7 +162,7 @@
         \repeat
         \caption[#5]{#5 \\
   \textbf{\seg@lhead} --
-  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number} -- #3}
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
 \label{fig:\@path-#3}
         \label{fig:#3}
       \end{figure}\clearpage
