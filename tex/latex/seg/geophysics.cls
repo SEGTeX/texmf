@@ -66,14 +66,6 @@
 \ifthenelse{\boolean{@eflt}}{
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
-\RequirePackage{ifpdf}
-\ifpdf
-\RequirePackage[pdftex]{graphicx}
-\DeclareGraphicsExtensions{.pdf,.png}
-\else
-\usepackage{graphicx}
-\DeclareGraphicsExtensions{.eps,.ps}
-\fi
 \ifthenelse{\boolean{@manu}}{
   \renewcommand{\inputdir}[1]{\AtEndDocument{\renewcommand{\@path}{#1}}}}{}
 \providecommand{\figdir}{.}
@@ -87,7 +79,7 @@
       \begin{figure}[p]
         \centering
         \includegraphics[#3]{\fig@file{#2}}
-        \caption[#4]{#4 \\
+        \caption [#4]{#4 \\
   \textbf{\seg@lhead} --
   \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
 \label{fig:\@path-#2}

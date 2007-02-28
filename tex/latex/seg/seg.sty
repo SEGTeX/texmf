@@ -47,6 +47,14 @@
 \providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+\RequirePackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
 \RequirePackage{verbatim}
 \RequirePackage{moreverb}
 \endinput

@@ -135,6 +135,19 @@
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
+% Load the \textsf{graphicx} package for included figures.
+% Possible suffices for graphics files depend on whether 
+% we are running pdflatex or latex.
+%    \begin{macrocode}
+\RequirePackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+\else
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps}
+\fi
+%    \end{macrocode}
 % Packages for including things verbatum.
 %    \begin{macrocode}
 \RequirePackage{verbatim}

@@ -187,19 +187,6 @@
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
 %    \end{macrocode}
-% Load the \textsf{graphicx} package for included figures.
-% Possible suffices for graphics files depend on whether 
-% we are running pdflatex or latex.
-%    \begin{macrocode}
-\RequirePackage{ifpdf}
-\ifpdf
-\RequirePackage[pdftex]{graphicx}
-\DeclareGraphicsExtensions{.pdf,.png}
-\else
-\usepackage{graphicx}
-\DeclareGraphicsExtensions{.eps,.ps}
-\fi
-%    \end{macrocode}
 % \begin{macro}{\figdir}
 % |\figdir| is a variable. It will need to be redefined to specify the figure
 % directory. 
@@ -221,7 +208,7 @@
 \ifthenelse{\boolean{@manu}}
 %    \end{macrocode} 
 % In manuscripts, each figure appears on a separate page at the
-% end of the paper.
+% end of the paper. 
 %    \begin{macrocode}
 {\newcommand{\fullplot}[4][X]{
     \stepcounter{@plots}
@@ -229,7 +216,7 @@
       \begin{figure}[p]
         \centering
         \includegraphics[#3]{\fig@file{#2}}
-        \caption[#4]{#4 \\ 
+        \caption [#4]{#4 \\ 
 	  \textbf{\seg@lhead} --
 	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
 	\label{fig:\@path-#2}
