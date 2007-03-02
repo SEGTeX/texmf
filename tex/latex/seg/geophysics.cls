@@ -19,7 +19,7 @@
 %%     version 2003/12/01 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{geophysics}[2004/11/08 v2.0 Geophysics paper]
+\ProvidesClass{geophysics}[2007/02/14 v3.0 Geophysics paper]
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z

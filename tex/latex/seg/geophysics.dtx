@@ -14,10 +14,10 @@
 %
 % \iffalse
 %<class>\NeedsTeXFormat{LaTeX2e}
-%<class>\ProvidesClass{geophysics}[2004/11/08 v2.0 Geophysics paper]
+%<class>\ProvidesClass{geophysics}[2007/02/14 v3.0 Geophysics paper]
 %
 %<*driver>
-\ProvidesFile{geophysics.dtx}[2004/06/22 v1.0 geophysics class]
+\ProvidesFile{geophysics.dtx}[2007/02/14 v3.0 geophysics class]
 \documentclass{ltxdoc}
 \GetFileInfo{geophysics.dtx}
 \EnableCrossrefs
@@ -48,6 +48,7 @@
 %
 % \changes{v1.0}{2004/06/22}{Initial version}
 % \changes{v2.0}{2004/11/08}{Numerous updates}
+% \changes{v3.0}{2007/02/14}{Numerous updates}
 %
 % \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
 % \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand,
@@ -70,7 +71,17 @@
 %
 %\subsection{Options}
 %
-% Two options control the appearance...
+% Several options control the paper appearance.
+%
+% \DescribeMacro{manuscript}
+% \DescribeMacro{paper}
+% The |manuscript| option produces a manuscript-style paper ready 
+% for submission to \emph{Geophysics}. The opposite (and default) is the
+% |paper| option, which produces a report-style paper.
+%
+% \DescribeMacro{onecolumn}
+% \DescribeMacro{twocolumn}
+% The |twocolumn| option... 
 %
 %\subsection{Appearance}
 %
