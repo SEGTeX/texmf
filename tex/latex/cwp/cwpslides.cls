@@ -2,10 +2,7 @@
 \ProvidesClass{pcsslides}[2005/12/16 v0.1 slides]
 
 \RequirePackage{ifthen}
-
-%\usetheme[hideothersubsections]{PCS}
 \LoadClass{beamer}
-
 \DeclareGraphicsExtensions{.pdf,.png}
 
 % path to figures
