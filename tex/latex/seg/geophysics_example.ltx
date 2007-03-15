@@ -49,12 +49,13 @@ This is another section.
 
 \subsection{Equations}
 
-Section headings should be capitalized. Subsection headings should only
-have the first letter of the first word capitalized.
+Section headings should be capitalized. Subsection headings should
+only have the first letter of the first word capitalized.
 
 Here are examples of equations involving vectors and tensors:
 \begin{equation}
-\tensor{R} = \pmatrix{R_{\rs{XX}} & R_{\rs{YX}} \cr R_{\rs{XY}} & R_{\rs{YY}}} 
+\tensor{R} = 
+\pmatrix{R_{\rs{XX}} & R_{\rs{YX}} \cr R_{\rs{XY}} & R_{\rs{YY}}} 
 =
 \tensor{P}_{M\rightarrow R} \; \tensor{D} \; \tensor{P}_{S\rightarrow M}
 \;\;\; \tensor{S} \ \ \  ,
@@ -70,12 +71,13 @@ P_{m}^{(n)}(\vector{x}_S) \ \ \ .
 \label{SVDray}
 \end{equation}
 
-Note that the macros for the \verb#\vector# and \verb#\tensor# commands have
-been changed to force tensors to be bold uppercase and vectors to be bold
-lowercase, in compliance with current SEG submission standards. This is so
-that documents typeset to the old standards will print out according to the
-new ones: e.g., tensor $\tensor{t}$ (note converted to uppercase) and vector
-$\vector{V}$ (note converted to lowercase).
+Note that the macros for the \verb#\vector# and \verb#\tensor#
+commands have been changed to force tensors to be bold uppercase and
+vectors to be bold lowercase, in compliance with current SEG
+submission standards. This is so that documents typeset to the old
+standards will print out according to the new ones: e.g., tensor
+$\tensor{t}$ (note converted to uppercase) and vector $\vector{V}$
+(note converted to lowercase).
 
 \subsection*{Figures}
 \renewcommand{\figdir}{Fig} % figure directory
@@ -114,13 +116,15 @@ The discussion is summarized in Table~\ref{tbl:example}.
       \multicolumn{3}{|c|}{Table Example} \\
       \hline
       migration\rule[-2ex]{0ex}{5ex} & 
-      $\omega \rightarrow k_z$ & $k_y^2+k-z^2\cos^2 \psi=4\omega^2/v^2$ \\
+      $\omega \rightarrow k_z$ & 
+      $k_y^2+k-z^2\cos^2 \psi=4\omega^2/v^2$ \\
       \hline
       \parbox{1in}{zero-offset\\diffraction}\rule[-4ex]{0ex}{8ex} &
       $k_z\rightarrow\omega_0$ &
       $k_y^2+k_z^2=4\omega_0^2/v^2$ \\
       \hline
-      DMO+NMO\rule[-2ex]{0in}{5ex} & $\omega\rightarrow\omega_0$ & $\frac{1}{4}
+      DMO+NMO\rule[-2ex]{0in}{5ex} & $\omega\rightarrow\omega_0$ & 
+      $\frac{1}{4}
       v^2k_y^2\sin^2\psi+\omega_0^2\cos^2\psi=\omega^2$ \\
       \hline
       radial DMO\rule[-2ex]{0in}{5ex} & $\omega\rightarrow\omega_s$ &
@@ -135,12 +139,12 @@ The discussion is summarized in Table~\ref{tbl:example}.
 
 \section{ACKNOWLEDGMENTS}
 
-I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and Fr\'ed\'eric Billette for having
-names with non-English letters in them.  I wish to thank \cite{Cerveny} for
-providing an example of how to make a bib file that includes an author
-whose name begins with a non-English character and \cite{forgues96} for
-providing both an example of referencing a Ph.D. thesis and yet more
-non-English characters.
+I wish to thank Ivan P\v{s}en\v{c}\'{\i}k and Fr\'ed\'eric Billette
+for having names with non-English letters in them.  I wish to thank
+\cite{Cerveny} for providing an example of how to make a bib file that
+includes an author whose name begins with a non-English character and
+\cite{forgues96} for providing both an example of referencing a Ph.D.
+thesis and yet more non-English characters.
 
 \append{Appendix example}
 \label{example}

@@ -11,14 +11,15 @@
 % This style works with the natbib package.
 %
 % History:
-%   15-sep-86	(SK,OP)	Original 'apalike' version, by Susan King and Oren Patashnik.
+%   15-sep-86	(SK,OP)	Original 'apalike' version,
+%                       by Susan King and Oren Patashnik.
 %   10-nov-86	(OP)	Truncated the sort.key$ string to the correct length
 %			in bib.sort.order to eliminate error message.
 %   24-jan-88	(OP)	Updated for BibTeX version 0.99a, from alpha.bst 0.99a;
 %			apalike now sorts by author, then year, then title;
 %   12-aug-04	(JS)	First adapted 'seglike' version, by Joerg Schleicher.
 %			Parts from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
-%			and from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
+%			& from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
 %			'seglike' follows the SEG style according to the
 %			'Instructions to Authors', Geophysics, Jan/Feb 2004.
 %   29-dec-04	(JS)	Abbr. tp for Tectonophysics added, and format.author
@@ -32,8 +33,13 @@
 %   07-jan-06	(JS)	Reorganized use of meetingnr, meeting, organization,
 %                       proceedingstitle as an higher-priority alternative to
 %                       booktitle in inproceedings
-%   13-oct-06	(JS)	Last correction: added comma after three-em dash
-%                       representing identical author names
+%   13-oct-06	(JS)	Added comma after three-em dash representing identical
+%                       author names
+%   08-mar-07	(JS)	Last corrections: period changed to comma before
+%                       publisher in incollection; comma added after
+%                       "ed." where editor instead of author is used,
+%                       resulting double comma eliminated after editor in
+%                       incollection
 %			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -330,8 +336,8 @@ FUNCTION {format.editors}
       editor num.names$ #1 >
 %%	{ ", editors" * }   
 %%	{ ", editor" * }
-        { ", eds." * }                  %% SEG style
-        { ", ed." * }                   %% SEG style
+        { ", eds.," * }                  %% SEG style
+        { ", ed.," * }                   %% SEG style
       if$
     }
   if$
@@ -512,7 +518,7 @@ FUNCTION {format.in.ed.booktitle}
 %	{ "In " format.editors * ", " * booktitle emphasize * }
 %%			%% modified according to seg.bst
         { "{\it in} " booktitle * }
-        { "{\it in} " format.editors * ", " * booktitle * }
+        { "{\it in} " format.editors * " " * booktitle * }
       if$
     }
   if$
@@ -785,7 +791,7 @@ FUNCTION {incollection}
       format.bvolume output
       format.number.series output
       format.chapter.pages output
-      new.sentence
+%      new.sentence
       publisher "publisher" output.check
 %      address output				%% address suppressed
       format.edition output
