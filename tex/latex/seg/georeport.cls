@@ -40,13 +40,16 @@
 \setboolean{@twoc}{false}
 \DeclareOption{twocolumn}{\setboolean{@twoc}{true}}
 \DeclareOption{onecolumn}{\setboolean{@twoc}{false}}
+\newboolean{@shrt}
+\setboolean{@shrt}{false}
+\DeclareOption{short}{\setboolean{@shrt}{true}}
+\DeclareOption{long}{\setboolean{@shrt}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
-\ExecuteOptions{onecolumn}
+\ExecuteOptions{onecolumn,long}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
-  \LoadClass[9pt]{report}}{%
-  \LoadClass[11pt]{report}}
-\RequirePackage{ifthen}
+  \LoadClass[9pt]{book}}{%
+  \LoadClass[11pt]{book}}
 \RequirePackage{seg}
 \RequirePackage{chapterbib}
 \newlength{\toc@width}%
@@ -61,9 +64,10 @@
 \newcommand{\REPORT}{}
 \newcommand{\GROUP}{}
 \newcommand{\GEOcopyr}[2]{%
-\author{Copyright \copyright\ #1}
-\author{by #2}
-\vfill \ \newpage}
+  \ \vfill
+  \mainauthor{Copyright \copyright\ #1}
+  \mainauthor{by #2}
+  \vfill \ \newpage}
 \newcommand{\geo@header}{}
 \newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
 \newcommand{\paper@name}{.}
@@ -138,7 +142,7 @@
 \newcommand{\new}[1]{#1}
 \newcommand{\old}[1]{}
 \def\first@char#1#2\end{#1}
-\def\geo@input#1{\ifthenelse{\equal{\paper@name}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\paper@name/#1}}
+\def\geo@input#1{\ifthenelse{\equal{\paper@name}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\@iinput{\paper@name/#1}}}
 \def\input{\@ifnextchar\bgroup\geo@input\@@input}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
@@ -157,25 +161,44 @@
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
    {\smallskip #1}\end{geo@title}}}
+\newcommand{\maintitle}[1]{\title{#1}\seg@title}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
 \providecommand{\seg@author}{}
-\renewcommand{\author}[1]{%
-  \renewcommand{\seg@author}{%
-    \seg@title
+\newcommand{\mainauthor}[1]{
+  \ifthenelse{\boolean{@twoc}}{%
+    \begin{flushleft}
+      \Large #1\footnote{\seg@address}
+    \end{flushleft}\vspace{0.2in}
+  }{%
     \begin{center}
       \textit{#1}\ifthenelse{\equal{\seg@email}{.}}{}{%
         \footnote{\textbf{e-mail: }\seg@email}} \\ \
     \end{center}
-  }}
-\renewcommand{\maketitle}{}
+  }
+}
+\renewcommand{\author}[1]{%
+  \renewcommand{\seg@author}{%
+    \ifthenelse{\boolean{@twoc}}{%
+      \seg@title \\
+      \mainauthor{#1}
+    }{%
+      \seg@title
+      \mainauthor{#1}
+    }
+  }
+}
+\renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
+    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
 \newsavebox{\seg@abstract}
 \setlength{\fboxsep}{10pt}
-\renewenvironment{abstract}{
-  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\textwidth}%
-      \centerline{\Large\textbf{ABSTRACT}}\medskip}{%
-      \medskip\end{minipage}\end{lrbox}%
-  \vspace{0.3in}\seg@author\noindent\fbox{\usebox{\seg@abstract}}}
+\newenvironment{abstract}{
+  \ifthenelse{\boolean{@twoc}}{%
+    \twocolumn[\vspace{1.8in}\seg@author]}{\vspace{0.3in}\seg@author}
+  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
+      \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
+  \medskip\end{minipage}\end{lrbox}%
+  \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
 \newcommand{\ps@georeport}{%
 \renewcommand{\@oddhead}{%
 \seg@foot\hfill\textit{\seg@rhead}\hfill\thepage}
