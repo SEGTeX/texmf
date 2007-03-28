@@ -77,7 +77,10 @@
   \renewcommand{\theequation}{\arabic{equation}}%
   \renewcommand{\thefigure}{\arabic{figure}}%
   \renewcommand{\thetable}{\arabic{table}}%
-  \header{, pages \pageref{#1.start}--\pageref{#1.end}}%
+  \cleardoublepage
+  \label{\paper@name.end}
+  \thispagestyle{segtwo}
+  \label{#1.start}
   \renewcommand{\paper@name}{#1}
 }
 \RequirePackage{ifpdf}
@@ -90,11 +93,19 @@
 \fi
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\paper@name/\@path/\figdir/#1}
+\newcommand{\plotdir}{\figdir}
+\newcommand{\plot@file}[1]{\plotdir/#1}
+\newcommand{\plotbox}[2]{%
+  \begin{figure*}[htbp]
+    \centering
+    \includegraphics[#2]{\plot@file{#1}}
+\end{figure*}}
 \newcommand{\fullplot}[4][htbp]{%
   \begin{figure*}[#1]
     \centering
+    \setlength{\fboxsep}{0.5ex}
     \includegraphics[#3]{\fig@file{#2}}
-    \caption{#4}
+    \caption{#4 \fbox{\paper@name/\@path/ #2}}
     \label{fig:#2}
   \end{figure*}
 }
@@ -102,15 +113,17 @@
   \ifthenelse{\boolean{@twoc}}{%
     \begin{figure}[#1]
       \centering
+      \setlength{\fboxsep}{0.5ex}
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4}
+      \caption{#4 \fbox{\paper@name/\@path/ #2}}
       \label{fig:#2}
     \end{figure}
   }{%
     \begin{figure*}[#1]
       \makebox{%
         \begin{minipage}{0.4\textwidth}
-          \caption{#4}
+  \setlength{\fboxsep}{0.5ex}
+          \caption{#4 \fbox{\paper@name/\@path/ #2}}
           \label{fig:#2}
         \end{minipage}
         \hfill
@@ -124,6 +137,57 @@
 \ifthenelse{\boolean{@twoc}}{%
   \def\plot{\@ifstar{\fullplot}{\sideplot}}}{%
   \def\plot{\@ifstar{\fullplot}{\fullplot}}}
+\RequirePackage{subfigure}
+\def\next@item#1,#2?{#1}
+\def\rest@item#1,#2?{#2}
+\newcounter{sub@fig}
+\newcommand{\seg@fullmultiplot}[5][htbp]{
+  \begin{figure*}[#1]
+    \centering
+    \setlength{\fboxsep}{0.5ex}
+    \setcounter{sub@fig}{0}
+    \edef\list@i{#3}
+    \loop
+    \edef\item@i{\expandafter\next@item\list@i,\empty?}
+    \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+    \ifx\item@i\empty
+    \else
+    \stepcounter{sub@fig}
+    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
+      \label{fig:\item@i}}
+    \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+    \repeat
+    \caption{#5 \fbox{\paper@name/\@path/ #3}}
+    \label{fig:\@path-#3}
+    \label{fig:#3}
+  \end{figure*}
+}
+\newcommand{\seg@sidemultiplot}[5][htbp]{
+  \begin{figure}[#1]
+    \centering
+    \setlength{\fboxsep}{0.5ex}
+    \setcounter{sub@fig}{0}
+    \edef\list@i{#3}
+    \loop
+    \edef\item@i{\expandafter\next@item\list@i,\empty?}
+    \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+    \ifx\item@i\empty
+    \else
+    \stepcounter{sub@fig}
+    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
+      \label{fig:\item@i}}
+    \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+    \repeat
+    \caption{#5 \fbox{\paper@name/\@path/ #3}}
+    \label{fig:\@path-#3}
+    \label{fig:#3}
+  \end{figure}
+}
+\ifthenelse{\boolean{@twoc}}{%
+  \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
+  \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
   \providecommand{\seg@sidetabl}[4][htbp]{
     \begin{table}[#1]
       #4
@@ -206,6 +270,12 @@
 \thepage\hfill\textit{\seg@lhead}\hfill\seg@foot}
 \renewcommand{\@oddfoot}{}\renewcommand{\@evenfoot}{}}
 \pagestyle{georeport}
+\newcommand{\ps@segtwo}{%
+  \renewcommand{\@oddfoot}{\hfill\thepage\hfill}%
+  \renewcommand{\@evenfoot}{\@oddfoot}
+  \renewcommand{\@oddhead}{%
+    \footnotesize\textit{\geo@header\seg@head}\hfill\normalsize}%
+  \renewcommand{\@evenhead}{\@oddhead}}
 \let\seg@large\large
 \let\seg@Large\Large
 \renewcommand{\Large}{\protect\seg@large}
@@ -216,7 +286,15 @@
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
 {1ex \@plus .2ex}%
-{\normalfont\Large\bfseries\MakeUppercase}}
+{\centering%
+\normalfont\ifthenelse{\boolean{@twoc}}{}{\Large}\bfseries\MakeUppercase}}
+\newcommand{\segsubsubsection}{%
+\@startsection{subsubsection}{3}{\z@}%
+{-3.25ex\@plus -1ex \@minus -.2ex}%
+{1.5ex \@plus .2ex}%
+{\normalfont\normalsize\itshape}}
+\newcommand{\seg@subsubsubsection}[2][]{%
+\underline{#2}.--}
 \def\section{\@ifstar{\segsection*}{\segsection*}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
@@ -238,6 +316,8 @@
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
 \renewcommand\bibsection{\section{\refname}}
+\RequirePackage{listings}
+\newcommand{\code}[2]{\lstinputlisting[#1]{./#2}}
 \endinput
 %%
 %% End of file `georeport.cls'.

@@ -37,7 +37,7 @@
 %%   Right brace   \}     Tilde         \~}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
-\LoadClass[11pt]{article}
+\LoadClass[10pt]{article}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
@@ -137,11 +137,11 @@
 \setlength{\itemsep}{0em}
 \setlength{\topmargin}{-0.5in}
 \setlength{\columnsep}{0.3125in}
-\renewcommand{\Large}{\protect\scriptsize}
+\renewcommand{\Large}{\protect\footnotesize}
 \let\normal@size\normalsize
-\renewcommand{\normalsize}{\protect\scriptsize}
-\renewcommand{\footnotesize}{\protect\tiny}
-\scriptsize
+\renewcommand{\normalsize}{\protect\small}
+\renewcommand{\footnotesize}{\protect\scriptsize}
+\small
 \newcommand{\seg@section}{%
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
@@ -178,7 +178,7 @@
 \textbf{SUMMARY\\}\\*}{%
 \end{minipage}\vspace{2ex}}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
+\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\small\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}

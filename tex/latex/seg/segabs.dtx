@@ -121,7 +121,7 @@
 % We will use 11pt fonts by default.
 %    \begin{macrocode}
 \ProcessOptions*
-\LoadClass[11pt]{article}
+\LoadClass[10pt]{article}
 %    \end{macrocode}
 % Load SEG style package
 %    \begin{macrocode}
@@ -291,11 +291,11 @@
 % \subsection{Font size}
 % Messing with sizes to get the required 9pt Times-Roman
 %    \begin{macrocode}
-\renewcommand{\Large}{\protect\scriptsize}
+\renewcommand{\Large}{\protect\footnotesize}
 \let\normal@size\normalsize
-\renewcommand{\normalsize}{\protect\scriptsize}
-\renewcommand{\footnotesize}{\protect\tiny}
-\scriptsize
+\renewcommand{\normalsize}{\protect\small}
+\renewcommand{\footnotesize}{\protect\scriptsize}
+\small
 %    \end{macrocode}
 % \subsection{Section commands}
 %    \begin{macrocode}
@@ -371,7 +371,7 @@
 % Define a page style
 %    \begin{macrocode}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
+\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\small\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}
