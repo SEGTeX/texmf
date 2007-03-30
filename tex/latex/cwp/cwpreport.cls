@@ -1,21 +1,23 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpreport}[2006/03/20 v0.1 CWP report]
 
-\LoadClass{othercwp01}
+\LoadClass{cwp01}
+%\LoadClass{othercwp01}
 
 % ------------------------------------------------------------
 \RequirePackage{graphicx}
 \RequirePackage{ifthen}
-\RequirePackage{times}
+%\RequirePackage{times}
 
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+
 \providecommand{\figdir}{Fig}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 
 % ------------------------------------------------------------
 \newcommand{\plot}[4][htbp]{%
-  \begin{figure*}[#1]
+  \begin{figure*}
     \centering
     \includegraphics[#3]{\fig@file{#2}}
     \caption{#4}
@@ -25,7 +27,7 @@
 
 % ------------------------------------------------------------
 \newcommand{\sideplot}[4][htbp]{%
-  \begin{figure*}[#1]
+  \begin{figure*}
     \makebox{%
       \begin{minipage}{0.4\textwidth}
 	\caption{#4}
@@ -51,7 +53,7 @@
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
 \newcommand{\multiplot}[5][htbp]{
-  \begin{figure*}[#1]
+  \begin{figure*}
     \centering
     \setcounter{sub@fig}{0}
     \edef\list@i{#3}
@@ -71,4 +73,38 @@
     \label{fig:#3}
     \label{fig:\@path-#3}
   \end{figure*}
+}
+
+% ------------------------------------------------------------
+
+\newboolean{@manu}
+\setboolean{@manu}{false}
+\newcounter{@append}
+\ifthenelse{\boolean{@manu}}{%
+  \AtEndDocument{\setcounter{@append}{0}}}{}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+  \ifthenelse{\equal{\append@name}{A}}{%
+    \renewcommand{\append@name}{\Alph{@append}}}{}
+  \setcounter{equation}{0}%
+  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+  \ifthenelse{\boolean{@manu}}{%
+    \AtEndDocument{
+      \setcounter{figure}{0}%
+      \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+      \stepcounter{@append}
+    }
+  }{%
+    \setcounter{figure}{0}%
+    \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  }
+  \stepcounter{@append}
+}
+\providecommand{\append}[2][\append@name]{%
+  \appendix\section{Appendix \append@name}\section{#2}
+  \begingroup
+  \def\@currentlabel{\append@name}%
+  \label{#1}%
+  \endgroup
 }
