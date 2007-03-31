@@ -105,7 +105,7 @@
     \centering
     \setlength{\fboxsep}{0.5ex}
     \includegraphics[#3]{\fig@file{#2}}
-    \caption{#4 \fbox{\paper@name/\@path/ #2}}
+    \caption{#4 \fbox{\paper@name/\@path #2}}
     \label{fig:#2}
   \end{figure*}
 }
@@ -115,7 +115,7 @@
       \centering
       \setlength{\fboxsep}{0.5ex}
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4 \fbox{\paper@name/\@path/ #2}}
+      \caption{#4 \fbox{\paper@name/\@path #2}}
       \label{fig:#2}
     \end{figure}
   }{%
@@ -123,7 +123,7 @@
       \makebox{%
         \begin{minipage}{0.4\textwidth}
   \setlength{\fboxsep}{0.5ex}
-          \caption{#4 \fbox{\paper@name/\@path/ #2}}
+          \caption{#4 \fbox{\paper@name/\@path #2}}
           \label{fig:#2}
         \end{minipage}
         \hfill
@@ -158,7 +158,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption{#5 \fbox{\paper@name/\@path/ #3}}
+    \caption{#5 \fbox{\paper@name/\@path #3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure*}
@@ -180,7 +180,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption{#5 \fbox{\paper@name/\@path/ #3}}
+    \caption{#5 \fbox{\paper@name/\@path #3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure}
@@ -317,7 +317,8 @@
 \DeclareRobustCommand{\refname}{REFERENCES}
 \renewcommand\bibsection{\section{\refname}}
 \RequirePackage{listings}
-\newcommand{\code}[2]{\lstinputlisting[#1]{./#2}}
+\newcommand{\include@file}[1]{\paper@name/#1}
+\newcommand{\code}[2][frame=single]{\lstinputlisting[#1]{\include@file{#2}}}
 \endinput
 %%
 %% End of file `georeport.cls'.
