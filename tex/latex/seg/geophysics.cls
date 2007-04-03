@@ -155,7 +155,7 @@
         \caption[#5]{#5 \\
   \textbf{\seg@lhead} --
   \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
-\label{fig:\@path-#3}
+	\label{fig:\@path-#3}
         \label{fig:#3}
       \end{figure}\clearpage
 }}
@@ -173,7 +173,7 @@
       \else
       \stepcounter{sub@fig}
       \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-\label{fig:\@path-\item@i}
+	\label{fig:\@path-\item@i}
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat
@@ -194,7 +194,7 @@
       \else
       \stepcounter{sub@fig}
       \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-\label{fig:\@path-\item@i}
+	\label{fig:\@path-\item@i}
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat

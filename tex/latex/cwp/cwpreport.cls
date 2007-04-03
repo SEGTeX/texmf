@@ -2,12 +2,10 @@
 \ProvidesClass{cwpreport}[2006/03/20 v0.1 CWP report]
 
 \LoadClass{cwp01}
-%\LoadClass{othercwp01}
 
 % ------------------------------------------------------------
 \RequirePackage{graphicx}
 \RequirePackage{ifthen}
-%\RequirePackage{times}
 
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
@@ -80,6 +78,7 @@
 \newboolean{@manu}
 \setboolean{@manu}{false}
 \newcounter{@append}
+
 \ifthenelse{\boolean{@manu}}{%
   \AtEndDocument{\setcounter{@append}{0}}}{}
 \providecommand{\append@name}{A}

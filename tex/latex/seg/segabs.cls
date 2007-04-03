@@ -53,6 +53,7 @@
    \fi
 \newcounter{@plots}
 \setcounter{@plots}{0}
+% ------------------------------------------------------------
 \DeclareRobustCommand{\fullplot}[4][htbp]{%
 \begin{figure*}[#1]
 \centering
@@ -60,6 +61,7 @@
 \caption[]{#4}
 \label{fig:#2}
 \end{figure*}}
+% ------------------------------------------------------------
 \DeclareRobustCommand{\sideplot}[4][htbp]{%
 \begin{figure}[#1]
 \centering
@@ -67,6 +69,7 @@
 \caption[]{#4}
 \label{fig:#2}
 \end{figure}}
+% ------------------------------------------------------------
 \def\plot{\@ifstar{\fullplot}{\sideplot}}
 \RequirePackage{subfigure}
 \RequirePackage{ifthen}
@@ -85,13 +88,16 @@
     \else
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
     \caption{#5}
+    \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure}
 }
+% ------------------------------------------------------------
 \newcommand{\fullmultiplot}[5][htbp]{
   \begin{figure*}[#1]
     \centering
@@ -104,21 +110,26 @@
     \else
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
     \caption{#5}
+    \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure*}
 }
+% ------------------------------------------------------------
 \def\multiplot{\@ifstar{\fullmultiplot}{\sidemultiplot}}
 \providecommand{\tabl}[4][htbp]{
   \begin{table}[#1]
     #4
     \caption{#3}
+    \label{tbl:\@path-#3}
     \label{tbl:#2}
   \end{table}
 }
+% ------------------------------------------------------------
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
