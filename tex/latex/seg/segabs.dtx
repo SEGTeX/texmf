@@ -118,10 +118,10 @@
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
-% We will use 10pt fonts by default.
+% We will use 11pt fonts by default.
 %    \begin{macrocode}
 \ProcessOptions*
-\LoadClass[10pt]{article}
+\LoadClass[11pt]{article}
 %    \end{macrocode}
 % Load SEG style package
 %    \begin{macrocode}
@@ -137,21 +137,6 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 %    \end{macrocode}
 % \end{macro}
-% Load the \textsf{graphicx} package for included figures.
-% Possible suffices for graphics files depend on whether 
-% we are running pdflatex or latex.
-%    \begin{macrocode}
-\newif\ifpdf
-   \ifx\pdfoutput\undefined \pdffalse              
-     \else \pdfoutput=1 \pdftrue \fi
-   \ifpdf
-     \RequirePackage[pdftex]{graphicx}
-     \DeclareGraphicsExtensions{.pdf,.png}
-   \else
-     \usepackage{graphicx}
-     \DeclareGraphicsExtensions{.eps,.ps}
-   \fi
-%    \end{macrocode}
 % Count figures.
 %    \begin{macrocode}
 \newcounter{@plots}
@@ -291,11 +276,12 @@
 % \subsection{Font size}
 % Messing with sizes to get the required 9pt Times-Roman
 %    \begin{macrocode}
-\renewcommand{\Large}{\protect\small}
 \let\normal@size\normalsize
-\renewcommand{\normalsize}{\protect\small}
-\renewcommand{\footnotesize}{\protect\scriptsize}
-\small
+\let\seg@size\footnotesize
+\renewcommand{\Large}{\protect\seg@size}
+\renewcommand{\normalsize}{\protect\seg@size}
+\renewcommand{\footnotesize}{\protect\tiny}
+\seg@size
 %    \end{macrocode}
 % \subsection{Section commands}
 %    \begin{macrocode}
@@ -349,7 +335,7 @@
 \renewcommand{\author}[1]{%
 \renewcommand{\seg@author}{%
 \twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
-\newline\normal@size\textit{#1}\vspace{2ex}]}}
+\newline\small\textit{#1}\vspace{2ex}]}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
@@ -371,7 +357,7 @@
 % Define a page style
 %    \begin{macrocode}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\normal@size\textbf{\seg@rhead}\small\hfill}
+\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\seg@size\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}

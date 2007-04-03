@@ -37,20 +37,10 @@
 %%   Right brace   \}     Tilde         \~}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
-\LoadClass[10pt]{article}
+\LoadClass[11pt]{article}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
-\newif\ifpdf
-   \ifx\pdfoutput\undefined \pdffalse
-     \else \pdfoutput=1 \pdftrue \fi
-   \ifpdf
-     \RequirePackage[pdftex]{graphicx}
-     \DeclareGraphicsExtensions{.pdf,.png}
-   \else
-     \usepackage{graphicx}
-     \DeclareGraphicsExtensions{.eps,.ps}
-   \fi
 \newcounter{@plots}
 \setcounter{@plots}{0}
 % ------------------------------------------------------------
@@ -148,11 +138,12 @@
 \setlength{\itemsep}{0em}
 \setlength{\topmargin}{-0.5in}
 \setlength{\columnsep}{0.3125in}
-\renewcommand{\Large}{\protect\small}
 \let\normal@size\normalsize
-\renewcommand{\normalsize}{\protect\small}
-\renewcommand{\footnotesize}{\protect\scriptsize}
-\small
+\let\seg@size\footnotesize
+\renewcommand{\Large}{\protect\seg@size}
+\renewcommand{\normalsize}{\protect\seg@size}
+\renewcommand{\footnotesize}{\protect\tiny}
+\seg@size
 \newcommand{\seg@section}{%
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
@@ -182,14 +173,14 @@
 \renewcommand{\author}[1]{%
 \renewcommand{\seg@author}{%
 \twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
-\newline\normal@size\textit{#1}\vspace{2ex}]}}
+\newline\small\textit{#1}\vspace{2ex}]}}
 \renewcommand{\maketitle}{\seg@author}
 \renewenvironment{abstract}{%
 \begin{minipage}[t]{\columnwidth}
 \textbf{SUMMARY\\}\\*}{%
 \end{minipage}\vspace{2ex}}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\normal@size\textbf{\seg@rhead}\small\hfill}
+\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\seg@size\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}
