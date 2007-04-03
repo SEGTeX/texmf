@@ -48,6 +48,8 @@
 \setboolean{@shrt}{false}
 \DeclareOption{short}{\setboolean{@shrt}{true}}
 \DeclareOption{long}{\setboolean{@shrt}{false}}
+\newcommand{\shortpaper}{\setboolean{@shrt}{true}}
+\newcommand{\longpaper}{\setboolean{@shrt}{false}}
 \newboolean{@eflt}
 \setboolean{@eflt}{false}
 \DeclareOption{endfloat}{\setboolean{@eflt}{true}}
