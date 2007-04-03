@@ -137,7 +137,7 @@
 \setlength{\itemsep}{0em}
 \setlength{\topmargin}{-0.5in}
 \setlength{\columnsep}{0.3125in}
-\renewcommand{\Large}{\protect\footnotesize}
+\renewcommand{\Large}{\protect\small}
 \let\normal@size\normalsize
 \renewcommand{\normalsize}{\protect\small}
 \renewcommand{\footnotesize}{\protect\scriptsize}
@@ -171,14 +171,14 @@
 \renewcommand{\author}[1]{%
 \renewcommand{\seg@author}{%
 \twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
-\newline\small\textit{#1}\vspace{2ex}]}}
+\newline\normal@size\textit{#1}\vspace{2ex}]}}
 \renewcommand{\maketitle}{\seg@author}
 \renewenvironment{abstract}{%
 \begin{minipage}[t]{\columnwidth}
 \textbf{SUMMARY\\}\\*}{%
 \end{minipage}\vspace{2ex}}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\small\hfill}
+\renewcommand{\@oddhead}{\hfill\normal@size\textbf{\seg@rhead}\small\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}
