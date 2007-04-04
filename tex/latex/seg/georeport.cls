@@ -283,6 +283,12 @@
 \let\seg@section\section
 \let\seg@subsection\subsection
 \let\seg@subsubsection\subsubsection
+\newcommand{\geosection}{%
+\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1ex \@plus .2ex}%
+{\centering%
+\normalfont\ifthenelse{\boolean{@twoc}}{}{\Large}\bfseries}}
 \newcommand{\segsection}{%
 \@startsection {section}{1}{\z@}%
 {-3.5ex \@plus -1ex \@minus -.2ex}%
