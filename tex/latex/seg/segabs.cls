@@ -38,6 +38,8 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
 \LoadClass[11pt]{article}
+\usepackage{mathptmx}
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
@@ -114,7 +116,6 @@
 \DeclareRobustCommand{\refname}{REFERENCES}
 \renewcommand\bibsection{\clearpage\section{\refname}}
 \newcommand{\shortcite}[1]{\citeyearpar{#1}}
-\RequirePackage{mathptmx}
 \setlength{\oddsidemargin}{0in}
 \setlength{\evensidemargin}{0in}
 \setlength{\textwidth}{6.5in}

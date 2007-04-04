@@ -123,6 +123,13 @@
 \ProcessOptions*
 \LoadClass[11pt]{article}
 %    \end{macrocode}
+% \subsection{Fonts}
+% Load fonts for text and math.
+%    \begin{macrocode}
+\usepackage{mathptmx}
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+%    \end{macrocode}
+%
 % Load SEG style package
 %    \begin{macrocode}
 \RequirePackage{seg}
@@ -249,12 +256,6 @@
 % For backward compatibility: shortcite refers to the year
 %    \begin{macrocode}
 \newcommand{\shortcite}[1]{\citeyearpar{#1}}
-%    \end{macrocode}
-%
-% \subsection{Fonts}
-% Load postscript fonts for text and math.
-%    \begin{macrocode}
-\RequirePackage{mathptmx}
 %    \end{macrocode}
 %
 % \subsection{Page layout}
