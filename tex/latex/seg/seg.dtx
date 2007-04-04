@@ -73,16 +73,14 @@
 % \begin{macro}{\vector}
 % The SEG-style vector is lowercase bold math.
 %    \begin{macrocode}
-\renewcommand{\vector}[1]{\ensuremath{\mathbf{\MakeLowercase{#1}}}}
+\RequirePackage{bm}
+\renewcommand{\vector}[1]{\ensuremath{\MakeLowercase{\protect\bm{#1}}}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\tensor}
 % The SEG-style matrix is uppercase bold math.
 %    \begin{macrocode}
-%\newcommand{\under@tilde}[1]{\mathord{\vtop{\ialign{##\crcr
-%        $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern1.5pt\nointerlineskip}
-%        $\hfil\tilde{}\hfil$\crcr\noalign{\kern1.5pt}}}}}
-\providecommand{\tensor}[1]{\ensuremath{\mathbf{\MakeUppercase{#1}}}}
+\providecommand{\tensor}[1]{\ensuremath{\MakeUppercase{\protect\bm{#1}}}}
 %    \end{macrocode}
 % \end{macro}
 %
