@@ -78,6 +78,7 @@
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
+% ------------------------------------------------------------
 \newcommand{\sidemultiplot}[5][htbp]{
   \begin{figure}[#1]
     \centering
