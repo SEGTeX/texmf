@@ -70,19 +70,21 @@
   \vfill \ \newpage}
 \newcommand{\geo@header}{}
 \newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
-\newcommand{\paper@name}{.}
-\newcommand{\GEOpaper}[1]{%
+\newcommand{\paper@dir}{.}
+\newcommand{\paper@tag}{self}
+\newcommand{\GEOpaper}[2]{%
   \setcounter{equation}{0}\setcounter{figure}{0}%
   \setcounter{table}{0}\setcounter{footnote}{0}%
   \renewcommand{\theequation}{\arabic{equation}}%
   \renewcommand{\thefigure}{\arabic{figure}}%
   \renewcommand{\thetable}{\arabic{table}}%
   \cleardoublepage
-  \label{\paper@name.end}%
+  \label{\paper@tag.end}%
   \thispagestyle{segtwo}%
   \longpaper%
-  \label{#1.start}
-  \renewcommand{\paper@name}{#1}
+  \label{#2.start}
+  \renewcommand{\paper@dir}{#1}
+  \renewcommand{\paper@tag}{#2}
 }
 \RequirePackage{ifpdf}
 \ifpdf
@@ -93,7 +95,7 @@
 \DeclareGraphicsExtensions{.eps,.ps}
 \fi
 \providecommand{\figdir}{.}
-\providecommand{\fig@file}[1]{\paper@name/\@path/\figdir/#1}
+\providecommand{\fig@file}[1]{\paper@dir/\@path/\figdir/#1}
 \newcommand{\plotdir}{\figdir}
 \newcommand{\plot@file}[1]{\plotdir/#1}
 \newcommand{\plotbox}[2]{%
@@ -106,7 +108,7 @@
     \centering
     \setlength{\fboxsep}{0.5ex}
     \includegraphics[#3]{\fig@file{#2}}
-    \caption{#4 \fbox{\paper@name/\@path\ #2}}
+    \caption{#4 \fbox{\paper@dir/\@path\ #2}}
     \label{fig:#2}
   \end{figure*}
 }
@@ -116,7 +118,7 @@
       \centering
       \setlength{\fboxsep}{0.5ex}
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4 \fbox{\paper@name/\@path\ #2}}
+      \caption{#4 \fbox{\paper@dir/\@path\ #2}}
       \label{fig:#2}
     \end{figure}
   }{%
@@ -124,7 +126,7 @@
       \makebox{%
         \begin{minipage}{0.4\textwidth}
   \setlength{\fboxsep}{0.5ex}
-          \caption{#4 \fbox{\paper@name/\@path\ #2}}
+          \caption{#4 \fbox{\paper@dir/\@path\ #2}}
           \label{fig:#2}
         \end{minipage}
         \hfill
@@ -159,7 +161,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption{#5 \fbox{\paper@name/\@path\ #3}}
+    \caption{#5 \fbox{\paper@dir/\@path\ #3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure*}
@@ -181,7 +183,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption{#5 \fbox{\paper@name/\@path\ #3}}
+    \caption{#5 \fbox{\paper@dir/\@path\ #3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure}
@@ -207,7 +209,7 @@
 \newcommand{\new}[1]{#1}
 \newcommand{\old}[1]{}
 \def\first@char#1#2\end{#1}
-\def\geo@input#1{\ifthenelse{\equal{\paper@name}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\@iinput{\paper@name/#1}}}
+\def\geo@input#1{\ifthenelse{\equal{\paper@dir}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\@iinput{\paper@dir/#1}}}
 \def\input{\@ifnextchar\bgroup\geo@input\@@input}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
@@ -324,7 +326,7 @@
 \DeclareRobustCommand{\refname}{REFERENCES}
 \renewcommand\bibsection{\section{\refname}}
 \RequirePackage{listings}
-\renewcommand{\lst@inputpath}{./\paper@name/}
+\renewcommand{\lst@inputpath}{./\paper@dir/}
 \endinput
 %%
 %% End of file `georeport.cls'.

@@ -21,6 +21,7 @@ $PS_IMAGES = 0;
 
 $default_title = '';
 $TITLE = $default_title;      # The default is "No Title" 
+$FILEPDF = $FILE . '.pdf';
 
 $DESTDIR = '';         # Put the result in this directory 
 
@@ -229,7 +230,7 @@ sub my_navigation_panel {
 	. " width=\"16\" height=\"32\" border=\"0\"></td>"
 	# right-hand side
 	. "\n<td>$CONTENTS</td>"
-	. "\n<td><a href=\"../$FILE.pdf\">" 
+	. "\n<td><a href=\"../$FILEPDF\">" 
 	. "<img src=\"$ICONSERVER/pdf.$IMAGE_TYPE\" alt=\"[pdf]\""
 	. " width=\"32\" height=\"32\" border=\"0\"></a></td>" 
 #	. "\n<td><a href=\"../$FILE.tgz\">" 
