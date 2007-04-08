@@ -21,7 +21,6 @@ $PS_IMAGES = 0;
 
 $default_title = '';
 $TITLE = $default_title;      # The default is "No Title" 
-$FILEPDF = $FILE . '.pdf';
 
 $DESTDIR = '';         # Put the result in this directory 
 
@@ -110,8 +109,8 @@ $DEBUG = 0;
 #  of the navigation panel in the first node/page of a converted document
 #  will point to $EXTERNAL_UP_LINK. $EXTERNAL_UP_TITLE should be set
 #  to some text which describes this external link.
-$EXTERNAL_UP_LINK = "";
-$EXTERNAL_UP_TITLE = "";
+$EXTERNAL_UP_LINK = "http://rsf.sourceforge.net/Reproducible_Documents";
+$EXTERNAL_UP_TITLE = "Reproducible Documents";
 
 # If this is set then the resulting HTML will look marginally better if viewed 
 # with Netscape.
@@ -214,6 +213,7 @@ sub my_navigation_panel {
  
     my $title = $t_title;
     $title =~ s/<BR>//g;
+    $FILEPDF = join($FILE,'../','.pdf') unless $FILEPDF;
 
     '<table align="center" width="100%" cellpadding="0" cellspacing="0">'
 	. "\n<tr>"
@@ -230,7 +230,7 @@ sub my_navigation_panel {
 	. " width=\"16\" height=\"32\" border=\"0\"></td>"
 	# right-hand side
 	. "\n<td>$CONTENTS</td>"
-	. "\n<td><a href=\"../$FILEPDF\">" 
+	. "\n<td><a href=\"$FILEPDF\">" 
 	. "<img src=\"$ICONSERVER/pdf.$IMAGE_TYPE\" alt=\"[pdf]\""
 	. " width=\"32\" height=\"32\" border=\"0\"></a></td>" 
 #	. "\n<td><a href=\"../$FILE.tgz\">" 

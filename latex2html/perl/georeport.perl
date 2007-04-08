@@ -3,16 +3,19 @@ package seg;
 sub checkAbs {
     my $html = shift;
     local ($_, $in, $abs);
-    open (HTML, $html) or return '';
+    open (HTML, '../' . $html) or return '';
     print "Checking abstract...\n";
     while (<HTML>) {
-	last if ($in && /\<\/DIV\>/);
+	if ($in && /^(.*)\<\/DIV\>/) {
+	    $abs .= $1;
+	    last;
+	}
 	if (/^\<DIV/) {
 	    $in = /^\<DIV CLASS=\"ABSTRACT\"\>/; 
 	} elsif ($in) {
 	    s/\<P\>//g;
-	    s/(SRC\=\")/join('',$1,$paper,"\/paper_html\/")/eg;
-	    s/(HREF\=\")/join('',$1,$paper,"\/paper_html\/")/eg;
+	    s/(SRC\=\")([^h])/join('',$1,$paper,"_html\/",$2)/eg;
+	    s/(HREF\=\")/join('',$1,$paper,"_html\/")/eg;
 	    $abs .= $_ if (/\S/);  
 	}
     }
@@ -23,7 +26,8 @@ sub checkAbs {
 sub checkIntro {
     my $html = shift;
     local ($_,$in, $abs);
-    open (HTML, $html) or return ''; 
+    open (HTML, '../' . $html) or return '';
+    print "Checking introduction...\n";
     my @lines = <HTML>;
     foreach (@lines) {
 	if ($in > 10) {
@@ -34,12 +38,15 @@ sub checkIntro {
 	} elsif ($in) {
 	    $in++;
 	    s/\<P\>//g;
-	    s/(SRC\=\"([^h]))/join('',$1,$paper,"\/paper_html\/",$2)/eg;
-	    s/(HREF\=\")/join('',$1,$paper,"\/paper_html\/")/eg;
+	    s/(SRC\=\")([^h])/join('',$1,$paper,"_html\/",$2)/eg;
+	    s/(HREF\=\")/join('',$1,$paper,"_html\/")/eg;
+	    s/\<[\/]?UL\>//;
+	    s/\<[\/]?OL\>//;
+	    s/\<[\/]?LI\>//;
 	    $abs .= $_ if (/\S/);
 	}
     }
-    $abs =~ s/<[^\\>]+>\s$/ /;
+    $abs =~ s/<[^\\\/>]+>\s*$/ /;
     close (html);
     $abs .= ' ...' if ($abs);
 }
@@ -47,7 +54,7 @@ sub checkIntro {
 sub checkToc {
     my $html = shift;
     local ($_, $in, $abs);
-    open (html, $html . 'node1.html') or return ''; 
+    open (html, join('../',$html,'node1.html')) or return ''; 
     while (<html>) {
 	$in-- if (/^\<\!--End of Table of Child-Links/);
 	if ($in) {
@@ -62,21 +69,35 @@ sub checkToc {
 
 sub getAbs {
     local $paper = shift;
-    &checkAbs         ($paper . '/paper_html/index.html') or 
-	&checkIntro   ($paper . '/paper_html/node1.html') or
-	    &checkToc ($paper . '/paper_html/');   
+    &checkAbs         ($paper . '_html/index.html') or 
+	&checkIntro   ($paper . '_html/node1.html') or
+	&checkToc     ($paper . '_html/');   
 }
 
 package main;
+
+&ignore_commands( <<_IGNORED_CMDS_);
+cleardoublepage
+_IGNORED_CMDS_
 
 sub do_cmd_maintitle {
     my $rest = shift;
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     $TITLE = $2;
     $t_title = $2;
-    $FILEPDF = $FILE . '.pdf';
-    $FILEPDF =~ s/toc/paper/;
+    $FILEPDF = 'book.pdf';
     $rest;
+}
+
+sub do_cmd_geosectionstar {
+    my $text = shift;
+    $text =~  s/$next_pair_pr_rx//o;
+    my $section = $2;
+    if ($section) {
+	join ('',"<H2 align=center>",$section,"<\/H2>\n",$text);
+    } else {
+	$text;
+    }
 }
 
 sub do_cmd_TOCentry {
@@ -88,20 +109,20 @@ sub do_cmd_TOCentry {
     $paper = $2;
     if ($author) {
 	$paper =~ s/^[^\#]+\#([^\#]+)(\.start)\#.*$/$1/;
-	$paper = '../' . $paper;
-	my $html = $paper . '/paper_html/index.html';
-	my $pdf  = $paper . '/paper.pdf';
-	my $pdfsize = `du -h $pdf`;
+	$paper .= '/paper' unless ($paper =~ s/-/\//);
+	my $html = $paper . '_html/index.html';
+	my $pdf  = $paper . '.pdf';
+	my $pdfsize = `du -h ../$pdf`;
 	$pdfsize =~ s/^(\S+).*[\n]?/$1/;
 
 	my $abs = seg::getAbs ($paper);
 
         $author = "<BR>" . join($author,"<B>","<\/B>");
-	$abs = join($abs,"<BR><SMALL>","<\/SMALL>") if $abs;
+	$abs = join($abs,"<BR><SMALL>","</SMALL>") if $abs;
 	join (" ",
 	      join('',"<A HREF=\"",$html,"\">",$title,"</A>"),
 	      join('',"[<A HREF=\"",$pdf,"\">pdf ", $pdfsize,"</A>]"),
-	      $author, $abs,"<BR>",$_);
+	      $author,$abs,"<BR>",$_);
     } else {
 	print "title $title?\n";
 	$_;

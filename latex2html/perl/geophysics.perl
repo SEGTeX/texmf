@@ -137,6 +137,7 @@ _RAW_ARG_CMDS_
 &ignore_commands( <<_IGNORED_CMDS_);
 bibAnnoteFile # {}
 footer # {}
+shortpaper
 _IGNORED_CMDS_
 
 sub do_cmd_inputdir {
