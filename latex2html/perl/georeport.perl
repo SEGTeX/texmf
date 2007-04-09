@@ -11,7 +11,7 @@ sub checkAbs {
 	    last;
 	}
 	if (/\<H3\>Abstract\:\<\/H3\>/) {
-	    <HTML>;
+	    $_ = <HTML>;
 	    $in = /^\<DIV/; 
 	} elsif ($in) {
 	    s/\<P\>//g;
