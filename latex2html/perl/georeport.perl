@@ -10,8 +10,9 @@ sub checkAbs {
 	    $abs .= $1;
 	    last;
 	}
-	if (/^\<DIV/) {
-	    $in = /^\<DIV CLASS=\"ABSTRACT\"\>/; 
+	if (/\<H3\>Abstract\:\<\/H3\>/) {
+	    <HTML>;
+	    $in = /^\<DIV/; 
 	} elsif ($in) {
 	    s/\<P\>//g;
 	    s/(SRC\=\")([^h])/join('',$1,$paper,"_html\/",$2)/eg;
