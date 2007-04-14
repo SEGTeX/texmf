@@ -1,7 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pcsslides}[2005/12/16 v0.1 slides]
+\ProvidesClass{cwpslides}[2007/4/15 v0.1 CWP slides]
 
 \RequirePackage{ifthen}
+
 \LoadClass{beamer}
 \DeclareGraphicsExtensions{.pdf,.png}
 
@@ -51,38 +52,25 @@
     \else
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-      \label{fig:\item@i}}
+      \label{fig:\item@i}
+      \label{fig:\@path-\item@i}
+    }
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption{#5}
+%    \caption{#5}
     \label{fig:#3}
+    \label{fig:\@path-#3}
   \end{figure}
 }
 
-% plot using overpic
-%\newcommand{\oplot}[3]{
-%  \begin{center}
-%    \begin{overpic}[#2] {\@path/\figdir/#1}
-%      \begin{picture}(1,1) #3 \end{picture}
-%    \end{overpic}
-%  \end{center}
-%}
-%
-%\newcommand{\otwoplot}[3]{
-%  \begin{columns}[t]
-%    \column{.5\textwidth} \oplot{#1}{#3}
-%    \column{.5\textwidth} \oplot{#2}{#3}
-%  \end{columns}
-%}
-
 % ------------------------------------------------------------
-\newcommand{\pcscover}{
+\newcommand{\cwpcover}{
   \begin{frame}
     \titlepage       % generate title page
   \end{frame}
 }
 
-\newcommand{\pcsoutline}{
+\newcommand{\cwpoutline}{
   \AtBeginSection[]{
     \begin{frame}<beamer>
       \frametitle{Outline}             % add outline slide
