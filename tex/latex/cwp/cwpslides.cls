@@ -64,16 +64,17 @@
 }
 
 % ------------------------------------------------------------
+% generate title page
 \newcommand{\cwpcover}{
   \begin{frame}
-    \titlepage       % generate title page
+    \titlepage
   \end{frame}
 }
 
+% generate outline slides
 \newcommand{\cwpoutline}{
   \AtBeginSection[]{
-    \begin{frame}<beamer>
-      \frametitle{Outline}             % add outline slide
+    \begin{frame}<beamer> \frametitle{}             
       \tableofcontents[currentsection] % highlight current section
     \end{frame}
   }
