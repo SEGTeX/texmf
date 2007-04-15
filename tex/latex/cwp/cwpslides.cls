@@ -79,4 +79,13 @@
     \end{frame}
   }
 }
+
+% add note to slides
+\def\cwpnote#1{ 
+\note{
+  \begin{multicols}{2} 
+    \tiny{ #1 }
+  \end{multicols}
+}}
+
 % ------------------------------------------------------------
