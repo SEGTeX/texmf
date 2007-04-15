@@ -1,9 +1,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpslides}[2007/4/15 v0.1 CWP slides]
 
-\RequirePackage{ifthen}
-
 \LoadClass{beamer}
+
+\RequirePackage{ifthen}
 \DeclareGraphicsExtensions{.pdf,.png}
 
 % path to figures
