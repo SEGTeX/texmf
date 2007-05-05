@@ -1,8 +1,36 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpslides}[2007/4/15 v0.1 CWP slides]
 
-\LoadClass{beamer}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{beamer}}
+\ExecuteOptions{notes}
+\ProcessOptions*
 
+\LoadClass[]{beamer}
+\setbeamertemplate{navigation symbols}{}
+
+
+% ------------------------------------------------------------
+% fonts
+\usefonttheme{structurebold}
+
+\setbeamerfont{title}        {size=\Huge}
+\setbeamerfont{subtitle}     {size=\Large}
+\setbeamerfont{section}      {size=\Large}
+\setbeamerfont{outline}      {size=\Large}
+
+\setbeamerfont{frametitle}   {size=\LARGE}
+\setbeamerfont{framesubtitle}{size=\large}
+
+\setbeamerfont{author}       {size=\large,     series=\bfseries}
+\setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
+\setbeamerfont{date}         {size=\normalsize,series=\bfseries}
+% ------------------------------------------------------------
+\newcommand{\red}  [1]{\textcolor{red}  {#1}}
+\newcommand{\blue} [1]{\textcolor{blue} {#1}}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\newcommand{\green}[1]{\textcolor{darkgreen}{#1}}
+
+% ------------------------------------------------------------
 \RequirePackage{ifthen}
 \DeclareGraphicsExtensions{.pdf,.png}
 
