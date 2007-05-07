@@ -8,7 +8,6 @@
 \LoadClass[]{beamer}
 \setbeamertemplate{navigation symbols}{}
 
-
 % ------------------------------------------------------------
 % fonts
 \usefonttheme{structurebold}
@@ -41,12 +40,20 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 
 % plot command
-\newcommand{\plot}[4][htbp]{
-  \begin{figure}[#1]
-    \centering
-    \includegraphics[#3]{\fig@file{#2}}
-  \end{figure}
+\newcommand{\plot}[3]{
+  \begin{center}
+    \begin{overpic}[#2] {\@path/\figdir/#1}
+      \begin{picture}(1,1) #3 \end{picture}
+    \end{overpic}
+  \end{center}
 }
+
+%\newcommand{\plot}[4][htbp]{
+%  \begin{figure}[#1]
+%    \centering
+%    \includegraphics[#3]{\fig@file{#2}}
+%  \end{figure}
+%}
 
 % sideplot command
 \newcommand{\sideplot}[4][htbp]{
