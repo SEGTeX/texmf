@@ -12,7 +12,7 @@
 % fonts
 \usefonttheme{structurebold}
 
-\setbeamerfont{title}        {size=\Huge}
+\setbeamerfont{title}        {size=\LARGE}
 \setbeamerfont{subtitle}     {size=\Large}
 \setbeamerfont{section}      {size=\Large}
 \setbeamerfont{outline}      {size=\Large}
