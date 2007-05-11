@@ -5,7 +5,7 @@
 \ExecuteOptions{notes}
 \ProcessOptions*
 
-\LoadClass[]{beamer}
+\LoadClass[hyperref={bookmarks=false}]{beamer}
 \setbeamertemplate{navigation symbols}{}
 
 % ------------------------------------------------------------
