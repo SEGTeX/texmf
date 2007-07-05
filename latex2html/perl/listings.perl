@@ -62,6 +62,7 @@ sub do_cmd_lstinputlisting {
     local ($_) = @_;
     my ($options,$file) = &get_next_optional_argument;
     s/$next_pair_pr_rx//o;
+    $rest = $_;
     $file = $2;
     $file = '../' . $file unless $file =~ /^[\/]/;
     my $firstline=1;
