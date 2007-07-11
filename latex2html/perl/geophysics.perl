@@ -138,6 +138,7 @@ _RAW_ARG_CMDS_
 bibAnnoteFile # {}
 footer # {}
 shortpaper
+pdfbookmark # [] # {} # {}
 _IGNORED_CMDS_
 
 sub do_cmd_inputdir {
