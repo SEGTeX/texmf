@@ -8,6 +8,10 @@
 \LoadClass[hyperref={bookmarks=false}]{beamer}
 \setbeamertemplate{navigation symbols}{}
 
+%\usetheme[hideothersubsections]{}
+%\useoutertheme[height=0pt,right]{sidebar}
+%\setbeamertemplate{frametitle}[default][left]
+
 % ------------------------------------------------------------
 % fonts
 \usefonttheme{structurebold}
