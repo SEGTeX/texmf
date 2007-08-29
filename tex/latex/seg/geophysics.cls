@@ -108,7 +108,7 @@
         \centering
         \includegraphics[#3]{\fig@file{#2}}
         \caption{#4}
-	\label{fig:\@path-#2}
+\label{fig:\@path-#2}
         \label{fig:#2}
       \end{figure}
     }{%
@@ -116,7 +116,7 @@
         \makebox{%
           \begin{minipage}{0.4\textwidth}
             \caption{#4}
-	    \label{fig:\@path-#2}
+    \label{fig:\@path-#2}
             \label{fig:#2}
           \end{minipage}
           \hfill
@@ -150,7 +150,7 @@
         \else
         \stepcounter{sub@fig}
         \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-	  \label{fig:\@path-\item@i}
+  \label{fig:\@path-\item@i}
           \label{fig:\item@i}}
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
         \repeat
@@ -175,7 +175,7 @@
       \else
       \stepcounter{sub@fig}
       \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-	\label{fig:\@path-\item@i}
+\label{fig:\@path-\item@i}
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat
@@ -196,7 +196,7 @@
       \else
       \stepcounter{sub@fig}
       \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-	\label{fig:\@path-\item@i}
+\label{fig:\@path-\item@i}
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat
