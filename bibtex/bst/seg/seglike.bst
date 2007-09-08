@@ -1,6 +1,6 @@
-% BibTeX `seglike' bibliography style (03-Oct-05 version)
-% Adapted from the `apalike' style, version 0.99a; for BibTeX version 0.99a.
-% Copyright (C) 2004, 2005 Soc. of Expl. Geophys. & Joerg Schleicher,
+% BibTeX `seglike' bibliography style (08-Mar-07 version)
+% Adapted from the `apalike' style, 24-jan-88 version; for BibTeX version 0.99a.
+% Copyright (C) 2007 Soc. of Expl. Geophys. & Joerg Schleicher,
 % all rights reserved.
 % Copying of this file is allowed, provided that if you make any changes at all
 % you name it something other than `seglike.bst'.
@@ -11,36 +11,39 @@
 % This style works with the natbib package.
 %
 % History:
-%   15-sep-86	(SK,OP)	Original 'apalike' version,
+%   15-sep-86   (SK,OP) Original 'apalike' version,
 %                       by Susan King and Oren Patashnik.
-%   10-nov-86	(OP)	Truncated the sort.key$ string to the correct length
-%			in bib.sort.order to eliminate error message.
-%   24-jan-88	(OP)	Updated for BibTeX version 0.99a, from alpha.bst 0.99a;
-%			apalike now sorts by author, then year, then title;
-%   12-aug-04	(JS)	First adapted 'seglike' version, by Joerg Schleicher.
-%			Parts from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
-%			& from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
-%			'seglike' follows the SEG style according to the
-%			'Instructions to Authors', Geophysics, Jan/Feb 2004.
-%   29-dec-04	(JS)	Abbr. tp for Tectonophysics added, and format.author
+%   10-nov-86   (OP)    Truncated the sort.key$ string to the correct length
+%                       in bib.sort.order to eliminate error message.
+%   24-jan-88   (OP)    Updated for BibTeX version 0.99a, from alpha.bst 0.99a;
+%                       apalike now sorts by author, then year, then title;
+%   12-aug-04   (JS)    First adapted 'seglike' version, by Joerg Schleicher.
+%                       Parts from 'seg.bst' (v. 16-apr-94) by Martin Karrenbach
+%                       & from 'geophys.bst' (v. 30-mar-04) by Joerg Schleicher.
+%                       'seglike' follows the SEG style according to the
+%                       'Instructions to Authors', Geophysics, Jan/Feb 2004.
+%   29-dec-04   (JS)    Abbr. tp for Tectonophysics added, and format.author
 %                       modified to correct name format
-%   09-aug-05	(JS)	Corrections of inproceedings: use of booktitle
+%   09-aug-05   (JS)    Corrections of inproceedings: use of booktitle
 %                       (proceedingstitle has priority), priority of meeting
 %                       over type, no case change of booktitle and meeting
-%			Rules updated to follow the SEG style according to the
-%			'Instructions to Authors', Geophysics, Jan/Feb 2005.
-%   03-oct-05	(JS)	Additional field segeditor in book and inbook
-%   07-jan-06	(JS)	Reorganized use of meetingnr, meeting, organization,
+%                       Rules updated to follow the SEG style according to the
+%                       'Instructions to Authors', Geophysics, Jan/Feb 2005.
+%   03-oct-05   (JS)    Additional field segeditor in book and inbook
+%   07-jan-06   (JS)    Reorganized use of meetingnr, meeting, organization,
 %                       proceedingstitle as an higher-priority alternative to
 %                       booktitle in inproceedings
-%   13-oct-06	(JS)	Added comma after three-em dash representing identical
+%   13-oct-06   (JS)    Added comma after three-em dash representing identical
 %                       author names
-%   08-mar-07	(JS)	Last corrections: period changed to comma before
-%                       publisher in incollection; comma added after
-%                       "ed." where editor instead of author is used,
-%                       resulting double comma eliminated after editor in
+%   08-mar-07   (JS)    Period changed to comma before publisher in incollection;
+%                       comma added after "ed." where editor instead of author is
+%                       used, resulting double comma eliminated after editor in
 %                       incollection
-%			THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
+%   04-sep-07   (JS)    Last corrections: Comma added after first author also for
+%                       two authors; edition in book right after title; note in
+%                       parentheses; series, number format corrected; segeditor
+%                       in parentheses
+%                       THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
   { address
@@ -244,10 +247,11 @@ FUNCTION {format.names.old}
       nameptr #1 >
 	{ namesleft #1 >
 	    { ", " * t * }
-	    { numnames #2 >
+ 	   {
+%%		numnames #2 >             %% always add comma after first author
 		{ "," * }
-		'skip$
-	      if$
+%%		'skip$
+%%	      if$
 	      t "others" =
 		{ " et~al." * }
 		{ " and " * t * }
@@ -318,13 +322,15 @@ FUNCTION {format.key}			% this function is just for apalike
 FUNCTION {format.segeditors}            %% this function is just for seglike
 { segeditor empty$                      %% it formats the segeditor field
     { "" }                              %% allowed in book and inbook
-    { segeditor format.names
+    { " (" segeditor format.names *
       segeditor num.names$ #1 >
 %%	{ ", editors" * }   
 %%	{ ", editor" * }
         { ", eds." * }                  %% SEG style
         { ", ed." * }                   %% SEG style
       if$
+      ")" *
+      before.all 'output.state :=
     }
   if$
 }
@@ -411,14 +417,17 @@ FUNCTION {format.number.series}
 { volume empty$
     { number empty$
 	{ series field.or.null }
-	{ output.state mid.sentence =
-	    { "number" }
-	    { "Number" }
-	  if$
-	  number tie.or.space.connect
+ 	{
+%	  output.state mid.sentence =
+%	    { "number" }
+%	    { "Number" }
+%	  if$
+%	  number tie.or.space.connect
 	  series empty$
 	    { "there's a number but no series in " cite$ * warning$ }
-	    { " {\it in} " * series * }
+%	    { " {\it in} " * series * }
+%       Replaced by
+	    { series ", No.~" * number * }
 	  if$
 	}
       if$
@@ -431,8 +440,8 @@ FUNCTION {format.edition}
 { edition empty$
     { "" }
     { output.state mid.sentence =
-	{ edition "l" change.case$ " edition" * }
-	{ edition "t" change.case$ " edition" * }
+	{ edition "l" change.case$ " ed." * }
+	{ edition "t" change.case$ " ed." * }
       if$
     }
   if$
@@ -604,6 +613,13 @@ FUNCTION {format.booktitle}
   if$
 }
 
+%%						%% Put note in parentheses
+FUNCTION {format.note}
+{ note empty$
+    { "" }
+    { "(" note * ")" * }
+  if$
+}
 %%                                                  new in seglike.bst
 FUNCTION {format.meeting.seg}
 { meeting empty$                                 %% if no meeting given
@@ -683,7 +699,7 @@ FUNCTION {article}
     }
   if$
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -703,7 +719,8 @@ FUNCTION {book}
   output.year.check                             % special for apalike
 % new.block                                     %% no period for seglike
 %  format.btitle "title" output.check	        %% treat book titles like 
-  format.title "title" output.check             %% any titles in seglike
+  format.title "title" output.check             %%  any titles in seglike
+  format.edition output                         %% edition right after title
   crossref missing$
     { format.bvolume output
       new.block
@@ -718,9 +735,8 @@ FUNCTION {book}
       format.book.crossref output.nonnull
     }
   if$
-  format.edition output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -736,7 +752,7 @@ FUNCTION {booklet}
   howpublished output
 %      address output				%% address suppressed
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -774,7 +790,7 @@ FUNCTION {inbook}
   if$
   format.edition output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -801,7 +817,7 @@ FUNCTION {incollection}
     }
   if$
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -833,7 +849,7 @@ FUNCTION {inproceedings}
     }
   if$
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -846,14 +862,14 @@ FUNCTION {manual}
   output.year.check					% apalike
 % new.block						%% no period
 %  format.btitle "title" output.check		%% treat book titles like 
-  format.title "title" output.check		%% any titles in seglike
+  format.title "title" output.check		%%  any titles in seglike
   new.colon						%% colon instead
   organization address new.block.checkb
   organization output
   address output
   format.edition output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -870,7 +886,7 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -885,7 +901,7 @@ FUNCTION {misc}
   new.colon						%% colon instead
   howpublished output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -903,7 +919,7 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -922,7 +938,7 @@ FUNCTION {proceedings}
   organization output				% a nonempty organization
   publisher output				% here
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
@@ -939,7 +955,7 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   new.block
-  note output
+  format.note output
   fin.entry
 }
 
