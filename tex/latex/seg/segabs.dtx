@@ -278,9 +278,11 @@
 % Messing with sizes to get the required 9pt Times-Roman
 %    \begin{macrocode}
 \let\normal@size\normalsize
+\let\seg@small\small
 \let\seg@size\footnotesize
 \renewcommand{\Large}{\protect\seg@size}
 \renewcommand{\normalsize}{\protect\seg@size}
+\renewcommand{\small}{\protect\tiny}
 \renewcommand{\footnotesize}{\protect\tiny}
 \seg@size
 %    \end{macrocode}
@@ -336,7 +338,7 @@
 \renewcommand{\author}[1]{%
 \renewcommand{\seg@author}{%
 \twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
-\newline\small\textit{#1}\vspace{2ex}]}}
+\newline\seg@small\textit{#1}\vspace{2ex}]}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
@@ -358,7 +360,7 @@
 % Define a page style
 %    \begin{macrocode}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\seg@size\hfill}
+\renewcommand{\@oddhead}{\hfill\seg@small\textbf{\seg@rhead}\seg@size\hfill}
 \renewcommand{\@evenhead}{\@oddhead}
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@evenfoot}{}}
