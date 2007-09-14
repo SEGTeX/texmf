@@ -71,6 +71,7 @@
 \ifthenelse{\boolean{@manu}}{
   \renewcommand{\inputdir}[1]{\AtEndDocument{\renewcommand{\@path}{#1}}}}{}
 \providecommand{\figdir}{.}
+\providecommand{\setfigdir}[1]{\renewcommand{\figdir}{#1}}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \newcounter{@plots}
 \setcounter{@plots}{0}

@@ -95,6 +95,7 @@
 \DeclareGraphicsExtensions{.eps,.ps}
 \fi
 \providecommand{\figdir}{.}
+\providecommand{\setfigdir}[1]{\renewcommand{\figdir}{#1}}
 \providecommand{\fig@file}[1]{\paper@dir/\@path/\figdir/#1}
 \newcommand{\plotdir}{\figdir}
 \newcommand{\plot@file}[1]{\plotdir/#1}

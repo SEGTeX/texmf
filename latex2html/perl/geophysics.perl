@@ -5,7 +5,7 @@ package seg;
 $fignum = 0;
 $tabnum = 0;
 $append = '';
-$figdir = 'Fig';
+$figdir = '.';
 $path = '.';
 $left = '';
 $right = '';
@@ -146,6 +146,14 @@ sub do_cmd_inputdir {
     $rest =~ s/$next_pair_pr_rx//o;
     $seg::path = $2;
     $latex_body .= &revert_to_raw_tex("\\inputdir{$2}\n");
+    $rest;
+}
+
+sub do_cmd_setfigdir {
+    my $rest = shift;
+    $rest =~ s/$next_pair_pr_rx//o;
+    $seg::figdir = $2;
+    $latex_body .= &revert_to_raw_tex("\\figdir{$2}\n");
     $rest;
 }
 
