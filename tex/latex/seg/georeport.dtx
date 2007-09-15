@@ -289,21 +289,21 @@
 % Tables.
 % \begin{macro}{\tabl}
 %    \begin{macrocode}
-  \providecommand{\seg@sidetabl}[4][htbp]{
-    \begin{table}[#1]
-      #4
-      \caption{#3}
-      \label{tbl:#2}
-    \end{table}
-  }
-  \providecommand{\seg@fulltabl}[4][htbp]{
-    \begin{table*}[#1]
-      #4
-      \caption{#3}
-      \label{tbl:#2}
-    \end{table*}
-  }
-  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
+\providecommand{\seg@sidetabl}[4][htbp]{
+  \begin{table}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table}
+}
+\providecommand{\seg@fulltabl}[4][htbp]{
+  \begin{table*}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table*}
+}
+\def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 %    \end{macrocode} 
 % \end{macro}
 % \subsection{Collecting papers}
@@ -403,6 +403,34 @@
       \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
   \medskip\end{minipage}\end{lrbox}%
   \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Biography information}
+% \begin{macro}{bios}
+%    \begin{macrocode}
+\newenvironment{bios}{%
+  \begin{list}{}{%
+      \setlength{\leftmargin}{1cm}\setlength{\rightmargin}{1cm}%
+      \setlength{\listparindent}{0cm}\setlength{\topsep}{0cm}%
+      \setlength{\baselineskip}{0.5cm}\setlength{\partopsep}{0cm}%
+      \setlength{\parsep}{0cm}\setlength{\parindent}{0cm}%
+      \setlength{\itemsep}{1.5cm plus0.5cm minus0.5cm}%
+    }
+  }{\end{list}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\bioplot}
+%    \begin{macrocode}
+\newcommand{\bioplot}[2]{%
+  \begin{figure*}[htbp]
+    \setlength{\fboxsep}{0.5ex}
+    \makebox{\parbox{0.71\textwidth}{#2}
+      \hfill
+      \begin{minipage}{0.29\textwidth}
+        \protect\centering
+        \fbox{\includegraphics[height=1.6in]{#1}}
+      \end{minipage}}
+  \end{figure*}}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{Page style}

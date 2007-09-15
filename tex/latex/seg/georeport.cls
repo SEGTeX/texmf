@@ -192,21 +192,21 @@
 \ifthenelse{\boolean{@twoc}}{%
   \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
   \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
-  \providecommand{\seg@sidetabl}[4][htbp]{
-    \begin{table}[#1]
-      #4
-      \caption{#3}
-      \label{tbl:#2}
-    \end{table}
-  }
-  \providecommand{\seg@fulltabl}[4][htbp]{
-    \begin{table*}[#1]
-      #4
-      \caption{#3}
-      \label{tbl:#2}
-    \end{table*}
-  }
-  \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
+\providecommand{\seg@sidetabl}[4][htbp]{
+  \begin{table}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table}
+}
+\providecommand{\seg@fulltabl}[4][htbp]{
+  \begin{table*}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table*}
+}
+\def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 \newcommand{\new}[1]{#1}
 \newcommand{\old}[1]{}
 \def\first@char#1#2\end{#1}
@@ -267,6 +267,25 @@
       \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
   \medskip\end{minipage}\end{lrbox}%
   \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
+\newenvironment{bios}{%
+  \begin{list}{}{%
+      \setlength{\leftmargin}{1cm}\setlength{\rightmargin}{1cm}%
+      \setlength{\listparindent}{0cm}\setlength{\topsep}{0cm}%
+      \setlength{\baselineskip}{0.5cm}\setlength{\partopsep}{0cm}%
+      \setlength{\parsep}{0cm}\setlength{\parindent}{0cm}%
+      \setlength{\itemsep}{1.5cm plus0.5cm minus0.5cm}%
+    }
+  }{\end{list}}
+\newcommand{\bioplot}[2]{%
+  \begin{figure*}[htbp]
+    \setlength{\fboxsep}{0.5ex}
+    \makebox{\parbox{0.71\textwidth}{#2}
+      \hfill
+      \begin{minipage}{0.29\textwidth}
+        \protect\centering
+        \fbox{\includegraphics[height=1.6in]{#1}}
+      \end{minipage}}
+  \end{figure*}}
 \newcommand{\ps@georeport}{%
 \renewcommand{\@oddhead}{%
 \seg@foot\hfill\textit{\seg@rhead}\hfill\thepage}
