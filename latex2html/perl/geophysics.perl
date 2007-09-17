@@ -139,6 +139,7 @@ bibAnnoteFile # {}
 footer # {}
 shortpaper
 pdfbookmark # [] # {} # {}
+ms # {}
 _IGNORED_CMDS_
 
 sub do_cmd_inputdir {
@@ -153,7 +154,7 @@ sub do_cmd_setfigdir {
     my $rest = shift;
     $rest =~ s/$next_pair_pr_rx//o;
     $seg::figdir = $2;
-    $latex_body .= &revert_to_raw_tex("\\figdir{$2}\n");
+    $latex_body .= &revert_to_raw_tex("\\setfigdir{$2}\n");
     $rest;
 }
 
