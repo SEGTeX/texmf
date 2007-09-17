@@ -158,6 +158,12 @@ sub do_cmd_setfigdir {
     $rest;
 }
 
+sub do_cmd_old {
+    my $rest = shift;
+    $rest =~ s/$next_pair_pr_rx//o;
+    $rest;
+}
+
 sub do_cmd_append {
     my $rest = shift;
     $rest =~ s/$next_pair_pr_rx//o;
