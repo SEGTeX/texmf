@@ -1,16 +1,19 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpslides}[2007/4/15 v0.1 CWP slides]
 
-\LoadClass[notes]{beamer}
+\LoadClass[notes only,hyperref={bookmarks=false}]{beamer}
+\setbeamertemplate{navigation symbols}{}
+
 \usefonttheme{structurebold}
-          \setbeamerfont{title}        {size=\huge}
-          \setbeamerfont{section}      {size=\huge}
-          \setbeamerfont{outline}      {size=\huge}
-          \setbeamerfont{frametitle}   {size=\huge}
-          \setbeamerfont{framesubtitle}{size=\large}
-          \setbeamerfont{author}       {size=\Large,     series=\bfseries}
-          \setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
-          \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
+\setbeamerfont{title}        {size=\LARGE}
+\setbeamerfont{subtitle}     {size=\Large}
+\setbeamerfont{section}      {size=\Large}
+\setbeamerfont{outline}      {size=\Large}
+\setbeamerfont{frametitle}   {size=\LARGE}
+\setbeamerfont{framesubtitle}{size=\large}
+\setbeamerfont{author}       {size=\large,     series=\bfseries}
+\setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
+\setbeamerfont{date}         {size=\normalsize,series=\bfseries}
 
 \RequirePackage{ifthen}
 \DeclareGraphicsExtensions{.pdf,.png}
@@ -22,12 +25,20 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 
 % plot command
-\newcommand{\plot}[4][htbp]{
-  \begin{figure}[#1]
-    \centering
-    \includegraphics[#3]{\fig@file{#2}}
-  \end{figure}
+%\newcommand{\plot}[4][htbp]{
+%  \begin{figure}[#1]
+%    \centering
+%    \includegraphics[#3]{\fig@file{#2}}
+%  \end{figure}
+%}
+\newcommand{\plot}[3]{
+  \begin{center}
+    \begin{overpic}[#2] {\@path/\figdir/#1}
+      \begin{picture}(1,1) #3 \end{picture}
+    \end{overpic}
+  \end{center}
 }
+
 
 % sideplot command
 \newcommand{\sideplot}[4][htbp]{

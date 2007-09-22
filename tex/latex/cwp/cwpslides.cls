@@ -15,18 +15,16 @@
 % ------------------------------------------------------------
 % fonts
 \usefonttheme{structurebold}
-
 \setbeamerfont{title}        {size=\LARGE}
 \setbeamerfont{subtitle}     {size=\Large}
 \setbeamerfont{section}      {size=\Large}
 \setbeamerfont{outline}      {size=\Large}
-
 \setbeamerfont{frametitle}   {size=\LARGE}
 \setbeamerfont{framesubtitle}{size=\large}
-
 \setbeamerfont{author}       {size=\large,     series=\bfseries}
 \setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
 \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
+
 % ------------------------------------------------------------
 \newcommand{\red}  [1]{\textcolor{red}  {#1}}
 \newcommand{\blue} [1]{\textcolor{blue} {#1}}
