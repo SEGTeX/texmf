@@ -259,5 +259,19 @@ sub top_navigation_panel {
 sub bot_navigation_panel {
     "<HR>\n" . my_navigation_panel();
 }			
+
+sub custom_address {
+    my $addr = shift;
+    join("\n",
+	 '<ADDRESS>',
+	 $addr,
+	 '</ADDRESS>',
+	 '<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">',
+	 '</script>',
+	 '<script type="text/javascript">',
+	 '_uacct = "UA-509367-3";',
+	 'urchinTracker();',
+	 '</script>');
+}
     
 1;	# This must be the last line
