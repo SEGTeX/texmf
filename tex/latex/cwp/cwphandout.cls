@@ -71,7 +71,7 @@
   \begin{center}
 {\small
   #1 \hfill #2 \\
-  \@name \hfill \today} \\ 
+  \@name \hfill \today } \\ 
 \hrulefill
 \end{center}}
 
