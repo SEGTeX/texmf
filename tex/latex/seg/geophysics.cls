@@ -150,9 +150,8 @@
         \ifx\item@i\empty
         \else
         \stepcounter{sub@fig}
-        \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
-  \label{fig:\@path-\item@i}
-          \label{fig:\item@i}}
+        \subfigure[\label{fig:\item@i}]{\includegraphics[#4]{\fig@file{\item@i}}%
+  \label{fig:\@path-\item@i}}
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
         \repeat
         \caption[#5]{#5 \\
@@ -460,11 +459,13 @@
     \AtEndDocument{
       \setcounter{figure}{0}%
       \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+      \renewcommand{\p@subfigure}{\thefigure}%
       \stepcounter{@append}
     }
   }{%
     \setcounter{figure}{0}%
     \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+    \renewcommand{\p@subfigure}{\thefigure}%
   }
   \stepcounter{@append}
 }
