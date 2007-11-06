@@ -111,7 +111,7 @@
 % generate outline slides
 \newcommand{\cwpoutline}{
   \AtBeginSection[]{
-    \begin{frame}<beamer> \frametitle{}             
+    \begin{frame}<beamer> \frametitle{outline}             
       \tableofcontents[currentsection] % highlight current section
     \end{frame}
   }

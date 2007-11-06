@@ -1,10 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{handout}[2003/09/01 v0.1 handouts for class]
 
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ExecuteOptions{notes}
+\ProcessOptions*
+
 \RequirePackage{ifthen}
 \RequirePackage{times}
 
 \LoadClass{article}
+
+\setlength{\oddsidemargin}{.01in}
+\setlength{\evensidemargin}{.01in}
+\setlength{\topmargin}{-0.51in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9in}
 
 \RequirePackage{natbib}
 \DeclareRobustCommand{\refname}{REFERENCES}
