@@ -21,7 +21,7 @@
 \setbeamerfont{outline}      {size=\Large}
 \setbeamerfont{frametitle}   {size=\LARGE}
 \setbeamerfont{framesubtitle}{size=\large}
-\setbeamerfont{author}       {size=\large,     series=\bfseries}
+\setbeamerfont{author}       {size=\Large,     series=\bfseries}
 \setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
 \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
 
