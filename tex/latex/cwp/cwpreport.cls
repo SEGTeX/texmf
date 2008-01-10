@@ -74,7 +74,6 @@
 }
 
 % ------------------------------------------------------------
-
 \newboolean{@manu}
 \setboolean{@manu}{false}
 \newcounter{@append}
