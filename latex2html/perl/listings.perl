@@ -4,6 +4,7 @@ use IPC::Open2;
 use Symbol;
 
 $language = 'html';
+$enscript = `which enscript`  || $ENV{"RSF_ENSCRIPT"};
 
 sub list {
     my $file = shift;
@@ -20,10 +21,10 @@ sub list {
     my $WTR = gensym();  # get a reference to a typeglob
     my $RDR = gensym();  # and another one
 
-    print "enscript --color --language=html --output=- --pretty-print=" . $language . "\n";
+    print "$enscript --color --language=html --output=- --pretty-print=" . $language . "\n";
 
     open2 ($RDR,$WTR,
-	   'enscript --color --language=html --output=- --pretty-print=' . $language);
+	   "$enscript --color --language=html --output=- --pretty-print=" . $language);
     while (<FILE>) {
 	if ($. >= $firstline && $. <= $lastline) {
 	    print $WTR $_;

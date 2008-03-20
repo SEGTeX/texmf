@@ -2,7 +2,7 @@ package jfc;
 
 $RSF = '../..';
 $listings::language='c';
-$repos = 'http://svn.sourceforge.net/viewcvs.cgi/rsf/trunk';
+$repos = $ENV{"RSF_REPOSITORY"};
 
 package main;
 
