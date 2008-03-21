@@ -112,7 +112,7 @@ sub buttons {
 	}
     } elsif ($path eq 'Pylab') {
 	foreach $name (@names) {
-	    my $pytl = join('/','..',$path,$name . '.ml');
+	    my $pytl = join('/','..',$path,$name . '.py');
 	    if (-f $pytl) {
 		$out .= join(''," <a href=\"$pytl\">", 
 			     "<img src=\"$main::ICONSERVER/pylab.$type\"",
