@@ -110,6 +110,17 @@ sub buttons {
 			     "width=\"34\" height=\"32\"></a>");
 	    }
 	}
+    } elsif ($path eq 'Pylab') {
+	foreach $name (@names) {
+	    my $pytl = join('/','..',$path,$name . '.ml');
+	    if (-f $pytl) {
+		$out .= join(''," <a href=\"$pytl\">", 
+			     "<img src=\"$main::ICONSERVER/pylab.$type\"",
+			     " border=\"0\"", 
+			     " alt=\"[pylab]\"",
+			     "width=\"34\" height=\"32\"></a>");
+	    }
+	}
     } elsif ($path eq 'XFig') {
 	foreach $name (@names) {
 	    my $xfig = join('/','..',$path,$name . '.fig');
