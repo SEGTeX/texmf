@@ -25,6 +25,10 @@
 \setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
 \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
 
+\setbeamersize{
+  text margin  left=0.05in,
+  text margin right=0.05in}
+
 % ------------------------------------------------------------
 \newcommand{\red}  [1]{\textcolor{red}  {#1}}
 \newcommand{\blue} [1]{\textcolor{blue} {#1}}
@@ -49,13 +53,6 @@
     \end{overpic}
   \end{center}
 }
-
-%\newcommand{\plot}[4][htbp]{
-%  \begin{figure}[#1]
-%    \centering
-%    \includegraphics[#3]{\fig@file{#2}}
-%  \end{figure}
-%}
 
 % sideplot command
 \newcommand{\sideplot}[4][htbp]{
