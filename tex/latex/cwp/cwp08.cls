@@ -68,13 +68,22 @@
 \DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
 \DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
 \DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
 
 %  ****************************************
 %  *            PAGE LAYOUT               *
 %  ****************************************
+\setlength{\paperwidth}{8.5in}
+\setlength{\paperheight}{11.0in}
+
+\setlength{\textheight}{8.75in}
+\setlength{\textwidth}{6.5in}
+
+
 % SIDE MARGINS:
-\setlength\oddsidemargin{-2.5pc}
-\setlength\evensidemargin{-2.5pc}
+\setlength{\oddsidemargin}{+.015625in}
+\setlength{\evensidemargin}{+.015625in}
+
 \setlength\marginparwidth{4pc}
 \setlength\marginparsep{0.5pc}
 
@@ -85,11 +94,8 @@
 \setlength{\footskip}  {26pt}
 
 % DIMENSION OF TEXT:
-\topmargin -.25in
-\textheight 8.75in
-\oddsidemargin +.015625in
-\evensidemargin +.015625in
-\textwidth 6.5in
+\setlength{\topmargin}{-0.25in}
+
 \setlength\columnsep{2pc}
 \setlength\columnseprule{0pt}
 

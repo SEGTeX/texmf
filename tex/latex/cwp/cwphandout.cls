@@ -165,3 +165,5 @@
     \label{fig:#2}
   \end{figure}
 }
+
+\newcommand{\shortcite}[1]{\citet{#1}}

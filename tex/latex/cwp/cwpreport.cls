@@ -50,6 +50,7 @@
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
+
 \newcommand{\multiplot}[5][htbp]{
   \begin{figure*}
     \centering
@@ -72,6 +73,33 @@
     \label{fig:\@path-#3}
   \end{figure*}
 }
+
+\newcommand{\sidemultiplot}[5][htbp]{%
+  \begin{figure*}
+    \makebox{%
+      \begin{minipage}{0.4\textwidth}
+	\caption{#5}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.6\textwidth}
+	\centering
+	\setcounter{sub@fig}{0}
+	\edef\list@i{#3}
+	\loop
+	\edef\item@i{\expandafter\next@item\list@i,\empty?}
+	\edef\list@i{\expandafter\rest@item\list@i,\empty?}
+	\ifx\item@i\empty
+	\else
+	\stepcounter{sub@fig}
+	\subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+	  \label{fig:\@path-\item@i}
+	  \label{fig:\item@i}}
+	\ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+	\repeat
+	\label{fig:\@path-#3}
+	\label{fig:#3}
+    \end{minipage}}
+\end{figure*}}
 
 % ------------------------------------------------------------
 \newboolean{@manu}

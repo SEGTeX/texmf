@@ -63,14 +63,28 @@
 \label{fig:#2}
 \end{figure*}}
 % ------------------------------------------------------------
-\DeclareRobustCommand{\sideplot}[4][htbp]{%
-\begin{figure}[#1]
-\centering
-\includegraphics[#3]{\fig@file{#2}}
-\caption[]{#4}
-\label{fig:\@path-#2}
-\label{fig:#2}
+%\DeclareRobustCommand{\sideplot}[4][htbp]{%
+%  \begin{figure}[#1]
+%    \centering
+%    \includegraphics[#3]{\fig@file{#2}}
+%    \caption[]{#4}
+%    \label{fig:\@path-#2}
+%    \label{fig:#2}
+%\end{figure}}
+\newcommand{\sideplot}[4][htbp]{%
+  \begin{figure}
+    \makebox{%
+      \begin{minipage}{0.2\textwidth}
+	\caption{#4}
+	\label{fig:#2}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.3\textwidth}
+	\centering
+	\includegraphics[#3]{\fig@file{#2}}
+    \end{minipage}}
 \end{figure}}
+
 % ------------------------------------------------------------
 \def\plot{\@ifstar{\fullplot}{\sideplot}}
 \RequirePackage{subfigure}
@@ -156,20 +170,20 @@
 \renewcommand{\footnotesize}{\protect\tiny}
 \scriptsize
 \newcommand{\seg@section}{%
-\@startsection {section}{1}{\z@}%
-{-3.5ex \@plus -1ex \@minus -.2ex}%
-{1ex \@plus .2ex}%
-{\normalfont\Large\bfseries\MakeUppercase}}
+  \@startsection {section}{1}{\z@}%
+		 {-3.5ex \@plus -1ex \@minus -.2ex}%
+		 {1ex \@plus .2ex}%
+		 {\normalfont\Large\bfseries\MakeUppercase}}
 \newcommand{\seg@subsection}[2][]{%
-\begin{minipage}{\columnwidth}
-\textbf{#2}
+  \begin{minipage}{\columnwidth}
+    \textbf{#2}
 \end{minipage}}
 \newcommand{\seg@subsubsection}[2][]{%
-\begin{minipage}{\columnwidth}
-\textit{#2}
+  \begin{minipage}{\columnwidth}
+    \textit{#2}
 \end{minipage}}
 \newcommand{\seg@subsubsubsection}[2][]{%
-\underline{#2}.--}
+  \underline{#2}.--}
 \def\section{\@ifstar{\seg@section*}{\seg@section*}}%
 \def\subsection{\@ifstar{\seg@subsection}{\seg@subsection}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection}{\seg@subsubsection}}
@@ -182,19 +196,19 @@
 \providecommand{\email}[1]{\renewcommand{\seg@email}{#1}}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
-\renewcommand{\seg@author}{%
-\twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
-\newline\small\textit{#1}\vspace{2ex}]}}
+  \renewcommand{\seg@author}{%
+    \twocolumn[\vspace{0.25in}\normal@size\textbf{\seg@title}%
+      \newline\small\textit{#1}\vspace{2ex}]}}
 \renewcommand{\maketitle}{\seg@author}
 \renewenvironment{abstract}{%
-\begin{minipage}[t]{\columnwidth}
-\textbf{SUMMARY\\}\\*}{%
-\end{minipage}\vspace{2ex}}
+  \begin{minipage}[t]{\columnwidth}
+    \textbf{SUMMARY\\}\\*}{%
+  \end{minipage}\vspace{2ex}}
 \newcommand{\ps@seg}{%
-\renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
-\renewcommand{\@evenhead}{\@oddhead}
-\renewcommand{\@oddfoot}{}
-\renewcommand{\@evenfoot}{}}
+  \renewcommand{\@oddhead}{\hfill\small\textbf{\seg@rhead}\scriptsize\hfill}
+  \renewcommand{\@evenhead}{\@oddhead}
+  \renewcommand{\@oddfoot}{}
+  \renewcommand{\@evenfoot}{}}
 \thispagestyle{empty}
 \pagestyle{seg}
 \newcounter{@append}
@@ -205,12 +219,12 @@
     \renewcommand{\append@name}{\Alph{@append}}}{}
   \setcounter{equation}{0}%
   \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-    \setcounter{figure}{0}%
-    \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
   \stepcounter{@append}
 }
 \providecommand{\append}[1]{%
-\appendix\section{Appendix \append@name}\section{#1}}
+  \appendix\section{Appendix \append@name}\section{#1}}
 \RequirePackage{verbatim}
 \RequirePackage{moreverb}
 \endinput
