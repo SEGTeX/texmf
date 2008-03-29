@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpreport}[2006/03/20 v0.1 CWP report]
 
-\LoadClass{cwp01}
+\LoadClass{cwp08}
 
 % ------------------------------------------------------------
 \RequirePackage{graphicx}
@@ -106,3 +106,14 @@
   \label{#1}%
   \endgroup
 }
+
+% ------------------------------------------------------------
+\RequirePackage{natbib}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+\DeclareRobustCommand{\refname}{REFERENCES}
+{\renewcommand\bibsection{\newpage\section{\refname}}}
+{\renewcommand\bibsection{        \section{\refname}}}
+\newcommand{\shortcite}[1]{\citet{#1}}
+
+\newcommand{\newblock}[1]{}
+

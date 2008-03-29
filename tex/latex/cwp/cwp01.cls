@@ -7,7 +7,7 @@
 % Brian Kennett, Pacific Region Office, GJI
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gji}[1995/11/30 v2.0 LaTeX2e document class]
+\ProvidesClass{cwp01}[1995/11/30 v2.0 LaTeX2e document class]
 
 \def\f@s@s{}%
 %
@@ -206,186 +206,186 @@
 
 % Astronomy and Astrophysics symbol macros
 
-\newcommand\la{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr<\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
-<\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
-<\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-<\cr\sim\cr}}}}}
+%\newcommand\la{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr<\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%<\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%<\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%<\cr\sim\cr}}}}}
 
-\newcommand\ga{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr>\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
->\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
->\cr\sim\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
->\cr\sim\cr}}}}}
+%\newcommand\ga{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr>\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%>\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%>\cr\sim\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%>\cr\sim\cr}}}}}
 
-\newcommand\getsto{\mathrel{\mathchoice {\vcenter{\offinterlineskip
-\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr\gets\cr\to\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\gets
-\cr\to\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr\gets
-\cr\to\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-\gets\cr\to\cr}}}}}
+%\newcommand\getsto{\mathrel{\mathchoice {\vcenter{\offinterlineskip
+%\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr\gets\cr\to\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\gets
+%\cr\to\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr\gets
+%\cr\to\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%\gets\cr\to\cr}}}}}
 
-\newcommand\cor{\mathrel{\mathchoice {\hbox{$\widehat=$}}{\hbox{$\widehat=$}}
-{\hbox{$\reset@font\scriptstyle\hat=$}}
-{\hbox{$\reset@font\scriptscriptstyle\hat=$}}}}
+%\newcommand\cor{\mathrel{\mathchoice {\hbox{$\widehat=$}}{\hbox{$\widehat=$}}
+%{\hbox{$\reset@font\scriptstyle\hat=$}}
+%{\hbox{$\reset@font\scriptscriptstyle\hat=$}}}}
 
-\newcommand\lid{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr<\cr\noalign{\vskip1.2pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr<\cr
-\noalign{\vskip1.2pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr<\cr
-\noalign{\vskip1pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-<\cr
-\noalign{\vskip0.9pt}=\cr}}}}}
+%\newcommand\lid{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr<\cr\noalign{\vskip1.2pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr<\cr
+%\noalign{\vskip1.2pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr<\cr
+%\noalign{\vskip1pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%<\cr
+%\noalign{\vskip0.9pt}=\cr}}}}}
 
-\newcommand\gid{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr>\cr\noalign{\vskip1.2pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr>\cr
-\noalign{\vskip1.2pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr>\cr
-\noalign{\vskip1pt}=\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
->\cr
-\noalign{\vskip0.9pt}=\cr}}}}}
+%\newcommand\gid{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr>\cr\noalign{\vskip1.2pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr>\cr
+%\noalign{\vskip1.2pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr>\cr
+%\noalign{\vskip1pt}=\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%>\cr
+%\noalign{\vskip0.9pt}=\cr}}}}}
 
-\newcommand\sol{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr\sim\cr<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\sim\cr
-<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr\sim\cr
-<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-\sim\cr<\cr}}}}}
+%\newcommand\sol{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr\sim\cr<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\sim\cr
+%<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr\sim\cr
+%<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%\sim\cr<\cr}}}}}
 
-\newcommand\sog{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr\sim\cr>\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\sim\cr
->\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
-\sim\cr>\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-\sim\cr>\cr}}}}}
+%\newcommand\sog{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr\sim\cr>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr\sim\cr
+%>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%\sim\cr>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%\sim\cr>\cr}}}}}
 
-\newcommand\lse{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr<\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
-<\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
-<\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-<\cr\simeq\cr}}}}}
+%\newcommand\lse{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr<\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%<\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%<\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%<\cr\simeq\cr}}}}}
 
-\newcommand\gse{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr>\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
->\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
->\cr\simeq\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
->\cr\simeq\cr}}}}}
+%\newcommand\gse{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr>\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%>\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%>\cr\simeq\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%>\cr\simeq\cr}}}}}
 
-\newcommand\grole{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr>\cr\noalign{\vskip-1.5pt}<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
->\cr\noalign{\vskip-1.5pt}<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
->\cr\noalign{\vskip-1pt}<\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
->\cr\noalign{\vskip-0.5pt}<\cr}}}}}
+%\newcommand\grole{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr>\cr\noalign{\vskip-1.5pt}<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%>\cr\noalign{\vskip-1.5pt}<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%>\cr\noalign{\vskip-1pt}<\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%>\cr\noalign{\vskip-0.5pt}<\cr}}}}}
 
-\newcommand\leogr{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr<\cr\noalign{\vskip-1.5pt}>\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
-<\cr\noalign{\vskip-1.5pt}>\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
-<\cr\noalign{\vskip-1pt}>\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-<\cr\noalign{\vskip-0.5pt}>\cr}}}}}
+%\newcommand\leogr{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr<\cr\noalign{\vskip-1.5pt}>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%<\cr\noalign{\vskip-1.5pt}>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%<\cr\noalign{\vskip-1pt}>\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%<\cr\noalign{\vskip-0.5pt}>\cr}}}}}
 
-\newcommand\loa{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr<\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
-<\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
-<\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
-<\cr\approx\cr}}}}}
+%\newcommand\loa{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr<\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%<\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%<\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%<\cr\approx\cr}}}}}
 
-\newcommand\goa{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
-$\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
->\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
->\cr\approx\cr}}}
-{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
->\cr\approx\cr}}}}}
+%\newcommand\goa{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+%$\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\textstyle##$\hfil\cr
+%>\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptstyle##$\hfil\cr
+%>\cr\approx\cr}}}
+%{\vcenter{\offinterlineskip\halign{\hfil$\reset@font\scriptscriptstyle##$\hfil\cr
+%>\cr\approx\cr}}}}}
 
-\newcommand\sun{\hbox{$\odot$}}
-\newcommand\earth{\hbox{$\oplus$}}
-\newcommand\degr{\hbox{$^\circ$}}
-\newcommand\diameter{{\ifmmode\mathchoice
-{\ooalign{\hfil\hbox{$\reset@font\displaystyle/$}\hfil\crcr
-{\hbox{$\reset@font\displaystyle\mathchar"20D$}}}}
-{\ooalign{\hfil\hbox{$\reset@font\textstyle/$}\hfil\crcr
-{\hbox{$\reset@font\textstyle\mathchar"20D$}}}}
-{\ooalign{\hfil\hbox{$\reset@font\scriptstyle/$}\hfil\crcr
-{\hbox{$\reset@font\scriptstyle\mathchar"20D$}}}}
-{\ooalign{\hfil\hbox{$\reset@font\scriptscriptstyle/$}\hfil\crcr
-{\hbox{$\reset@font\scriptscriptstyle\mathchar"20D$}}}}
-\else{\ooalign{\hfil/\hfil\crcr\mathhexbox20D}}%
-\fi}}
+%\newcommand\sun{\hbox{$\odot$}}
+%\newcommand\earth{\hbox{$\oplus$}}
+%\newcommand\degr{\hbox{$^\circ$}}
+%\newcommand\diameter{{\ifmmode\mathchoice
+%{\ooalign{\hfil\hbox{$\reset@font\displaystyle/$}\hfil\crcr
+%{\hbox{$\reset@font\displaystyle\mathchar"20D$}}}}
+%{\ooalign{\hfil\hbox{$\reset@font\textstyle/$}\hfil\crcr
+%{\hbox{$\reset@font\textstyle\mathchar"20D$}}}}
+%{\ooalign{\hfil\hbox{$\reset@font\scriptstyle/$}\hfil\crcr
+%{\hbox{$\reset@font\scriptstyle\mathchar"20D$}}}}
+%{\ooalign{\hfil\hbox{$\reset@font\scriptscriptstyle/$}\hfil\crcr
+%{\hbox{$\reset@font\scriptscriptstyle\mathchar"20D$}}}}
+%\else{\ooalign{\hfil/\hfil\crcr\mathhexbox20D}}%
+%\fi}}
 
-\newcommand\sq{\ifmmode\squareforqed\else{\unskip\nobreak\hfil
-\penalty50\hskip1em\null\nobreak\hfil\squareforqed
-\parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
-\newcommand\squareforqed{\hbox{\rlap{$\sqcap$}$\sqcup$}}
+%\newcommand\sq{\ifmmode\squareforqed\else{\unskip\nobreak\hfil
+%\penalty50\hskip1em\null\nobreak\hfil\squareforqed
+%\parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+%\newcommand\squareforqed{\hbox{\rlap{$\sqcap$}$\sqcup$}}
 
-\newcommand{\romn}[1] {{\mathrm #1}}
+%\newcommand{\romn}[1] {{\mathrm #1}}
 
-\newcommand\fd{\hbox{$.\!\!^{\reset@font\romn d}$}}
-\newcommand\fh{\hbox{$.\!\!^{\reset@font\romn h}$}}
-\newcommand\fm{\hbox{$.\!\!^{\reset@font\romn m}$}}
-\newcommand\fs{\hbox{$.\!\!^{\reset@font\romn s}$}}
-\newcommand\fdg{\hbox{$.\!\!^\circ$}}
-\newcommand\farcm{\hbox{$.\mkern-4mu^\prime$}}
-\newcommand\farcs{\hbox{$.\!\!^{\prime\prime}$}}
-\newcommand\fp{\hbox{$.\!\!^{\reset@font\reset@font\scriptscriptstyle\romn p}$}}
-\newcommand\arcmin{\hbox{$^\prime$}}
-\newcommand\arcsec{\hbox{$^{\prime\prime}$}}
+%\newcommand\fd{\hbox{$.\!\!^{\reset@font\romn d}$}}
+%\newcommand\fh{\hbox{$.\!\!^{\reset@font\romn h}$}}
+%\newcommand\fm{\hbox{$.\!\!^{\reset@font\romn m}$}}
+%\newcommand\fs{\hbox{$.\!\!^{\reset@font\romn s}$}}
+%\newcommand\fdg{\hbox{$.\!\!^\circ$}}
+%\newcommand\farcm{\hbox{$.\mkern-4mu^\prime$}}
+%\newcommand\farcs{\hbox{$.\!\!^{\prime\prime}$}}
+%\newcommand\fp{\hbox{$.\!\!^{\reset@font\reset@font\scriptscriptstyle\romn p}$}}
+%\newcommand\arcmin{\hbox{$^\prime$}}
+%\newcommand\arcsec{\hbox{$^{\prime\prime}$}}
 
-\def\micron{\hbox{$\mu$m}}
+%\def\micron{\hbox{$\mu$m}}
 
-\newcommand\case[2]{\hbox{$\frac{#1}{#2}$}}
-\newcommand\slantfrac[2]{\hbox{$\,^#1\!/_#2$}}
-\newcommand\onehalf{\slantfrac{1}{2}}
-\newcommand\onethird{\slantfrac{1}{3}}
-\newcommand\twothirds{\slantfrac{2}{3}}
-\newcommand\onequarter{\slantfrac{1}{4}}
-\newcommand\threequarters{\slantfrac{3}{4}}
-\newcommand\fhf{\case{1}{2}}
-\newcommand\fqr{\case{1}{4}}
+%\newcommand\case[2]{\hbox{$\frac{#1}{#2}$}}
+%\newcommand\slantfrac[2]{\hbox{$\,^#1\!/_#2$}}
+%\newcommand\onehalf{\slantfrac{1}{2}}
+%\newcommand\onethird{\slantfrac{1}{3}}
+%\newcommand\twothirds{\slantfrac{2}{3}}
+%\newcommand\onequarter{\slantfrac{1}{4}}
+%\newcommand\threequarters{\slantfrac{3}{4}}
+%\newcommand\fhf{\case{1}{2}}
+%\newcommand\fqr{\case{1}{4}}
 %
 %\chemical from Kopka & Daly
-\newlength\fntxvi
-\newlength\fntxvii
-\newcommand{\chemical}[1]
-{{\fontencoding{OMS}\fontfamily{cmsy}\selectfont
-  \fntxvi\the\fontdimen16\font
-  \fntxvii\the\fontdimen17\font
-  \fontdimen16\font=2pt\fontdimen17\font=2pt
-  $\mathrm{#1}$
-  \fontencoding{OMS}\fontfamily{cmsy}\selectfont
-  \fontdimen16\font=\fntxvi \fontdimen17\font=\fntxvii}}
+%\newlength\fntxvi
+%\newlength\fntxvii
+%\newcommand{\chemical}[1]
+%{{\fontencoding{OMS}\fontfamily{cmsy}\selectfont
+%  \fntxvi\the\fontdimen16\font
+%  \fntxvii\the\fontdimen17\font
+%  \fontdimen16\font=2pt\fontdimen17\font=2pt
+%  $\mathrm{#1}$
+%  \fontencoding{OMS}\fontfamily{cmsy}\selectfont
+%  \fontdimen16\font=\fntxvi \fontdimen17\font=\fntxvii}}
 
 %  ****************************************
 %  *            PAGE LAYOUT               *
@@ -1243,17 +1243,17 @@ $\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
 % citation call-outs is required; it is crucial for the future use of
 % on-line browsers.
 
-\def\references{\section*{REFERENCES}
-    \bgroup\parindent=\z@\parskip=\z@\reset@font\small
-    \def\refpar{\par\hangindent=1em\hangafter=1}}
-\def\endreferences{\refpar\egroup}
+%\def\references{\section*{REFERENCES}
+%    \bgroup\parindent=\z@\parskip=\z@\reset@font\small
+%    \def\refpar{\par\hangindent=1em\hangafter=1}}
+%\def\endreferences{\refpar\egroup}
 %%\let\endreferences=\endlist
 
 %% \small should probably be \scriptsize to match print version
 
 
-\def\reference{\relax\refpar}  % Generic: might be better...
-\def\markcite#1{#1\relax}
+%\def\reference{\relax\refpar}  % Generic: might be better...
+%\def\markcite#1{#1\relax}
 
 
 
@@ -1371,62 +1371,6 @@ $\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
   \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #2}\par
  \endgroup}
 
-%  ****************************************
-%  *           Specials               *
-%  ****************************************
-%
-%
-%  The following code is taken from authordate.sty, by  David Rhead, of
-%  the Cripps Computing Centre (February 1990), with some modifications
-%  by ggw.  It is intended for documents
-%  that use the author-date citation system.  When used in conjunction with
-%  authordate1.bst, ... , authordate4.bst, it allows citations of the
-%  form \shortcite{bloggs-60} as well as the usual
-%  \cite{bloggs-60}.
-%  When
-%       ... \cite{bloggs-60} ... \shortcite{bloggs-60} ...
-%  appears in the input file,
-%       ... (Bloggs, 1960) ... (1960) ...
-%  appears in the final document.
-%
-%  Code taken from apalike.sty.
-%
-\ifGJ@extra
-\else
-\def\@cite#1#2{(#1\if@tempswa #2\fi)}
-\def\@cited#1#2{#1\if@tempswa (#2)\fi}
-\def\@biblabel#1{}
-
-% Set length of hanging indentation for bibliography entries
-%
-\newlength{\bibhang}
-\setlength{\bibhang}{1em}
-\fi
-%  Define default title and page-head text.
-%
-\def\bibtitle{References}
-\def\bibheadtitle{REFERENCES}
-
-%  Code taken from aaai.sty.
-%
-% don't box citations, add space between multiple citations, separate with ;
-\def\@citex[#1]#2{\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi
-  \def\@citea{}\@cite{\@for\@citeb:=#2\do
-    {\@citea\def\@citea{; }\@ifundefined
-       {b@\@citeb}{@warning
-       {Citation `\@citeb' on page \thepage \space undefined}}%
-{\csname b@\@citeb\endcsname}}}{#1}}
-% Allow short (name-less) citations, when used in
-% conjunction with a bibliography style that creates labels like
-%       \citename{<names> }<year>
-\let\@internalcite\cite
-\def\cite{\def\citename##1{##1}\@internalcite}
-\def\shortcite{\def\citename##1{}\@internalcite}
-
-
-\def\bsp{\medskip\reset@font\small\noindent This paper has been produced
- using the Blackwell Scientific Publications GJI \LaTeX2e\ class file.}
-
 
 %  ****************************************
 %  *                FLEQN                 *
@@ -1515,8 +1459,8 @@ to \linewidth\bgroup\@eqnsel\hskip\@centering$\displaystyle\tabskip\z@
 
 %%%  ACKNOWLEDGEMENTS
 
-\newenvironment{acknowledgments}{\section*{ACKNOWLEDGMENTS}}{}%
-\newenvironment{acknowledgment}{\section*{ACKNOWLEDGMENT}}{}%
+%\newenvironment{acknowledgments}{\section*{ACKNOWLEDGMENTS}}{}%
+%\newenvironment{acknowledgment}{\section*{ACKNOWLEDGMENT}}{}%
 
 
 %%%  COMMON JOURNALS
@@ -1543,8 +1487,9 @@ to \linewidth\bgroup\@eqnsel\hskip\@centering$\displaystyle\tabskip\z@
 \newcommand{\rg}{\textit{Rev.\ Geophys.,} }
 \newcommand{\tecto}{\textit{Tectonophysics,} }
 
-\ifGJ@extra
-\def\refname{REFERENCES}
-\usepackage{gji_extr}
-\fi
+%\ifGJ@extra
+%\def\refname{REFERENCES}
+%\usepackage{gji_extr}
+%\fi
 % end of GJI.cls
+
