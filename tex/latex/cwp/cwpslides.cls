@@ -26,8 +26,8 @@
 \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
 
 \setbeamersize{
-  text margin  left=0.025in,
-  text margin right=0.025in
+  text margin  left=0.05in,
+  text margin right=0.05in
 }
 
 % ------------------------------------------------------------
