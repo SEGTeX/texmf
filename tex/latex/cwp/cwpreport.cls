@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpreport}[2006/03/20 v0.1 CWP report]
 
-\LoadClass{cwp08}
+\LoadClass{cwppcs}
 
 % ------------------------------------------------------------
 \RequirePackage{graphicx}
@@ -35,7 +35,8 @@
       \begin{minipage}{0.6\textwidth}
 	\centering
 	\includegraphics[#3]{\fig@file{#2}}
-    \end{minipage}}
+    \end{minipage}
+    }
 \end{figure*}}
 
 % ------------------------------------------------------------
