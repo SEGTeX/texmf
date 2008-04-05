@@ -38,7 +38,6 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-\usepackage{mathptmx}
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
