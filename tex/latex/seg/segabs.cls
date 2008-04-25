@@ -104,13 +104,21 @@
   \end{figure*}
 }
 \def\multiplot{\@ifstar{\fullmultiplot}{\sidemultiplot}}
-\providecommand{\tabl}[4][htbp]{
+\providecommand{\seg@sidetabl}[4][htbp]{
   \begin{table}[#1]
     #4
     \caption{#3}
     \label{tbl:#2}
   \end{table}
 }
+\providecommand{\seg@fulltabl}[4][htbp]{
+  \begin{table*}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table*}
+}
+\def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}

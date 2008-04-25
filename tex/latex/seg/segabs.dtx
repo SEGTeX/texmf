@@ -231,13 +231,21 @@
 % \begin{macro}{\tabl}
 % Define the |\tabl| macro for handling tables.
 %    \begin{macrocode}
-\providecommand{\tabl}[4][htbp]{
+\providecommand{\seg@sidetabl}[4][htbp]{
   \begin{table}[#1]
     #4
     \caption{#3}
     \label{tbl:#2}
   \end{table}
 }
+\providecommand{\seg@fulltabl}[4][htbp]{
+  \begin{table*}[#1]
+    #4
+    \caption{#3}
+    \label{tbl:#2}
+  \end{table*}
+}
+\def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{References}
