@@ -114,19 +114,31 @@
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
+% Load \textsf{ifthen} package for conditionals.
+%    \begin{macrocode}
+\RequirePackage{ifthen}
+%    \end{macrocode}
+% Option to set \emph{Times} font.
+%    \begin{macrocode}
+\newboolean{@times}
+\setboolean{@times}{true}
+\DeclareOption{times}{\setboolean{@times}{true}}
+\DeclareOption{notimes}{\setboolean{@times}{false}}
+%    \end{macrocode}
 % Our package is a derivative of the standard \texttt{article} class.
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
 % We will use 11pt fonts by default.
 %    \begin{macrocode}
+\ExecuteOptions{times}
 \ProcessOptions*
 \LoadClass[11pt]{article}
 %    \end{macrocode}
 % \subsection{Fonts}
 % Load fonts for text and math.
 %    \begin{macrocode}
-%\usepackage{mathptmx}
+\ifthenelse{\boolean{@times}}{\RequirePackage{mathptmx}}{}
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 %    \end{macrocode}
 %
@@ -181,7 +193,6 @@
 % \begin{macro}{\multiplot}
 %    \begin{macrocode}
 \RequirePackage{subfigure}
-\RequirePackage{ifthen}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}

@@ -35,9 +35,16 @@
 %%   Right bracket \]     Circumflex    \^     Underscore    \_
 %%   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %%   Right brace   \}     Tilde         \~}
+\RequirePackage{ifthen}
+\newboolean{@times}
+\setboolean{@times}{true}
+\DeclareOption{times}{\setboolean{@times}{true}}
+\DeclareOption{notimes}{\setboolean{@times}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ExecuteOptions{times}
 \ProcessOptions*
 \LoadClass[11pt]{article}
+\ifthenelse{\boolean{@times}}{\RequirePackage{mathptmx}}{}
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
@@ -61,7 +68,6 @@
 \end{figure}}
 \def\plot{\@ifstar{\fullplot}{\sideplot}}
 \RequirePackage{subfigure}
-\RequirePackage{ifthen}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
