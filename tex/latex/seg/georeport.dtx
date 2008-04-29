@@ -70,7 +70,7 @@
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
-% Our package is a derivative of the standard \texttt{report} class.
+% Our package is a derivative of the standard \texttt{book} class.
 % Load \textsf{ifthen} package for conditionals.
 %    \begin{macrocode}
 \RequirePackage{ifthen}
@@ -88,8 +88,15 @@
 \newcommand{\shortpaper}{\setboolean{@shrt}{true}}
 \newcommand{\longpaper}{\setboolean{@shrt}{false}}
 %    \end{macrocode}
+% Book option
 %    \begin{macrocode}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\newboolean{@book}
+\setboolean{@book}{false}
+\DeclareOption{book}{\setboolean{@book}{true}}
+\DeclareOption{report}{\setboolean{@book}{false}}
+%    \end{macrocode}
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 %    \end{macrocode}
 % We will use 11pt fonts by default.
 %    \begin{macrocode}
@@ -113,11 +120,12 @@
 \setlength{\toc@width}{\textwidth}%
 \addtolength{\toc@width}{-6em}%
 \newcommand{\TOCentry}[3][.]{
+\ifthenelse{\boolean{@book}}{}{%
   \noindent\hspace*{4em}{\begin{minipage}[b]{\toc@width}
       \setlength{\parindent}{-5em}%
       \ifthenelse{\equal{#1}{.}}{}{\textit {#1}, }%
       #2\dotfill\ 
-    \end{minipage}\hfill#3}\par}
+    \end{minipage}\hfill#3}\par}}
 %    \end{macrocode}
 % Empty handle for the report name
 %    \begin{macrocode}
@@ -341,10 +349,11 @@
   \begin{minipage}{\textwidth}%
     \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
 	       {\end{minipage}\vspace{.2in}}%
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\title}[1]{%
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-		   {\smallskip #1}\end{geo@title}}}
+		   {\smallskip #1}\end{geo@title}}}}
 \newcommand{\maintitle}[1]{\title{#1}\seg@title}
 %    \end{macrocode}
 % \end{macro}
@@ -371,6 +380,7 @@
     \end{center}
   }
 }
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
     \ifthenelse{\boolean{@twoc}}{%
@@ -381,14 +391,15 @@
       \mainauthor{#1}
     }
   }
-}
+}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\maketitle}
-%   |\maketitle| is disabled
+%   |\maketitle| is disabled for reports
 %    \begin{macrocode}
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
-    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
+    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{abstract}
@@ -442,13 +453,17 @@
 \renewcommand{\@evenhead}{%
 \thepage\hfill\textit{\seg@lhead}\hfill\seg@foot}
 \renewcommand{\@oddfoot}{}\renewcommand{\@evenfoot}{}}
-\pagestyle{georeport}
+\newcommand{\ps@geobook}{%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\ifthenelse{\boolean{@book}}{%
+\newcommand{\ps@segtwo}{\ps@geobook}\pagestyle{geobook}}{%
 \newcommand{\ps@segtwo}{%
   \renewcommand{\@oddfoot}{\hfill\thepage\hfill}%
   \renewcommand{\@evenfoot}{\@oddfoot}
   \renewcommand{\@oddhead}{%
     \footnotesize\textit{\geo@header\seg@head}\hfill\normalsize}%
-  \renewcommand{\@evenhead}{\@oddhead}}
+  \renewcommand{\@evenhead}{\@oddhead}}\pagestyle{georeport}}
 %    \end{macrocode}
 % \subsection{Section headings}
 % Capitalize section headings and redefine their size from 
@@ -480,9 +495,10 @@
 {\normalfont\normalsize\itshape}}
 \newcommand{\seg@subsubsubsection}[2][]{%
 \underline{#2}.--}
+\ifthenelse{\boolean{@book}}{}{%
 \def\section{\@ifstar{\segsection*}{\segsection*}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
-\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}}
 %    \end{macrocode}
 % \subsection{Appendix}
 % \begin{macro}{\append}

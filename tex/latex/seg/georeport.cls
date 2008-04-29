@@ -44,7 +44,11 @@
 \setboolean{@shrt}{false}
 \newcommand{\shortpaper}{\setboolean{@shrt}{true}}
 \newcommand{\longpaper}{\setboolean{@shrt}{false}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\newboolean{@book}
+\setboolean{@book}{false}
+\DeclareOption{book}{\setboolean{@book}{true}}
+\DeclareOption{report}{\setboolean{@book}{false}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ExecuteOptions{onecolumn}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
@@ -56,11 +60,12 @@
 \setlength{\toc@width}{\textwidth}%
 \addtolength{\toc@width}{-6em}%
 \newcommand{\TOCentry}[3][.]{
+\ifthenelse{\boolean{@book}}{}{%
   \noindent\hspace*{4em}{\begin{minipage}[b]{\toc@width}
       \setlength{\parindent}{-5em}%
       \ifthenelse{\equal{#1}{.}}{}{\textit {#1}, }%
       #2\dotfill\
-    \end{minipage}\hfill#3}\par}
+    \end{minipage}\hfill#3}\par}}
 \newcommand{\REPORT}{}
 \newcommand{\GROUP}{}
 \newcommand{\GEOcopyr}[2]{%
@@ -225,10 +230,11 @@
   \begin{minipage}{\textwidth}%
     \bfseries\seg@Large\ifthenelse{\boolean{@twoc}}{\flushleft}{\centering}}
        {\end{minipage}\vspace{.2in}}%
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\title}[1]{%
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-   {\smallskip #1}\end{geo@title}}}
+   {\smallskip #1}\end{geo@title}}}}
 \newcommand{\maintitle}[1]{\title{#1}\seg@title}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
@@ -245,6 +251,7 @@
     \end{center}
   }
 }
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\author}[1]{%
   \renewcommand{\seg@author}{%
     \ifthenelse{\boolean{@twoc}}{%
@@ -255,9 +262,10 @@
       \mainauthor{#1}
     }
   }
-}
+}}
+\ifthenelse{\boolean{@book}}{}{%
 \renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
-    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
+    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}}
 \newsavebox{\seg@abstract}
 \setlength{\fboxsep}{10pt}
 \newenvironment{abstract}{
@@ -292,13 +300,17 @@
 \renewcommand{\@evenhead}{%
 \thepage\hfill\textit{\seg@lhead}\hfill\seg@foot}
 \renewcommand{\@oddfoot}{}\renewcommand{\@evenfoot}{}}
-\pagestyle{georeport}
+\newcommand{\ps@geobook}{%
+\renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}}
+\ifthenelse{\boolean{@book}}{%
+\newcommand{\ps@segtwo}{\ps@geobook}\pagestyle{geobook}}{%
 \newcommand{\ps@segtwo}{%
   \renewcommand{\@oddfoot}{\hfill\thepage\hfill}%
   \renewcommand{\@evenfoot}{\@oddfoot}
   \renewcommand{\@oddhead}{%
     \footnotesize\textit{\geo@header\seg@head}\hfill\normalsize}%
-  \renewcommand{\@evenhead}{\@oddhead}}
+  \renewcommand{\@evenhead}{\@oddhead}}\pagestyle{georeport}}
 \let\seg@large\large
 \let\seg@Large\Large
 \renewcommand{\Large}{\protect\seg@large}
@@ -324,9 +336,10 @@
 {\normalfont\normalsize\itshape}}
 \newcommand{\seg@subsubsubsection}[2][]{%
 \underline{#2}.--}
+\ifthenelse{\boolean{@book}}{}{%
 \def\section{\@ifstar{\segsection*}{\segsection*}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
-\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}
+\def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}}
 \newcounter{@append}
 \providecommand{\append@name}{A}
 \providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
