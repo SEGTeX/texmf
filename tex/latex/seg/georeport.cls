@@ -263,9 +263,14 @@
     }
   }
 }}
-\ifthenelse{\boolean{@book}}{}{%
-\renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
-    \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}}
+\newcommand{\geo@ignore}[1]{}
+\ifthenelse{\boolean{@book}}{
+  \let\geo@toc\tableofcontents
+  \renewcommand{\tableofcontents}{\geo@toc%
+    \def\title{\chapter}%
+    \def\author{\geo@ignore}}}{%
+  \renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
+      \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}}
 \newsavebox{\seg@abstract}
 \setlength{\fboxsep}{10pt}
 \newenvironment{abstract}{
