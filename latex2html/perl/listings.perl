@@ -5,6 +5,7 @@ use Symbol;
 
 $language = 'html';
 $enscript = `which enscript`  || $ENV{"RSF_ENSCRIPT"};
+chomp($enscript);
 
 sub list {
     my $file = shift;
