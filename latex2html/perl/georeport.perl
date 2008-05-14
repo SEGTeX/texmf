@@ -107,6 +107,7 @@ sub do_cmd_TOCentry {
     s/$next_pair_pr_rx//o; 
     $title = $2;
     s/$next_pair_pr_rx//o;
+
     $paper = $2;
     if ($author) {
 	$paper =~ s/^[^\#]+\#([^\#]+)(\.start)\#.*$/$1/;
@@ -116,7 +117,10 @@ sub do_cmd_TOCentry {
 	my $pdfsize = `du -h ../$pdf`;
 	$pdfsize =~ s/^(\S+).*[\n]?/$1/;
 
-	my $abs = seg::getAbs ($paper);
+	$author =~ s/\\\s+//;
+
+	my $abs = '';
+	$abs = seg::getAbs ($paper) if $author;
 
         $author = "<BR>" . join($author,"<B>","<\/B>");
 	$abs = join($abs,"<BR><SMALL>","</SMALL>") if $abs;
