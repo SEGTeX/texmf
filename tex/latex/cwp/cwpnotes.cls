@@ -1,9 +1,21 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpslides}[2007/4/15 v0.1 CWP slides]
 
-\LoadClass[notes only,hyperref={bookmarks=false}]{beamer}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{beamer}}
+\ExecuteOptions{notes}
+\ExecuteOptions{notesonly}
+
+\ProcessOptions*
+
+\LoadClass[hyperref={bookmarks=false}]{beamer}
 \setbeamertemplate{navigation symbols}{}
 
+%\usetheme[hideothersubsections]{}
+%\useoutertheme[height=0pt,right]{sidebar}
+%\setbeamertemplate{frametitle}[default][left]
+
+% ------------------------------------------------------------
+% fonts
 \usefonttheme{structurebold}
 \setbeamerfont{title}        {size=\LARGE}
 \setbeamerfont{subtitle}     {size=\Large}
@@ -11,10 +23,22 @@
 \setbeamerfont{outline}      {size=\Large}
 \setbeamerfont{frametitle}   {size=\LARGE}
 \setbeamerfont{framesubtitle}{size=\large}
-\setbeamerfont{author}       {size=\large,     series=\bfseries}
+\setbeamerfont{author}       {size=\Large,     series=\bfseries}
 \setbeamerfont{institute}    {size=\normalsize,series=\bfseries}
 \setbeamerfont{date}         {size=\normalsize,series=\bfseries}
 
+%\setbeamersize{
+%  text margin  left=0.05in,
+%  text margin right=0.05in
+%}
+
+% ------------------------------------------------------------
+\newcommand{\red}  [1]{\textcolor{red}  {#1}}
+\newcommand{\blue} [1]{\textcolor{blue} {#1}}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\newcommand{\green}[1]{\textcolor{darkgreen}{#1}}
+
+% ------------------------------------------------------------
 \RequirePackage{ifthen}
 \DeclareGraphicsExtensions{.pdf,.png}
 
@@ -25,12 +49,6 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 
 % plot command
-%\newcommand{\plot}[4][htbp]{
-%  \begin{figure}[#1]
-%    \centering
-%    \includegraphics[#3]{\fig@file{#2}}
-%  \end{figure}
-%}
 \newcommand{\plot}[3]{
   \begin{center}
     \begin{overpic}[#2] {\@path/\figdir/#1}
@@ -38,7 +56,6 @@
     \end{overpic}
   \end{center}
 }
-
 
 % sideplot command
 \newcommand{\sideplot}[4][htbp]{
@@ -94,7 +111,7 @@
 % generate outline slides
 \newcommand{\cwpoutline}{
   \AtBeginSection[]{
-    \begin{frame}<beamer> \frametitle{}             
+    \begin{frame}<beamer> \frametitle{outline}             
       \tableofcontents[currentsection] % highlight current section
     \end{frame}
   }

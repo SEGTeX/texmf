@@ -3,6 +3,8 @@
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{beamer}}
 \ExecuteOptions{notes}
+\ExecuteOptions{notesonly}
+
 \ProcessOptions*
 
 \LoadClass[hyperref={bookmarks=false}]{beamer}

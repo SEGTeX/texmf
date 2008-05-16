@@ -61,6 +61,7 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{paper,onecolumn,long,noendfloat,new}
 \ProcessOptions*
+
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
   \LoadClass[11pt]{article}}
