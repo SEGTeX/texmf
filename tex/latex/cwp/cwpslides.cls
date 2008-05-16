@@ -17,7 +17,7 @@
 % ------------------------------------------------------------
 % fonts
 \usefonttheme{structurebold}
-\setbeamerfont{title}        {size=\LARGE}
+\setbeamerfont{title}        {size=\Huge}
 \setbeamerfont{subtitle}     {size=\Large}
 \setbeamerfont{section}      {size=\Large}
 \setbeamerfont{outline}      {size=\Large}
@@ -112,7 +112,7 @@
 \newcommand{\cwpoutline}{
   \AtBeginSection[]{
     \begin{frame}<beamer> \frametitle{outline}             
-      \tableofcontents[currentsection] % highlight current section
+      \tableofcontents[currentsection,currentsubsection] % highlight current section
     \end{frame}
   }
 }
