@@ -78,11 +78,12 @@
 \newcommand{\paper@dir}{.}
 \newcommand{\paper@tag}{self}
 \newcommand{\GEOpaper}[2]{%
+\ifthenelse{\boolean{@book}}{}{%
   \setcounter{equation}{0}\setcounter{figure}{0}%
   \setcounter{table}{0}\setcounter{footnote}{0}%
   \renewcommand{\theequation}{\arabic{equation}}%
   \renewcommand{\thefigure}{\arabic{figure}}%
-  \renewcommand{\thetable}{\arabic{table}}%
+  \renewcommand{\thetable}{\arabic{table}}}%
   \cleardoublepage
   \label{\paper@tag.end}%
   \thispagestyle{segtwo}%
