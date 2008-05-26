@@ -537,7 +537,9 @@
 % Redefine the reference section name.
 %    \begin{macrocode}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\section{\refname}}
+\ifthenelse{\boolean{@book}}
+{\renewcommand\bibsection{\section*{\refname}}}
+{\renewcommand\bibsection{\section{\refname}}}
 %    \end{macrocode}
 % \subsection{Listings}
 %    \begin{macrocode}

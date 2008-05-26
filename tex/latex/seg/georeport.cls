@@ -363,7 +363,9 @@
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
-\renewcommand\bibsection{\section{\refname}}
+\ifthenelse{\boolean{@book}}
+{\renewcommand\bibsection{\section*{\refname}}}
+{\renewcommand\bibsection{\section{\refname}}}
 \RequirePackage{listings}
 \renewcommand{\lst@inputpath}{./\paper@dir/}
 \endinput
