@@ -6,7 +6,7 @@ latex = WhereIs('latex')
 pdflatex = WhereIs('pdflatex')
 makeindex = WhereIs('makeindex')
 bibtex = WhereIs('bibtex')
-epstopdf = WhereIs('epstopdf')
+epstopdf = WhereIs('epstopdf') or WhereIs('a2ping')
 
 env.Command(Split('seg.sty geophysics.cls georeport.cls segabs.cls eage.cls'),
             Split('seg.ins seg.dtx geophysics.dtx georeport.dtx segabs.dtx eage.dtx'),

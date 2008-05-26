@@ -236,7 +236,7 @@
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
    {\smallskip #1}\end{geo@title}}}}
-\newcommand{\maintitle}[1]{\title{#1}\seg@title}
+\newcommand{\maintitle}[1]{\ifthenelse{\boolean{@book}}{}{\title{#1}\seg@title}}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
 \providecommand{\seg@author}{}
