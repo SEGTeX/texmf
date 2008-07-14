@@ -34,13 +34,17 @@ for xml in ('DCI_Archive/GPR10_02_01660170.xml',):
             elif elem.tag=='body':
                 if subelem.tag=='title':
                     field['title'] = subelem.text
+                elif subelem.tag=='cpyrt':
+                    for subsubelem in subelem:
+                        if subsubelem.tag=='cpydate':
+                            field['year'] = subsubelem.text
                 else:
                     print ': ', subelem.tag, '=> ', subelem.text
                     
-                for subsubelem in subelem:
-                    print ':: ', subsubelem.tag, '=> ', subsubelem.text
-                    for subsubsubelem in subsubelem:
-                        print '::: ', subsubsubelem.tag, '=> ', subsubsubelem.text
+                    for subsubelem in subelem:
+                        print ':: ', subsubelem.tag, '=> ', subsubelem.text
+                        for subsubsubelem in subsubelem:
+                            print '::: ', subsubsubelem.tag, '=> ', subsubsubelem.text
 
     if fpage and lpage:
         if fpage == lpage:
