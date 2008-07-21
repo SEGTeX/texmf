@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 
 from elementtree.ElementTree import ElementTree
-import glob, sys
+import glob, sys, re
 
 out = open('SEG2008.bib','w')
 
+is_article = re.compile(r'(CAN|GEO|EGJ|EGK|PRE|FBR|GPR|TLE|REC)')
+
 for xml in glob.glob('DCI_Archive/*.xml')[:10]:
     print xml
-    print '======='
     tree = ElementTree(file=xml)
     field = {}
     fpage = None
     lpage = None
-    type = 'inproceedings'
     authors = []
+    group = ''
     for elem in tree.getroot():
-        print elem.tag, ' => ', elem.text
         for subelem in elem:
             if elem.tag=='front':
                 if subelem.tag=='docid':
@@ -31,6 +31,10 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
                     type = 'article'
                 elif subelem.tag=='issno':
                     field['number'] = subelem.text
+                elif subelem.tag=='group':
+                    group = subelem.text
+                elif subelem.tag=='date':
+                    pass
                 else:
                     print ': ', subelem.tag, '=> ', subelem.text
             elif elem.tag=='body':
@@ -56,32 +60,32 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
                     for subsubelem in subelem:
                         print ':: ', subsubelem.tag, '=> ', subsubelem.text
                         for subsubsubelem in subsubelem:
-                            print '::: ', subsubsubelem.tag, '=> ', subsubsubelem.text
+                            print '::: ', subsubsubelem.tag, \
+                                '=> ', subsubsubelem.text
 
+    # determine pages
     if fpage and lpage:
         if fpage == lpage:
             field['pages'] = fpage
         else:
             field['pages'] = '-'.join([fpage,lpage])
 
+    # determine type
+    if is_article.match(group):
+        type = 'article'
+    elif fpage != lpage: # or title.lower() != booktitle.lower():
+        type = 'incollection'
+        field['booktitle'] = field['journal']
+        del field['journal']
+    else:
+        type = 'book'
+        del field['journal']
+
     out.write('\n@%s{%s,\n' % (type,key))
     for key in field.keys():
         out.write('\t%s = {%s},\n' % (key,field[key]))
     out.write('}\n')
 
-    print '----------'
-
-#@article{GPR10-02-01660170,
-#   author = {R[] Green},
-#   journal = {Geophys. Prosp.},
-#   note = {Discussion in GPR-10-04-0548-0548},
-#   number = {02},
-#   pages = {166-170},
-#   publisher = {Eur. Assn. Geosci. Eng.},
-#   title = {The hidden layer problem },
-#   volume = {10},
-#   year = {1962}}
-   
 out.close()
 sys.exit(0)
 
