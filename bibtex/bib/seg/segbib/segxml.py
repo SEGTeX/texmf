@@ -3,9 +3,31 @@
 from elementtree.ElementTree import ElementTree
 import glob, sys, re
 
+is_article = re.compile(r'(CAN|GEO|EGJ|EGK|PRE|FBR|GPR|TLE|REC)')
+
+needs_braces = re.compile(r'.*[A-Z]')
+special_character = re.compile(r'([\&\#\$\_])')
+math_mode = re.compile(r'([\w\d]+\^[\w\d]+)')
+
+def fix_title(string):
+    words = string.split()
+    title = words.pop(0)
+    if needs_braces.match(title,1):
+        title = "{%s}" % title
+        title = special_character.sub(r'\\\1',title) # escape for latex
+    for word in words:
+        if needs_braces.match(word):
+            word = "{%s}" % word
+        word = special_character.sub(r'\\\1',word) # escape for latex
+        word = math_mode.sub(r'$\1$',word) # T^2 is math mode 
+        title += ' ' + word
+    return title
+
 out = open('SEG2008.bib','w')
 
-is_article = re.compile(r'(CAN|GEO|EGJ|EGK|PRE|FBR|GPR|TLE|REC)')
+book = {
+    'SSS': 'Seismic source signature estimation and measurement',
+    }
 
 for xml in glob.glob('DCI_Archive/*.xml')[:10]:
     print xml
@@ -39,11 +61,15 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
                     print ': ', subelem.tag, '=> ', subelem.text
             elif elem.tag=='body':
                 if subelem.tag=='title':
-                    field['title'] = subelem.text
+                    field['title'] = fix_title(subelem.text)
                 elif subelem.tag=='cpyrt':
                     for subsubelem in subelem:
                         if subsubelem.tag=='cpydate':
                             field['year'] = subsubelem.text
+                        elif subsubelem.tag=='cpyrtnme':
+                            for subsubsubelem in subsubelem:
+                                if subsubsubelem.tag=='orgname':
+                                    field['publisher'] = subsubsubelem.text
                 elif subelem.tag=='authgrp':
                     for author in subelem:
                         name = ['','']
@@ -53,7 +79,7 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
                             elif subsubelem.tag=='surname':
                                 name[1] = subsubelem.text
                         authors.append(' '.join(name))
-                    field['author'] = ' '.join(authors)
+                    field['author'] = ' and '.join(authors)
                 else:
                     print ': ', subelem.tag, '=> ', subelem.text
                     
@@ -73,17 +99,22 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
     # determine type
     if is_article.match(group):
         type = 'article'
-    elif fpage != lpage: # or title.lower() != booktitle.lower():
-        type = 'incollection'
-        field['booktitle'] = field['journal']
+    elif field['journal'] == 'SEG Books':
+        if fpage == lpage:
+            type = 'book'
+        else:
+            type = 'incollection'
+            field['booktitle'] = book.get(key[:3])
         del field['journal']
     else:
-        type = 'book'
+        type = 'inproceedings'
+        field['booktitle'] = field['journal']
         del field['journal']
 
     out.write('\n@%s{%s,\n' % (type,key))
     for key in field.keys():
-        out.write('\t%s = {%s},\n' % (key,field[key]))
+        if field[key]:
+            out.write('\t%s = {%s},\n' % (key,field[key]))
     out.write('}\n')
 
 out.close()
