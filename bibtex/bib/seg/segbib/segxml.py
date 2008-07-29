@@ -8,6 +8,7 @@ is_article = re.compile(r'(CAN|GEO|EGJ|EGK|PRE|FBR|GPR|TLE|REC)')
 needs_braces = re.compile(r'.*[A-Z]')
 special_character = re.compile(r'([\&\#\$\_])')
 math_mode = re.compile(r'([\w\d]+\^[\w\d]+)')
+dash = re.compile(u'\xfb')
 
 def fix_title(string):
     words = string.split()
@@ -19,17 +20,30 @@ def fix_title(string):
         if needs_braces.match(word):
             word = "{%s}" % word
         word = special_character.sub(r'\\\1',word) # escape for latex
+        word = dash.sub('--',word)
         word = math_mode.sub(r'$\1$',word) # T^2 is math mode 
         title += ' ' + word
     return title
 
-out = open('SEG2008.bib','w')
+accents = {
+    u'\xb0': '\\O',
+    }
+
+def fix_author(string):
+    for a in accents.keys():
+        string = re.sub(a,accents[a],string)
+    return string
+
+def fix_publisher(string):
+    string = special_character.sub(r'\\\1',string) # escape for latex
+
+out = open('SEG2008.bib','a')
 
 book = {
     'SSS': 'Seismic source signature estimation and measurement',
     }
 
-for xml in glob.glob('DCI_Archive/*.xml')[:10]:
+for xml in glob.glob('DCI_Archive/*.xml')[:100]:
     print xml
     tree = ElementTree(file=xml)
     field = {}
@@ -69,16 +83,21 @@ for xml in glob.glob('DCI_Archive/*.xml')[:10]:
                         elif subsubelem.tag=='cpyrtnme':
                             for subsubsubelem in subsubelem:
                                 if subsubsubelem.tag=='orgname':
-                                    field['publisher'] = subsubsubelem.text
+                                    field['publisher'] = fix_publisher(subsubsubelem.text)
                 elif subelem.tag=='authgrp':
                     for author in subelem:
                         name = ['','']
                         for subsubelem in author:
                             if subsubelem.tag=='fname':
-                                name[0] = subsubelem.text
+                                if subsubelem.text:
+                                    name[0] = subsubelem.text                                
                             elif subsubelem.tag=='surname':
-                                name[1] = subsubelem.text
-                        authors.append(' '.join(name))
+                                if subsubelem.text:
+                                    name[1] = fix_author(subsubelem.text)
+                                else:
+                                    name = None
+                        if name:
+                            authors.append(' '.join(name))
                     field['author'] = ' and '.join(authors)
                 else:
                     print ': ', subelem.tag, '=> ', subelem.text

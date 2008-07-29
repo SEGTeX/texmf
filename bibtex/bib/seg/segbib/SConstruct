@@ -25,6 +25,14 @@ env.Command('SEG2005.bib',
             python ${SOURCES[0]} < ${SOURCES[3]} >> $TARGET
             ''')
 
+env.Command('SEG2008.bib',
+            Split('segxml.py preamble2008 strings.bib'),
+            '''
+            cat ${SOURCES[1]} > $TARGET 
+            cat ${SOURCES[2]} >> $TARGET
+            python ${SOURCES[0]}
+            ''')
+
 latex = WhereIs('pdflatex')
 bibtex = WhereIs('bibtex')
 
@@ -82,7 +90,7 @@ for i in xrange(len(blocks)-1):
     ltx = test + '.ltx'
     pdf = test + '.pdf'
 
-    env.Command(ltx,['segtex.py','SEG2005.bib','../../../bst/seg/seglike.bst'],
+    env.Command(ltx,['segtex.py','SEG2008.bib','../../../bst/seg/seglike.bst'],
                 './segtex.py %s > $TARGET' % range)
     env.Pdf(pdf,ltx)
     env.Install('PDF',pdf)
