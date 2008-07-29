@@ -280,7 +280,7 @@ FUNCTION {format.names}
       nameptr #1 >
 	{ namesleft #1 >
 	    { ", " * t * }
-	    { numnames #2 >
+	    { numnames #1 > % changed from #2 by Rodrigo Fuck 
 		{ "," * }
 		'skip$
 	      if$
