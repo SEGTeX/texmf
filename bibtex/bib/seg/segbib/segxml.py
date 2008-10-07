@@ -36,11 +36,19 @@ def fix_author(string):
 
 def fix_publisher(string):
     string = special_character.sub(r'\\\1',string) # escape for latex
+    return string
 
 out = open('SEG2008.bib','a')
 
 book = {
     'SSS': 'Seismic source signature estimation and measurement',
+    'ASA': 'Applied seismic anisotropy: theory, background, and field studies',
+    'SW2': '2nd Southwest. Pacific Workshop-Symp., Papers and Summaries',
+    'MSD': 'Migration of seismic data',
+    'MAT': 'Multiple attenuation',
+    'SAA': 'Seismic and acoustic velocities in reservoir rocks',
+    'EM2': 'Electromagnetic methods in applied geophysics',
+    'MTM': 'Magnetotelluric methods'
     }
 
 for xml in glob.glob('DCI_Archive/*.xml')[:100]:
@@ -119,7 +127,7 @@ for xml in glob.glob('DCI_Archive/*.xml')[:100]:
     if is_article.match(group):
         type = 'article'
     elif field['journal'] == 'SEG Books':
-        if fpage == lpage:
+        if fpage == lpage or fpage == '1':
             type = 'book'
         else:
             type = 'incollection'
