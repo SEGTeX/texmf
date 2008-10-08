@@ -8,9 +8,29 @@ is_article = re.compile(r'(CAN|GEO|EGJ|EGK|PRE|FBR|GPR|TLE|REC)')
 needs_braces = re.compile(r'.*[A-Z]')
 special_character = re.compile(r'([\&\#\$\_])')
 math_mode = re.compile(r'([\w\d]+\^[\w\d]+)')
-dash = re.compile(u'\xfb')
+
+accents = {
+    u'\xb0': '{\\O}',
+    u'\xb5': '\\ae',
+    u'\xfb': '--',
+    u'\xc6': '\'',
+    u'\xf4': '``',
+    u'\xf6': '\'\'',
+    u'\xe0': ' ',
+    u'\xf7': '\\"{o}',
+    u'\xab': '--',
+    u'\xb2': '\\\'{y}',
+    u'\xdf': '\\\'{a}',
+    u'\xdc': '\\u{s}'
+    }
+
+def fix_special(string):
+    for a in accents.keys():
+        string = re.sub(a,accents[a],string)
+    return string
 
 def fix_title(string):
+    string = fix_special(string)
     words = string.split()
     title = words.pop(0)
     if needs_braces.match(title,1):
@@ -20,19 +40,9 @@ def fix_title(string):
         if needs_braces.match(word):
             word = "{%s}" % word
         word = special_character.sub(r'\\\1',word) # escape for latex
-        word = dash.sub('--',word)
         word = math_mode.sub(r'$\1$',word) # T^2 is math mode 
         title += ' ' + word
     return title
-
-accents = {
-    u'\xb0': '\\O',
-    }
-
-def fix_author(string):
-    for a in accents.keys():
-        string = re.sub(a,accents[a],string)
-    return string
 
 def fix_publisher(string):
     string = special_character.sub(r'\\\1',string) # escape for latex
@@ -51,7 +61,7 @@ book = {
     'MTM': 'Magnetotelluric methods'
     }
 
-for xml in glob.glob('DCI_Archive/*.xml')[:100]:
+for xml in glob.glob('DCI_Archive/*.xml'):
     print xml
     tree = ElementTree(file=xml)
     field = {}
@@ -101,7 +111,7 @@ for xml in glob.glob('DCI_Archive/*.xml')[:100]:
                                     name[0] = subsubelem.text                                
                             elif subsubelem.tag=='surname':
                                 if subsubelem.text:
-                                    name[1] = fix_author(subsubelem.text)
+                                    name[1] = fix_special(subsubelem.text)
                                 else:
                                     name = None
                         if name:

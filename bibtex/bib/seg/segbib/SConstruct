@@ -83,7 +83,7 @@ Pdf = Builder(action = Action(latex2pdf),
 
 env.Append(BUILDERS={'Pdf':Pdf})
 
-blocks = map(str,range(1,34000,1000))
+blocks = map(str,range(1,34000,100))
 for i in xrange(len(blocks)-1):
     range = '-'.join(blocks[i:i+2])
     test = 'test' + range
