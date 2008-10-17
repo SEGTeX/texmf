@@ -51,7 +51,8 @@ sub do_cmd_lstset {
     my $rest = shift;
     $rest = ~ s/$next_pair_pr_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
     my $options = $2;
-    print "in lstset\n";
+    print "in lstset with options $options \n";
+
     if ($options =~ /language=([^\,\}]+)/) {
 	$listings::language=lc($1);
 	$listings::language =~ s/c\+\+/cpp/;

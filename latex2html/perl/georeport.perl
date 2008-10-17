@@ -4,7 +4,7 @@ sub checkAbs {
     my $html = shift;
     local ($_, $in, $abs);
     open (HTML, '../' . $html) or return '';
-    print "Checking abstract...\n";
+    print "Checking abstract in $html...\n";
     while (<HTML>) {
 	if ($in && /^(.*)\<\/DIV\>/) {
 	    $abs .= $1;
