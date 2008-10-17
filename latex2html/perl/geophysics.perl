@@ -11,7 +11,7 @@ $left = '';
 $right = '';
 
 sub figure {
-    my ($figname,$size) = @_;
+    my ($figname,$size,$scale) = @_;
     my $fig = join('/','..',$path,$figdir,$figname);
     my $type = $main::IMAGE_TYPE;
     print "Translating plot $fig... with size \"$size\" \n";
@@ -28,9 +28,9 @@ sub figure {
 		$dim = 1;
 	    }
 	    if ($3 == 'height') {
-		$out .= sprintf (" %s=%d",$dimension,$dim*9*75);
+		$out .= sprintf (" %s=%d",$dimension,$scale*$dim*9*75);
 	    } else {
-		$out .= sprintf (" %s=%d",$dimension,$dim*6*75);
+		$out .= sprintf (" %s=%d",$dimension,$scale*$dim*6*75);
 	    }
 	}
     }
@@ -204,7 +204,7 @@ sub do_cmd_plot {
     join ("\n","<P><CENTER>",
           &anchor_label($label,$CURRENT_FILE,''),
           "<TABLE BORDER=0>","<TR><TH>",
-          &seg::figure  ($figname,$size),"<TR><TH>",
+          &seg::figure  ($figname,$size,1),"<TR><TH>",
           &seg::caption ($figname,$caption),"<TR><TH>",
 	  &seg::buttons ($figname),
 	  "<\/TABLE>",
@@ -226,7 +226,7 @@ sub do_cmd_multiplot {
     foreach $fig (@figs) {	
 	$figs .= join("\n",		      
 		      &anchor_label('fig:' . $fig,$CURRENT_FILE,''),
-		      &seg::figure($fig,$size));
+		      &seg::figure($fig,$size,1));
     }
     join ("\n","<P><CENTER>",
           &anchor_label($label,$CURRENT_FILE,''),
@@ -271,7 +271,7 @@ sub do_cmd_sideplot {
           "<TABLE BORDER=0>","<TR>",
           "<TH WIDTH=\"40\%\">",
           &seg::caption ($figname,$caption),"<TH rowspan=2>",
-          &seg::figure  ($figname,$size),"<TR><TH WIDTH=\"40\%\">",
+          &seg::figure  ($figname,$size,0.5),"<TR><TH WIDTH=\"40\%\">",
 	  &seg::buttons ($figname),
           "<\/TABLE><\/CENTER><\/P>", $_);
 }
