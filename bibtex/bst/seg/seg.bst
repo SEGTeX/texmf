@@ -1,9 +1,9 @@
-% BibTeX `seglike' bibliography style (08-Mar-07 version)
+% BibTeX `seglike' bibliography style (29-Apr-08 version)
 % Adapted from the `apalike' style, 24-jan-88 version; for BibTeX version 0.99a.
-% Copyright (C) 2007 Soc. of Expl. Geophys. & Joerg Schleicher,
+% Copyright (C) 2007, 2008 Soc. of Expl. Geophys. & Joerg Schleicher,
 % all rights reserved.
 % Copying of this file is allowed, provided that if you make any changes at all
-% you name it something other than `seglike.bst'.
+% you name it something other than `seglike.bst' or 'seg'bst'.
 % This restriction helps ensure that all copies are identical.
 % Differences between `apalike' and `alpha' are generally heralded by a `%'.
 % Differences between this style and `apalike' are generally heralded by a `%%'.
@@ -35,14 +35,25 @@
 %                       booktitle in inproceedings
 %   13-oct-06   (JS)    Added comma after three-em dash representing identical
 %                       author names
-%   08-mar-07   (JS)    Period changed to comma before publisher in incollection;
-%                       comma added after "ed." where editor instead of author is
-%                       used, resulting double comma eliminated after editor in
-%                       incollection
-%   04-sep-07   (JS)    Last corrections: Comma added after first author also for
-%                       two authors; edition in book right after title; note in
-%                       parentheses; series, number format corrected; segeditor
-%                       in parentheses
+%   08-mar-07   (JS)    Period changed to comma before publisher in incollection
+%                       comma added after "ed." where editor instead of author
+%                       is used, resulting double comma eliminated after editor
+%                       in incollection
+%   04-sep-07   (JS)    Comma added after first author also for two authors;
+%                       edition in book right after title; note in parentheses;
+%                       series, number format in book and inbook corrected;
+%                       segeditor in parentheses
+%   29-apr-08   (JS)    Changes in inproceedings: address suppressed,
+%                       priority of proceedingstitle over booktitle, if no
+%                       proceedingstitle is present, use always booktitle,
+%                       organization after proceedingstitle or booktitle;
+%                       in book: segeditor replaced by bookeditor; in inbook:
+%                       chapter used as paper title, title as book title; in
+%                       inbook and incollection: pages after publisher, field
+%                       bookeditor introduced; in book, inbook, incollection,
+%                       inproceedings and proceedings: publisher before volume
+%   17-jun-08   (JS)    Last corrections: comma added before and in two-author 
+%                       references
 %                       THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
@@ -61,7 +72,7 @@ ENTRY
     meetingnr		%% introduced in adaptation of geophys.bst	
     note
     number
-%%			as number is suppressed in normal journal
+%%			since number is suppressed in normal journal
 %%			citations, we need a new entry for magazines the
 %%			issues of which start with page number 1 each
     issue
@@ -70,7 +81,10 @@ ENTRY
     proceedingstitle	%% only in seglike.bst
     publisher
     school
-    segeditor           %% allow for author and editor in SEG books
+%%                      since standard bib styles don't allow for both author
+%%                      and editor fields in book, inbook, and incollection
+%%                      we need an additional field, bookeditor
+    bookeditor
     series
     title
     type
@@ -280,7 +294,7 @@ FUNCTION {format.names}
       nameptr #1 >
 	{ namesleft #1 >
 	    { ", " * t * }
-	    { numnames #1 > % changed from #2 by Rodrigo Fuck 
+	    { numnames #1 >
 		{ "," * }
 		'skip$
 	      if$
@@ -319,11 +333,11 @@ FUNCTION {format.key}			% this function is just for apalike
   if$
 }
 
-FUNCTION {format.segeditors}            %% this function is just for seglike
-{ segeditor empty$                      %% it formats the segeditor field
+FUNCTION {format.bookeditors.book}       %% this function is just for seglike
+{ bookeditor empty$                      %% it formats the bookeditor field
     { "" }                              %% allowed in book and inbook
-    { " (" segeditor format.names *
-      segeditor num.names$ #1 >
+    { " (" bookeditor format.names *
+      bookeditor num.names$ #1 >
 %%	{ ", editors" * }   
 %%	{ ", editor" * }
         { ", eds." * }                  %% SEG style
@@ -346,6 +360,27 @@ FUNCTION {format.editors}
         { ", ed.," * }                   %% SEG style
       if$
     }
+  if$
+}
+
+FUNCTION {format.bookeditors}
+{ bookeditor empty$
+    { "" }
+    { bookeditor format.names
+      bookeditor num.names$ #1 >
+%%	{ ", editors" * }   
+%%	{ ", editor" * }
+        { ", eds.," * }                  %% SEG style
+        { ", ed.," * }                   %% SEG style
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.chapter}
+{ chapter empty$
+    { "" }
+    { chapter "t" change.case$ }
   if$
 }
 
@@ -403,10 +438,11 @@ FUNCTION {either.or.check}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
-    { "volume" volume emphasize tie.or.space.connect
-      series empty$
-	'skip$
-	{ " {\it of} " * series * }
+    { series empty$
+        { ", " * volume emphasize * }
+        { "volume" volume emphasize tie.or.space.connect
+	  " {\it of} " * series *
+        }
       if$
       "volume and number" number either.or.check
     }
@@ -522,12 +558,26 @@ FUNCTION {format.chapter.pages}
 FUNCTION {format.in.ed.booktitle}
 { booktitle empty$
     { "" }
-    { editor empty$
+    { bookeditor empty$
 %	{ "In " booktitle emphasize * }
 %	{ "In " format.editors * ", " * booktitle emphasize * }
 %%			%% modified according to seg.bst
         { "{\it in} " booktitle * }
-        { "{\it in} " format.editors * " " * booktitle * }
+        { "{\it in} " format.bookeditors * " " * booktitle * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.in.ed.title}                   %% used in inbook
+{ title empty$
+    { "" }
+    { bookeditor empty$
+%	{ "In " booktitle emphasize * }
+%	{ "In " format.editors * ", " * booktitle emphasize * }
+%%			%% modified according to seg.bst
+        { "{\it in} " title * }
+        { "{\it in} " format.bookeditors * " " * title * }
       if$
     }
   if$
@@ -633,14 +683,20 @@ FUNCTION {format.meeting.seg}
       organization *
     }
   if$
-  proceedingstitle empty$                    %% if no proceedingstitle
-    { pages empty$                              %% if no pages
-        { "" * }                                %% nothing
-        { ", Expanded Abstracts" * }            %% else "Exp. Abst"
+  proceedingstitle empty$                        %% if no proceedingstitle
+    { booktitle empty$                           %%   if no booktitle
+        { pages empty$                           %%     if no pages
+            { "" * }                             %%       nothing
+            { ", Expanded Abstracts" * }         %%     else "Exp. Abst"
+          if$
+        }
+        { ", " *                                 %%   else
+          booktitle *                            %%     use booktitle
+        }
       if$
     }
-    { ", " *                                 %% else
-      proceedingstitle *                     %% use proceedingstitle
+    { ", " *                                     %% else
+      proceedingstitle *                         %%   use proceedingstitle
     }
   if$
 }
@@ -652,11 +708,21 @@ FUNCTION {format.meeting.ad.ab}
   if$
   meetingnr empty$                                     %% if no meetingnr given
     { meeting empty$                                   %% and no meeting given
-        { booktitle empty$
-            { "empty booktitle in " cite$ * warning$
-              "" *
+        { proceedingstitle empty$
+            { booktitle empty$
+                { "empty booktitle in " cite$ * warning$
+                  "" *
+                }
+                { booktitle * }                           %% use booktitle
+              if$
             }
-            { booktitle * }                              %% use booktitle
+            { proceedingstitle * }                        %% use proc.title
+          if$
+          organization empty$
+            { "" * }
+            { ", " *
+              organization *
+            }
           if$
         }
         { format.meeting.seg * }                       %% else use meeting
@@ -666,16 +732,16 @@ FUNCTION {format.meeting.ad.ab}
       format.meeting.seg *
     }
   if$
+  publisher empty$                                     %% no publisher given 
+    { "" * }                                           %%    do nothing
+    { ", " *                                           %% else
+    publisher *                                        %%    use publisher
+  }
+  if$
   pages empty$
     { "" * }
     { "," *
       format.pages *
-    }
-  if$
-  publisher empty$
-    { "" * }
-    { ", " *
-      publisher *
     }
   if$
 }
@@ -719,16 +785,16 @@ FUNCTION {book}
   output.year.check                             % special for apalike
 % new.block                                     %% no period for seglike
 %  format.btitle "title" output.check	        %% treat book titles like 
-  format.title "title" output.check             %%  any titles in seglike
-  format.edition output                         %% edition right after title
   crossref missing$
-    { format.bvolume output
-      new.block
-      format.number.series output
-      format.segeditors output                  %% Allow segeditor
-%      new.sentence
+    { format.title "title" output.check         %%  any titles in seglike
+      format.edition output                     %% edition right after title
       new.colon					%% colon for seglike
       publisher "publisher" output.check
+      format.bvolume output
+      new.block
+      format.number.series output
+      format.bookeditors.book output             %% Allow bookeditor
+%      new.sentence
 %      address output				%% address suppressed
     }
     { new.block
@@ -770,25 +836,23 @@ FUNCTION {inbook}
     }
   if$
   output.year.check				% special for apalike
-% new.block						%% no period
-%  format.btitle "title" output.check		%% treat book titles like 
-  format.title "title" output.check		%% any titles in seglike
+% new.block                             	%% no period
+%  format.btitle "btitle" output.check          %% no special treatment,
+  format.chapter "chapter" output.check	        %% treat chapter as title
   crossref missing$
-    { format.bvolume output
-      format.chapter.pages "chapter and pages" output.check
-      new.block
-      format.number.series output
-      format.segeditors output                  %% allow segeditor
-      new.sentence
+    { format.in.ed.title "title" output.check   %% treat title as book title
+      format.edition output
+      new.colon
       publisher "publisher" output.check
+      format.bvolume output
+      format.number.series output
 %      address output				%% address suppressed
     }
-    { format.chapter.pages "chapter and pages" output.check
-      new.block
+    { new.block
       format.book.crossref output.nonnull
     }
   if$
-  format.edition output
+  format.pages output
   new.block
   format.note output
   fin.entry
@@ -804,13 +868,14 @@ FUNCTION {incollection}
 % new.block						%% no period
   crossref missing$
     { format.in.ed.booktitle "booktitle" output.check
+      format.edition output
+      new.colon
+      publisher "publisher" output.check
       format.bvolume output
       format.number.series output
-      format.chapter.pages output
-%      new.sentence
-      publisher "publisher" output.check
+      format.chapter output
+      format.pages output
 %      address output				%% address suppressed
-      format.edition output
     }
     { format.incoll.inproc.crossref output.nonnull
       format.chapter.pages output
@@ -931,12 +996,13 @@ FUNCTION {proceedings}
 % new.block						%% no period
 %  format.btitle "title" output.check		%% treat book titles like 
   format.title "title" output.check		%% any titles in seglike
+%                                               %% no addres in seglike
+% address output				% for apalike
+  organization output				% a nonempty organization
+  new.colon					% we always output
+  publisher output				% here
   format.bvolume output
   format.number.series output
-  address output				% for apalike
-  new.sentence					% we always output
-  organization output				% a nonempty organization
-  publisher output				% here
   new.block
   format.note output
   fin.entry
@@ -1054,6 +1120,8 @@ MACRO {jasab} {"Journal of the Acoustical Society of America B"}
 MACRO {jcss} {"Journal of Computer and System Sciences"}
 
 MACRO {jg} {"Journal of Geophysics"}
+
+MACRO {jge} {"Journal of Geophysics and Engineering"}
 
 MACRO {jgr} {"Journal of Geophysical Research"}
 
