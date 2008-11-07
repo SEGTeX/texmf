@@ -109,7 +109,7 @@ $DEBUG = 0;
 #  of the navigation panel in the first node/page of a converted document
 #  will point to $EXTERNAL_UP_LINK. $EXTERNAL_UP_TITLE should be set
 #  to some text which describes this external link.
-$EXTERNAL_UP_LINK = "http://rsf.sourceforge.net/Reproducible_Documents";
+$EXTERNAL_UP_LINK = "http://www.reproducibility.org/wiki/Reproducible_Documents";
 $EXTERNAL_UP_TITLE = "Reproducible Documents";
 
 # If this is set then the resulting HTML will look marginally better if viewed 
