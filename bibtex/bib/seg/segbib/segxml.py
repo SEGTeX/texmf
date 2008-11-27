@@ -126,6 +126,13 @@ for xml in glob.glob('DCI_Archive/*.xml'):
                             print '::: ', subsubsubelem.tag, \
                                 '=> ', subsubsubelem.text
 
+    # add issue
+    if group[:3] == 'GEO': 
+        number = field.get('number')
+        year = field.get('year')
+        if number and year and int(year) >= 2005:
+            field['issue'] = number
+
     # determine pages
     if fpage and lpage:
         if fpage == lpage:
