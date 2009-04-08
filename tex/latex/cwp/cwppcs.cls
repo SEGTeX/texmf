@@ -553,6 +553,7 @@
 \gdef\@shorttitle{}
 
 \gdef\@journal{CWP-000}
+\def\journal#1{\gdef\@journal{#1}}
 
 \def\@ddell{}
 \def\ps@headings{\let\@mkboth\markboth
