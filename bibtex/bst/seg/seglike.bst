@@ -52,28 +52,42 @@
 %                       inbook and incollection: pages after publisher, field
 %                       bookeditor introduced; in book, inbook, incollection,
 %                       inproceedings and proceedings: publisher before volume
-%   17-jun-08   (JS)    Last corrections: comma added before and in two-author 
-%                       references
+%   17-jun-08   (JS)    Comma added before and in two-author references
+%   17-jul-09   (JS)    Last changes: added earticle and webpage fields in
+%                       accordance with 'Instructions to Authors', Geophysics, 
+%                       Jan/Feb 2009. Field earticle has entries doi, url,
+%                       and accessed (or lastchecked for compatibility with
+%                       other solutions) in addition to all conventional
+%                       article entries. Field webpage has entries author,
+%                       year, title, url, accessed/lastchecked, and note.
+%                       Default for accessed/lastchecked is \today.
 %                       THIS VERSION DOES NOT WORK WITH BIBTEX 0.98i.
 
 ENTRY
-  { address
+%%                      new entry for earticle and webpage
+  { accessed
+    address
     author
     booktitle
     chapter
+%%                      new entry for earticle
+    doi
     edition
     editor
     howpublished
     institution
     journal
     key
+%%                      new entry for earticle and webpage
+    lastchecked
 %    month		not used in apalike  %% nor seglike.bst
-    meeting		%% introduced in accordance to SEG's seg.bst	
+    meeting		%% introduced in accordance with SEG's seg.bst	
     meetingnr		%% introduced in adaptation of geophys.bst	
     note
     number
 %%			since number is suppressed in normal journal
-%%			citations, we need a new entry for magazines the
+%%			citations, we need a new entry for Geophysics with
+%%			its new page number system and for magazines the
 %%			issues of which start with page number 1 each
     issue
     organization
@@ -88,6 +102,8 @@ ENTRY
     series
     title
     type
+%%                      new entry for earticle and webpage
+    url
     volume
     year
   }
@@ -381,6 +397,49 @@ FUNCTION {format.chapter}
 { chapter empty$
     { "" }
     { chapter "t" change.case$ }
+  if$
+}
+
+FUNCTION {format.url.access}
+{ url empty$
+    { "url empty in " cite$ * warning$ }
+    { "\verb+" url * "+" * 
+      lastchecked empty$
+        { accessed empty$
+            { "" "both lastchecked and accessed empty in " cite$ * warning$ }
+            { ", accessed " * accessed * }
+          if$
+        }
+        { ", accessed " * lastchecked * }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.doi.access}
+{ doi empty$
+    {  url empty$
+        { "" "both doi and url empty in " cite$ * warning$ }
+        { "empty doi in " cite$ * warning$ }
+      if$
+    }
+    { }
+  if$
+  lastchecked empty$
+    { accessed empty$
+        { "\today" "both lastchecked and accessed empty in " cite$ * warning$ }
+        { "accessed " accessed * }
+      if$
+    }
+    { "accessed " lastchecked * }
+  if$
+  url empty$
+    { }
+    { "; \verb+" * url * "+" * }
+  if$
+  doi empty$
+    { }
+    {  "; \verb+http://dx.doi.org/" * doi * "+" * }
   if$
 }
 
@@ -769,6 +828,30 @@ FUNCTION {article}
   fin.entry
 }
 
+FUNCTION {earticle}
+{ output.bibitem
+  format.authors "author" output.check
+  author format.key output				% special for
+  output.year.check					% apalike
+% new.block						%% no period
+  format.title "title" output.check
+% new.block						%% no period
+  new.colon						%% colon instead
+  crossref missing$
+%    { journal emphasize "journal" output.check		%% no italics
+    { journal "journal" output.check			%% for seglike
+      format.vol.num.pages output
+    }
+    { format.article.crossref output.nonnull
+      format.pages output
+    }
+  if$
+  format.doi.access output
+  new.block
+  format.note output
+  fin.entry
+}
+
 FUNCTION {book}
 { output.bibitem
   author empty$
@@ -965,6 +1048,18 @@ FUNCTION {misc}
 % new.block						%% no period
   new.colon						%% colon instead
   howpublished output
+  new.block
+  format.note output
+  fin.entry
+}
+
+FUNCTION {webpage}                                      %% new in seglike
+{ output.bibitem
+  format.authors output
+  author format.key output
+  output.year.check
+  format.title output
+  format.url.access output
   new.block
   format.note output
   fin.entry
