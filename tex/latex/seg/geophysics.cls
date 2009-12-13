@@ -390,7 +390,7 @@
     \ifthenelse{\boolean{@twoc}}{%
       \seg@title \\
       \begin{flushleft}
-\Large #1\footnote{\seg@address}
+\Large #1
       \end{flushleft}\vspace{0.2in}
     }{%
       \seg@title
@@ -417,7 +417,8 @@
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
     \ifthenelse{\boolean{@twoc}}{%
-      \twocolumn[\vspace{1.8in}\seg@author]}{\vspace{0.3in}\seg@author}
+      \twocolumn[\vspace{1.8in}\seg@author]\footnotetext{\protect\seg@address}%
+    }{\vspace{0.3in}\seg@author}
     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
          \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
     \medskip\end{minipage}\end{lrbox}%
@@ -437,7 +438,6 @@
 \renewcommand{\@evenhead}{\@oddhead}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
 \renewcommand{\@evenfoot}{\@oddfoot}}}
-  % In general, there is a different page style on the first page.
 \newcommand{\ps@segone}{%
 \renewcommand{\@oddhead}{}%
 \renewcommand{\@evenhead}{}%

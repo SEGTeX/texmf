@@ -49,10 +49,26 @@
 % \changes{v1.0}{2004/06/22}{Initial version}
 % \changes{v2.0}{2004/11/08}{Numerous updates}
 % \changes{v3.0}{2007/02/14}{Numerous updates}
-%
+% 
 % \DoNotIndex{\LoadClass,\DeclareOption,\ProcessOption}
-% \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand,
-% \providecommand,\renewcommand}
+% \DoNotIndex{\@ifstar,\@mkboth,\@tempboxa,\\,\ ,\newcommand}
+% \DoNotIndex{\providecommand,\renewcommand,\textit,\thepage,\hfill,\makebox}
+% \DoNotIndex{\textbf,\thispagestyle,\boolean,\setboolean,\RequirePackage}
+% \DoNotIndex{\newboolean,\ifthenelse,\fbox,\noindent,\medskip,\Large}
+% \DoNotIndex{\onecolumn,\twocolumn,\PassOptionsToClass,\AtEndDocument}
+% \DoNotIndex{\CurrentOption,\ExecuteOptions,\ProcessOptions,\section}
+% \DoNotIndex{\footnote,\newpage,\renewenvironment,\vspace,\centering}
+% \DoNotIndex{\usebox,\columnwidth,\centerline,\setlength,\maketitle,\equal}
+% \DoNotIndex{\today,\address,\bfseries,\newenvironment,\underline,\def}
+% \DoNotIndex{\fboxsep,\emph,\begin,\end,\parindent,\normalsize,\normalfont}
+% \DoNotIndex{\protect,\headsep,\textfloatsep,\topmargin,\evensidemargin}
+% \DoNotIndex{\stepcounter,\thefigure,\pagestyle,\@plus,\@minus,\let,\parskip}
+% \DoNotIndex{\newsavebox,\oddsidemargin,\textwidth,\textheight,\p@,\topskip}
+% \DoNotIndex{\theequation,\setcounter,\Alph,\newcounter,\MakeUppercase}
+% \DoNotIndex{\itshape,\addtolength,\refname,\DeclareRobustCommand,\textcolor}
+% \DoNotIndex{\caption,\label,\footnotesep,\headheight,\lineskip,\footins}
+% \DoNotIndex{\@beginparpenalty,\@endparpenalty,\@highpenalty,\@medpenalty}
+% \DoNotIndex{\@oddhead,\@oddfoot,\@evenhead,\@evenfoot,\z@,\large}
 %
 % \title{The \textsf{geophysics} class for 
 % writing \emph{Geophysics} papers\thanks{This document corresponds to
@@ -654,7 +670,7 @@
     \ifthenelse{\boolean{@twoc}}{%
       \seg@title \\  
       \begin{flushleft}
-	\Large #1\footnote{\seg@address}
+	\Large #1
       \end{flushleft}\vspace{0.2in}
     }{%
       \seg@title
@@ -694,7 +710,8 @@
   \setlength{\fboxsep}{10pt}
   \renewenvironment{abstract}{
     \ifthenelse{\boolean{@twoc}}{%
-      \twocolumn[\vspace{1.8in}\seg@author]}{\vspace{0.3in}\seg@author}
+      \twocolumn[\vspace{1.8in}\seg@author]\footnotetext{\protect\seg@address}%
+    }{\vspace{0.3in}\seg@author}
     \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
          \centerline{\ifthenelse{\boolean{@twoc}}{}{\Large}\textbf{ABSTRACT}}\medskip}{%
     \medskip\end{minipage}\end{lrbox}%
@@ -724,9 +741,6 @@
 \renewcommand{\@evenhead}{\@oddhead}%
 \renewcommand{\@oddfoot}{\hfill\textit{\seg@foot}\hfill}%
 \renewcommand{\@evenfoot}{\@oddfoot}}}
-%    \end{macrocode}
-  % In general, there is a different page style on the first page.
-%    \begin{macrocode}
 \newcommand{\ps@segone}{%
 \renewcommand{\@oddhead}{}%
 \renewcommand{\@evenhead}{}%
