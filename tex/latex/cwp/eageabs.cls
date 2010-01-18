@@ -66,7 +66,7 @@
 \fancyhead[RO,RE]{\includegraphics[height=0.76in,width=1.88in]{eagelogo2010}} % input logo top right, even and odd side
 \renewcommand{\headrulewidth}{0pt} % no line in header
 %
-\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{72\textsuperscript{st} EAGE Conference \& Exhibition --- Barcelona, Spain, 14 {}- 17 June 2010}} % footnote
+\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{72\textsuperscript{st} EAGE Conference \& Exhibition incorporating SPE EUROPEC 2010 \\ Barcelona, Spain, 14 -- 17 June 2010}} % footnote
 \renewcommand{\footrulewidth}{0.5pt} % add line in footnote
 % \renewcommand{\footrule}{%
 %   \vskip-\footruleskip\vskip-\footrulewidth 
