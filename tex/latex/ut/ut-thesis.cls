@@ -174,6 +174,7 @@
 \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 \newcommand{\new}[1]{#1}
 \newcommand{\old}[1]{}
+\newcommand{\ms}[1]{}
 \def\first@char#1#2\end{#1}
 \def\geo@input#1{\ifthenelse{\equal{\paper@dir}{.}\or\equal{\expandafter\first@char#1\end}{.}}{\@iinput{#1}}{\@iinput{\paper@dir/#1}}}
 \def\input{\@ifnextchar\bgroup\geo@input\@@input}
