@@ -187,13 +187,7 @@
 \setlength{\topmargin}{-.51in}
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
 \setlength{\headsep}{0.5in}
-\newsavebox{\seg@abstract}
-\setlength{\fboxsep}{10pt}
-\renewenvironment{abstract}{\vspace{0.3in}\seg@author
-  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
-      \centerline{\Large\textbf{ABSTRACT}}\medskip}
-       {\medskip\end{minipage}\end{lrbox}%
-  \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
+\renewenvironment{abstract}{}{}
 \newenvironment{bios}{%
   \begin{list}{}{%
       \setlength{\leftmargin}{1cm}\setlength{\rightmargin}{1cm}%

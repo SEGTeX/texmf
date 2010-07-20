@@ -327,15 +327,9 @@
 \setlength{\headsep}{0.5in}
 %    \end{macrocode}
 % \begin{macro}{abstract}
-%   The abstract apears in a box.
+%   The abstract is not neded.
 %    \begin{macrocode}
-\newsavebox{\seg@abstract}
-\setlength{\fboxsep}{10pt}
-\renewenvironment{abstract}{\vspace{0.3in}\seg@author
-  \begin{lrbox}{\seg@abstract}\begin{minipage}{0.95\columnwidth}%
-      \centerline{\Large\textbf{ABSTRACT}}\medskip}
-	       {\medskip\end{minipage}\end{lrbox}%
-  \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
+\renewenvironment{abstract}{}{}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{Biography information}
