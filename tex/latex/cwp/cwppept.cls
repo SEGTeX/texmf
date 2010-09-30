@@ -1,26 +1,14 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{cwparticle}[2003/09/01 v0.1 handouts for class]
+\ProvidesClass{pept}[2003/09/01 v0.1 handouts for class]
 
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{notes}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{svjour3}}
 \ProcessOptions*
 
 \RequirePackage{ifthen}
-\RequirePackage{times}
 
-\LoadClass{article}
-
-\setlength{\oddsidemargin}{.01in}
-\setlength{\evensidemargin}{.01in}
-\setlength{\topmargin}{-0.51in}
-\setlength{\textwidth}{6.5in}
-\setlength{\textheight}{9in}
+\LoadClass{svjour3}
 
 \RequirePackage{natbib}
-\DeclareRobustCommand{\refname}{REFERENCES}
-\DeclareRobustCommand{\bibname}{\protect\large~REFERENCES}
-\renewcommand{\bibsection}{\section{\refname}}
-
 \RequirePackage{graphicx}
 
 \newcommand{\@path}{.}
