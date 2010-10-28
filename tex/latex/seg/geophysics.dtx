@@ -69,6 +69,9 @@
 % \DoNotIndex{\caption,\label,\footnotesep,\headheight,\lineskip,\footins}
 % \DoNotIndex{\@beginparpenalty,\@endparpenalty,\@highpenalty,\@medpenalty}
 % \DoNotIndex{\@oddhead,\@oddfoot,\@evenhead,\@evenfoot,\z@,\large}
+% \DoNotIndex{\global,\hspace,\hfil,\arabic,\clearpage,\edef,\vskip}
+% \DoNotIndex{\baselinestretch,\begingroup,\columnsep,\columnseprule}
+% \DoNotIndex{\else,\endgroup,\fi,\flushleft,\footnotetext}
 %
 % \title{The \textsf{geophysics} class for 
 % writing \emph{Geophysics} papers\thanks{This document corresponds to
@@ -643,6 +646,8 @@
 % \begin{macro}{\title}
 % |\title| is redefined for consistency. It changes the internal |\seg@title|.
 %    \begin{macrocode}
+\newcommand{\geo@published}{Unknown}
+\newcommand{\pulished}[1]{\renewcommand{\geo@published}{#1}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
   \begin{minipage}{\textwidth}%
@@ -651,7 +656,7 @@
 \renewcommand{\title}[1]{%
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-		   {\smallskip #1}\end{geo@title}}}
+		   {\smallskip #1\ifthenelse{\equal{\geo@published}{Unknown}}{}{\footnote{Published in \geo@published}}}\end{geo@title}}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\address}
@@ -727,6 +732,7 @@
 %    \begin{macrocode}
 {\pagestyle{plain}\thispagestyle{plain}}
 %    \end{macrocode}
+% \clearpage
 % For paper, define a page style
 %    \begin{macrocode}
 {\newcommand{\ps@seg}{%

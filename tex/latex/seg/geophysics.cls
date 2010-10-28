@@ -373,6 +373,8 @@
 \def\subsubsubsection{\@ifstar{\seg@subsubsubsection}{\seg@subsubsubsection}}
 \newcommand{\ms@number}{Manuscript}
 \newcommand{\ms}[1]{\renewcommand{\ms@number}{\textbf{#1}}}
+\newcommand{\geo@published}{Unknown}
+\newcommand{\published}[1]{\renewcommand{\geo@published}{#1}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
   \begin{minipage}{\textwidth}%
@@ -381,7 +383,7 @@
 \renewcommand{\title}[1]{%
   \renewcommand{\seg@title}{%
     \noindent\begin{geo@title}\setlength{\parindent}{0em}\par%
-   {\smallskip #1}\end{geo@title}}}
+   {\smallskip #1\ifthenelse{\equal{\geo@published}{Unknown}}{}{\footnote{Published in \geo@published}}}\end{geo@title}}}
 \providecommand{\seg@address}{}
 \providecommand{\address}[1]{\renewcommand{\seg@address}{#1}}
 \providecommand{\seg@author}{}

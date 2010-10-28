@@ -285,6 +285,14 @@ sub do_cmd_lefthead {
     $rest;
 }
 
+sub do_cmd_published {
+    my $rest = shift;
+    $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
+    $published = $2;
+    &extract_pure_text("liberal");
+    join ("\n","<h3>Published as $published</h3>",$rest);
+}
+
 sub do_cmd_righthead {
     my $rest = shift;
     $rest =~ s/$next_pair_rx//o unless ($rest =~ s/$next_pair_pr_rx//o);
