@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% This is file 'barc2010.cls' %%
+%% This is file 'eageabs.cls' %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Made by: Bobby Hak, Tristan van Leeuwen
@@ -20,7 +20,7 @@
 %%    www.ctan.org
 %%
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
-\ProvidesClass{barc2010}[2009/05/01 v1.0 EAGE Abstract Class, Barcelona EAGE Conference 2010]
+\ProvidesClass{eageabs}[2009/05/01 v1.0 EAGE Abstract Class]
 %%
 %% Pass all options directly to 'article'
 %%
@@ -63,10 +63,10 @@
 %%
 \pagestyle{fancy} % load package
 \fancyhf{} % clear styles
-\fancyhead[RO,RE]{\includegraphics[height=0.76in,width=1.88in]{eagelogo2010}} % input logo top right, even and odd side
+\fancyhead[RO,RE]{\includegraphics[height=0.44in,width=2.31in]{eagelogo}} % input logo top right, even and odd side
 \renewcommand{\headrulewidth}{0pt} % no line in header
 %
-\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{72\textsuperscript{st} EAGE Conference \& Exhibition incorporating SPE EUROPEC 2010 \\ Barcelona, Spain, 14 -- 17 June 2010}} % footnote
+\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{72\textsuperscript{st} EAGE Conference \& Exhibition incorporating SPE EUROPEC 2011 \\ Vienna, Austria, 23 -- 26 May 2011}} % footnote
 \renewcommand{\footrulewidth}{0.5pt} % add line in footnote
 % \renewcommand{\footrule}{%
 %   \vskip-\footruleskip\vskip-\footrulewidth 
