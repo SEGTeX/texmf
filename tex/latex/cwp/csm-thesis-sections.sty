@@ -1,0 +1,194 @@
+% A good portion of the section handling code is handled here, this keeps the main style clean of this awful low-level code.
+% This code is primarily a modification of the code in latex.ltx and article.cls
+%
+% IMPORTANT NOTE: The following things will break amsmath!
+% 1) Using '\renewcommand{\section}{' instead of '\renewcommand\section{'
+% 2) Having an extra enter at the end of a command
+
+\let\phantomsection\@empty
+\newcommand{\magicsection}{%
+	\ifx\phantomsection\@empty \else
+		\phantomsection
+	\fi
+}
+\setcounter{secnumdepth}{0}
+\let\@afterindentfalse\@afterindenttrue % indent after sections
+\def\@dottedtocline#1#2#3#4#5{\ThesisContentsEntry{#1}{#2}{#3}{#4}{#5}}
+\def\@centeredsect#1#2#3#4#5#6[#7]#8{%
+	\ifnum #2>\c@secnumdepth
+		\let\@svsec\@empty
+		\magicsection%
+	\else
+		\refstepcounter{#1}%
+		\protected@edef\@svsec{\@seccntformat{#1}\relax}%
+	\fi
+	\@tempskipa #5\relax
+	\ifdim \@tempskipa>\z@
+		\begin{center}
+		\begingroup
+			#6{%
+				\@hangfrom{\hskip #3\relax\@svsec}%
+					\interlinepenalty \@M \MakeTextUppercase{#8} \@@par}%
+		\endgroup
+		\end{center}
+		\csname #1mark\endcsname{#7}%
+	\else
+		\def\@svsechd{%
+			#6{\hskip #3\relax
+			\@svsec #8}%
+			\csname #1mark\endcsname{#7}%
+			}%
+	\fi
+	\@xsect{#5}}
+\def\@scenteredsect#1#2#3#4#5{%
+	\@tempskipa #3\relax
+	\ifdim \@tempskipa>\z@
+		\begin{center}
+			\begingroup#4{
+				\@hangfrom{\hskip #1}%
+				\interlinepenalty \@M \MakeTextUppercase{#5}\@@par}%
+			\endgroup
+		\end{center}
+	\else
+		\def\@svsechd{#4{\hskip #1\relax #5}}%
+	\fi
+	\@xsect{#3}
+}
+\def\@startcenteredsection#1#2#3#4#5#6{%
+	\if@noskipsec \leavevmode \fi
+	\par
+	\@tempskipa #4\relax
+	\@afterindenttrue
+	\ifdim \@tempskipa <\z@
+		\@tempskipa -\@tempskipa \@afterindentfalse
+	\fi
+	\if@nobreak
+		\everypar{}%
+	\else
+		\addpenalty\@secpenalty\addvspace\@tempskipa
+	\fi
+	\@ifstar
+		{\@scenteredsect{#3}{#4}{#5}{#6}}%
+		{\@dblarg{\@centeredsect{#1}{#2}{#3}{#4}{#5}{#6}}}}
+% Be careful with the \section command or you will break amsmath compatibility:
+\renewcommand\section{
+	\if\@chapter@call\=\@empty
+		\csm@thesis@error{You may not call \noexpand\section directly, you must use \noexpand\chapter instead.}
+	\fi
+	\@startcenteredsection{section}{1}{\z@}%
+	{-3.5ex \@plus -1ex \@minus -.2ex}%
+	{2.3ex \@plus.2ex}%
+	{\normalfont}}
+
+% At least one paragraph of text must follow each heading or subheading. Headings and subheadings may not follow each other without some text between, and may not stand alone at the bottom of a page.
+%% <<NOTE: Inspired by lineno.sty>>
+\newcounter{csmsectionline}
+\setcounter{csmsectionline}{0}
+\global\let\csm@ln@output\@@par
+\gdef\@@par{%
+	\ifvmode \csm@ln@output \else%
+		\ifinner \csm@ln@output \else%
+			\addtocounter{csmsectionline}{1}%
+			\csm@ln@output%
+		\fi%
+	\fi%
+}
+\gdef\reset@csm@section@check{\setcounter{csmsectionline}{0}}
+\gdef\csm@section@check{
+	% Only perform the empty section check when the ``insane'' option is off
+	\ifx\csm@thesis@nochecks\@false
+		\expandafter\ifnum\value{csmsectionline}=0
+			\@latex@error{OGS Incompliant Document: You have an empty section \on@line}{}
+		\fi
+	\fi
+}
+
+% The chapter or section title for each part of the body is typed only on the first page of that part in all capital letters (for example, INTRODUCTION) and not underlined. The title is centered between the left and right text margins, one keyboard return below the one inch top page margin.
+\newcommand{\texorpdfupper}[1]{%
+	\ifx \csm@hyperref\@true%
+		\texorpdfstring{\uppercase{#1}}{#1}%
+	\else%
+		\uppercase{#1}%
+	\fi%
+}
+\newcommand{\chapter}[1]{
+	\csm@section@check
+	\cleardoublepage
+	\global\let\@currentlabel\thesection
+	\setcounter{equation}{0}
+	\setcounter{subsection}{0}
+	\setcounter{subsubsection}{0}
+	\setcounter{table}{0}
+	\setcounter{figure}{0}
+	\addtocounter{section}{1}
+	\let\@chapter@call\@true
+	\section{Chapter \thesection\protect\\ #1}
+	\let\@chapter@call\@empty
+	\addcontentsline{toc}{section}{\texorpdfupper{Chapter {\thesection} #1}}
+	\reset@csm@section@check
+}
+
+% Special command to mark internal \section calls
+\newcommand{\internalsection}[1]{
+	\let\@chapter@call\@true
+	\magicsection
+	\addcontentsline{toc}{section}{\protect\texorpdfupper{#1}}
+	\section*{#1}
+	\let\@chapter@call\@empty
+}
+
+% EXTRA: Make a special section command for appendices so that all \section calls are done internally
+% NOTE: This section is optional
+\newcounter{appendix}
+\setcounter{appendix}{0}
+\newcommand{\newappendixnum}{\addtocounter{appendix}{1}}
+\newcommand{\appendixnum}{\Alph{appendix}}
+\global\let\csm@appendicies\@empty
+\newcounter{csm@redefined@appendix}
+\setcounter{csm@redefined@appendix}{0}
+\global\newcount\csm@redefined@appendix@saved \global\csm@redefined@appendix@saved=0
+\renewenvironment{appendix}[1]{
+	\cleardoublepage
+	% Once an appendix is created then section numbering changes
+	\gdef\thesection{\@Alph\c@section}
+	\gdef\csm@thesis@appendix@active{\@true}
+	\gdef\theHsection{\@Alph\c@section}
+	% Reset section counters
+	\newappendixnum
+	\setcounter{section}{\value{appendix}}
+	\setcounter{subsection}{0}
+	\setcounter{subsubsection}{0}
+	\setcounter{table}{0}
+	\setcounter{figure}{0}
+	% Output the appendix title
+	\def\csm@appendix@text{Appendix \Alph{appendix}}
+	\ifx \csm@appendicies\@empty \relax \else
+		\ifnum \csm@appendicies<2
+			\setcounter{csm@redefined@appendix}{1}
+			\def\csm@appendix@text{Appendix}
+		\fi
+	\fi
+	\internalsection{{\csm@appendix@text} - #1}
+}{}
+\AtBeginDocument{
+	\@starttoc{cfg}
+}
+\AtEndDocument{
+	\ifx \csm@appendicies\@empty
+		\@tempswatrue % Request interpretter to automatically regenerate the document.
+		\@latex@warning@no@line{Number of appendicies is not known. Rerun to get appendicies right.}
+	\else
+		\ifnum \csm@redefined@appendix@saved=\value{csm@redefined@appendix} \relax \else
+			\@tempswatrue % Request interpretter to automatically regenerate the document.
+			\@latex@warning@no@line{Appendix labels have changed. Rerun to get appendicies right.}
+		\fi
+	\fi
+	\addtocontents{cfg}{%
+		\protect\global\protect\newcount\protect\csm@redefined@appendix@saved%
+		\protect\global\protect\csm@redefined@appendix@saved=\arabic{csm@redefined@appendix}%
+	}
+	\addtocontents{cfg}{%
+		\protect\global\protect\newcount\protect\csm@appendicies%
+		\protect\global\protect\csm@appendicies=\arabic{appendix}%
+	}
+}

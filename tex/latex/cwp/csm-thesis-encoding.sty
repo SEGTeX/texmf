@@ -1,0 +1,13 @@
+% This is a list of the symbols that encode differently between LyX and LaTeX
+% where it makes sense to redefine them for both (if there is a good reason
+% to NOT do this for a symbol then please let me know)
+\begingroup
+\catcode`\>=\active
+\catcode`\<=\active
+\AtBeginDocument{
+	\catcode`\>=\active
+	\catcode`\<=\active
+	\gdef >{\textgreater}
+	\gdef <{\textless}
+}
+\endgroup

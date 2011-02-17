@@ -1,0 +1,289 @@
+#% Do not delete the line below; configure depends on this
+#  \DeclareLaTeXClass[article]{article (CSM Thesis)}
+# Based on the "Article" and "stdclass.inc", updated for the CSM Thesis by Erich Hoover.
+
+Format 4
+Columns                 1
+Sides                   2
+SecNumDepth             3
+TocDepth                3
+DefaultStyle            Standard
+
+Provides babel          1
+
+Preamble
+	% Override the fontenc setting in LyX, it makes the fonts ugly
+	\usepackage[OT1]{fontenc}
+	% Include our package
+	\usepackage{csm-thesis}
+EndPreamble
+
+ClassOptions
+        FontSize        12
+End
+
+Style Standard
+	Category              MainText
+        Margin                Static
+        LatexType             Paragraph
+        LatexName             dummy
+        ParIndent             MM
+        ParSkip               0.4
+        Align                 Block
+        AlignPossible         Block, Left, Right, Center
+        LabelType             No_Label
+End
+
+# Setup a counter for appendices
+Counter
+        Name                 appendix
+End
+
+# Redefine how section numbering resets
+Counter chapter
+End
+Counter subsection
+        Within           chapter
+End
+# Copy all the other counters from stdcounters.inc:
+Counter subsubsection
+	Within               subsection
+End
+Counter enumi
+End
+Counter enumii
+	Within               enumi
+End
+Counter enumiii
+	Within               enumii
+End
+Counter enumiv
+	Within               enumiii
+End
+Counter bibitem
+End
+Counter figure
+End
+Counter table
+End
+Counter algorithm
+End
+Counter equation
+End
+Counter listing
+End
+
+# Bring in the standard set of LyX settings
+Input stdlists.inc
+Input stdsections.inc
+Input stdstarsections.inc
+Input stdtitle.inc
+Input stdstruct.inc
+Input stdlayouts.inc
+Input stdfloats.inc
+
+NoStyle Chapter*
+NoStyle Section
+NoStyle Section*
+NoStyle Subsection*
+NoStyle Subsubsection*
+NoStyle Paragraph
+NoStyle Paragraph*
+NoStyle Subparagraph
+NoStyle Subparagraph*
+NoStyle Part
+NoStyle Part*
+
+# Make the chapter appear in the center
+Style Chapter
+	TopSep                1
+	BottomSep             0.5
+	Align                 Center
+	AlignPossible         Center
+	LabelString           "Chapter \arabic{chapter}"
+	Font
+		Shape             Smallcaps
+	EndFont
+End
+
+# Redefine the section numbering display
+Style Subsection
+	Align                 Left
+	AlignPossible         Left
+	LabelString           "\arabic{chapter}.\arabic{subsection}"
+End
+
+Style Subsubsection
+	Align                 Left
+	AlignPossible         Left
+	LabelString           "\arabic{chapter}.\arabic{subsection}.\arabic{subsubsection}"
+End
+# Redefine the Title style to be in all caps
+Style Title
+	Font
+		Shape             Smallcaps
+	EndFont
+End
+# Redefine the Abstract style to have the label be in caps
+Style Abstract
+	LabelFont
+		Shape             Smallcaps
+	EndFont
+End
+# Add extra styles
+Style Acknowledgements
+	CopyStyle             Abstract
+	LatexName             acknowledgements
+        LabelString           "Acknowledgements"
+End
+
+Style Dedication
+	CopyStyle             Abstract
+	LatexName             dedication
+        LabelString           "Dedication"
+End
+
+Style Introduction
+	Category              MainText
+	LatexType             Environment
+	LatexName             introduction
+	Align                 Left
+	AlignPossible         Left
+End
+
+Style SelectedBibliography
+	Category              BackMatter
+	LatexType             Environment
+	LatexName             selected-bibliography
+	Align                 Left
+	AlignPossible         Left
+End
+
+Style Appendix
+	Category              BackMatter
+	LatexType             Command
+	LatexName             appendix
+        Align                 Center
+        AlignPossible         Center
+	LabelType             Counter
+	LabelCounter          appendix
+        LabelString           "Appendix \Alph{appendix}"
+	LabelSep              x
+	NeedProtect           1
+	OptionalArgs          0
+        Font
+                Shape             Smallcaps
+        EndFont
+End
+
+Style Degree
+	Category              FrontMatter
+	LatexType             Command
+	LatexName             degree
+        Align                 Block
+        AlignPossible         Block
+	LabelType             Static
+	LabelString           "Degree:"
+	LabelSep              x
+	LeftMargin            "XXXXXXXXXXXXXX"
+	NeedProtect           1
+	OptionalArgs          0
+End
+Style Discipline
+	CopyStyle             Degree
+	LatexName             discipline
+	LabelString           "Discipline:"
+End
+Style Department
+	CopyStyle             Degree
+	LatexName             department
+	LabelString           "Department:"
+End
+Style Advisor
+	CopyStyle             Degree
+	LatexName             advisor
+	LabelString           "Advisor:"
+End
+Style Co-Advisor
+	CopyStyle             Degree
+	LatexName             coadvisor
+	LabelString           "Co-Advisor:"
+End
+Style DepartmentHeadName
+	CopyStyle             Degree
+	LatexName             dptheadname
+	LabelString           "Dpt. Head Name:"
+End
+Style DepartmentHeadTitle
+	CopyStyle             Degree
+	LatexName             dptheadtitle
+	LabelString           "Dpt. Head Title:"
+End
+
+# Styles for the different document pieces
+Style --FrontMatter--
+	Category              FrontMatter
+	KeepEmpty             1
+	Margin                Dynamic
+        LatexType             Command
+        LatexName             frontmatter
+	ParIndent             MM
+	Align                 Center
+	AlignPossible         Center
+	LabelType             Static
+        LabelString           "------ Front Matter ------"
+	LabelFont
+	  Family              Roman
+	  Series              Medium
+	  Size                Normal
+	  Color               Blue
+	EndFont
+End
+Style -SubmittalPage-
+	CopyStyle             --FrontMatter--
+	Category              FrontMatter
+	LatexName             makesubmittal
+	LabelString           "--- Insert Submittal Page ---"
+	LabelFont
+	  Color               Green
+	EndFont
+End
+Style -ListOfFiguresAndTables-
+	CopyStyle             -SubmittalPage-
+	LatexName             listoffiguresandtables
+	LabelString           "--- Insert List of Figures and Tables ---"
+End
+Style -ListOfFigures-
+	CopyStyle             -SubmittalPage-
+	LatexName             listoffigures
+	LabelString           "--- Insert List of Figures ---"
+End
+Style -ListOfTables-
+	CopyStyle             -SubmittalPage-
+	LatexName             listoftables
+	LabelString           "--- Insert List of Tables ---"
+End
+Style -ListOfSymbols-
+	CopyStyle             -SubmittalPage-
+	LatexName             listofsymbols
+	LabelString           "--- Insert List of Symbols ---"
+End
+Style -ListOfAbbreviations-
+	CopyStyle             -SubmittalPage-
+	LatexName             listofabbreviations
+	LabelString           "--- Insert List of Abbreviations ---"
+End
+Style --BodyMatter--
+	CopyStyle             --FrontMatter--
+	Category              MainText
+	LatexName             bodymatter
+	LabelString           "------ Body Matter ------"
+End
+Style --BackMatter--
+	CopyStyle             --FrontMatter--
+	Category              BackMatter
+	LatexType             Paragraph
+	LatexName             dummy
+	LabelString           "------ Back Matter ------"
+End
+

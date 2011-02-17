@@ -1,0 +1,620 @@
+% Define convenient ``true'' and ``false'' variables
+\gdef\@true{1}
+\gdef\@false{0}
+
+%% <Package Options>
+
+% Turn off sanity checks: \usepackage[insanity]{csm-thesis} 
+\global\let\csm@thesis@nochecks=\@false
+\DeclareOption{insane}{\global\let\csm@thesis@nochecks=\@true}
+
+% Turn off automatic Figure/Table labeling
+\global\let\csm@thesis@nolabel=\@false
+\DeclareOption{nolabel}{\global\let\csm@thesis@nolabel=\@true}
+
+\ProcessOptions
+%% </Package Options>
+
+%% <Internal Packages>
+% Allow fancy sanity checking
+\usepackage{csm-thesis-sanity}
+
+% Use custom environments for additional error checking
+\usepackage{csm-thesis-environments}
+
+% Title shape handling
+\usepackage{csm-thesis-title}
+
+% Lists of tables, figures, symbols, etc.
+\usepackage{csm-thesis-lists}
+
+% The CSM Thesis uses special section types
+\usepackage{csm-thesis-sections}
+
+%% </Internal Packages>
+
+% Allow redefining the page number
+\newcounter{csmpage}
+\newcounter{truepage}
+\setcounter{csmpage}{\value{page}}
+\setcounter{truepage}{\value{page}}
+\def\pagenumbering#1{\global\c@csmpage \@ne \gdef\thepage{\csname @#1\endcsname \c@csmpage}}
+
+% Align pages to the top without warnings
+\raggedbottom
+
+% The required thesis page size is 8.5 by 11 inches (letter size). The page margins given here are required and not optional.
+% • Top and bottom text margins: 1 inch wide.
+% • Inside text margin (binding side): 1.5 inch wide.
+% • Outside text margin: no less than 1 inch wide.
+% • Two-sided printing: the inside and outside margin widths should alternate pages. (Most word processing programs will automatically alternate margins on odd and even pages for documents that are copied on two sides).
+% • Page-number margin: ½ inch from either the top or the bottom edge of the page.
+\usepackage[left=1in,top=1in,right=1in,bottom=1in,bindingoffset=0.5in,nohead,foot=0.5in]{geometry}
+
+% OGS prefers left-margin justification of paragraph text with “ragged right” edges. Right margin justification is accepted only if the word spacing is proportional, with no extra white space between words.
+%% <<NOTE: LaTeX has no ragged edges, on either side, by default>>
+
+% When this guide directs that text and graphics be centered on the page between the left and right text margins, please note that is not the same as centering between the left and right edges of the paper. Keep in mind that the left and right margins on a page are not equal in width.
+%% <<NOTE: There is no easy way to make this mistake in LaTeX, it knows how to center properly>>
+
+% Roman numerals are used for page numbering of the front matter. Page numbers on the title page and copyright page are not displayed. Displayed page numbering begins on the submittal sheet, and is always roman numeral two (ii), regardless of whether or not a copyright page is included. The first page of the abstract is roman numeral three (iii), and so forth for the rest of the front matter.
+\let\@frontmatter@exists\@empty
+\let\@frontmatter@active\@false
+\let\@csm@newpage@call\@false
+\newcommand{\frontmatter}{
+	\global\let\@frontmatter@active\@true
+	\global\let\@frontmatter@exists\@true
+	\pagenumbering{roman}
+	\pagestyle{plain}
+}
+
+% Arabic numerals are used for the page numbering of the main body and of the back matter. The page number on the first page of the body (Introduction or Chapter 1) is arabic numeral one (1). The arabic numbering continues consecutively throughout the rest of the thesis, including the back matter. Page numbers in the body and back matter are placed at any appropriate place on the page. However, the placement of the page numbers must remain consistent throughout the body and back matter. Page numbers are usually placed at the top right text margin, 1/2 inch from the top edge of the page.
+%% <<NOTE: Leaving page number at bottom, page numbers look funny at the top>>
+\let\@bodymatter@exists\@empty
+\newcommand{\bodymatter}{
+	\global\let\@frontmatter@active\@false
+	\global\let\@bodymatter@exists\@true
+	% Return to normal pages
+	\gdef\c@csmpage{\c@page}
+	\gdef\c@truepage{\c@page}
+	\pagenumbering{arabic}
+}
+
+% The space between lines of all running text is 1.5 or 2 lines (unless otherwise noted), and the first line of each paragraph is indented. Appropriate white space must separate text before and after short tables and figures that are included in text.
+%% <<NOTE: Using 2 line spacing for now, may require 1.5 lines (\onehalfspacing)>>
+\usepackage{setspace}
+\doublespacing
+
+% You may choose any standard font, such as Times Roman. You must use the same font style throughout the thesis; including, e.g., lists, page numbers, headings and subheadings, chapter and appendix titles, and figure and table captions. Note: Specialty fonts are not acceptable.
+% <<NOTE: This is handled automatically by LaTeX>>
+
+% All running text must use a professional-looking type size; OGS recommends using between 10- and 12-point type.
+% <<NOTE: This is handled in the document itself>>
+% << see the value of \@ptsize >>
+
+% All pages of front matter are copied single sided. That is, each page is blank on the back. See Appendix A for page examples. Roman numerals are used for page numbering of the front matter.
+\let\latex@outputpage\@outputpage
+\let\recursive@output\@false
+% <<NOTE: You must be EXTREMELY careful in redefining the \@outputpage primitive, certain mistakes will cause LaTeX to hang indefinitely>>
+\def\@outputpage{
+	% Now that we are over-riding \c@page we need to fake out the formatting so that
+	% the margin style does not alternate in the front matter
+	\ifx\@frontmatter@active\@true
+		\if@twoside
+			\@twosidefalse \@mparswitchfalse
+			\latex@outputpage
+			\@twosidetrue \@mparswitchtrue
+		\else
+			\latex@outputpage
+		\fi
+	\else
+		\latex@outputpage
+	\fi
+	\begingroup
+	% Only the front matter has blank back pages
+	\ifx\@frontmatter@active\@true
+		\if@twoside
+			\ifx\recursive@output\@false
+				\global\let\recursive@output\@true
+				\thispagestyle{empty} % no page number for blank pages
+				%\ifodd\c@page
+				%	\csm@thesis@error{What did you do? You SHOULD NOT be able to trigger this error!}
+				%\else
+				%	\latex@outputpage
+				%\fi
+				\def\thepage{}
+				\addtocounter{truepage}{1}
+				\latex@outputpage
+				\thispagestyle{plain} % page numbers for normal pages
+				\addtocounter{csmpage}{1}
+				\addtocounter{truepage}{1}
+				\setcounter{page}{\value{csmpage}} % for proper numbering with hyperref
+				\global\let\recursive@output\@false
+			\fi
+		\else
+			\addtocounter{csmpage}{1}
+			\addtocounter{truepage}{1}
+			\setcounter{page}{\value{csmpage}} % for proper numbering with hyperref
+		\fi
+	\fi
+	\endgroup
+	% When the ``insane'' option is inabled and the \makesubmittal command does not exist we need to reset the numbering properly
+	\ifx\csm@customnumber@output\@true
+		\pagenumbering{roman}
+		\setcounter{csmpage}{2}
+		\setcounter{page}{2}
+		\global\let\csm@customnumber@output\@false
+	\fi
+}
+
+% The thesis copyright page contains the 1) author’s name, 2) the date, and 3) the statement, “All Rights Reserved,” centered on the page.
+\newcommand{\makecopyright}[1]{
+	\vspace*{\fill}
+	\begin{center}
+		\textbf{{\textcopyright} Copyright by {\@author}, {#1}} \\
+		All Rights Reserved
+	\end{center}
+	\vspace*{\fill}
+	\thispagestyle{empty} % no page number for the copyright page
+	\def\thepage{copyright} % use a special hyperref ``page seek'' for the copyright page
+	\global\let\csm@customnumber@output\@true % needs to be turned off after page is output
+}
+
+% The thesis title, in ALL CAPITAL letters, is centered on the page between the left and right text margins, and between the top and bottom text margins. Long titles may be broken logically into more than one line, arranged in an inverted pyramid, 1.5- or double-spaced between lines.
+% The author’s name, in upper- and lower case letters, is centered between the right and left text margins, and appears flush with the lower one inch text margin. The word “by” in lower case letters, is centered one blank line (e.g., 1.5- or double-space) above the author’s name.
+% The title page is unnumbered and blank on its back side.
+% Note: A title should be brief and descriptive, avoiding introductory phrases like “A Study to Determine…” or “An Investigation and Evaluation of….”
+%\global\let\maketitle\relax % NOTE: Some TeX distributions define ``maketitle'' funny, clear that definition before starting
+\let\@title\@empty
+\let\@maketitle@exists\@empty
+\global\let\csm@customnumber@output\@false
+\newbox\csm@titletext
+\renewcommand{\maketitle}{
+	\global\let\@maketitle@exists\@true
+	% BEGIN LaTeX Sanity Checks
+		\sanitize{\@title}{title}
+	% END LaTeX Sanity Checks
+	\vspace*{0.35\textheight} % TODO: Make this work automatically
+	\begin{center}
+		\makeatletter
+		{\begingroup
+			% Check for returns in the title
+			\global\let\csm@returnexists\@false
+			{\begingroup
+				\def\\{\global\let\csm@returnexists\@true}
+				\setbox\csm@titletext=\vbox{\@title}
+			\endgroup}
+			% If there are returns in the title then use the user-generated title,
+			% otherwise attempt to automatically generate the inverted pyramid
+			\ifx\csm@returnexists\@true
+				\ManualTrapezoidTitle
+			\else
+				\AutoTrapezoidTitle
+			\fi
+		\endgroup}
+		\makeatother
+	\end{center}
+	\vfill
+	\begin{center}
+		by\linebreak
+		\makeatletter
+		\@author
+		\makeatother
+	\end{center}
+	\thispagestyle{empty} % no page number for the title page
+	\def\thepage{title} % use a special hyperref ``page seek'' for the copyright page
+	\global\let\csm@customnumber@output\@true % needs to be turned off after page is output
+}
+
+% Below is a convenience command for entering atoms in the title of a thesis.
+% Please note that the Thesis Writer's Guide DOES NOT provide a prescription for having atoms/molecules in the title and may no-longer allow them through format review.
+% Usage: \atom{mass number}{proton number}{symbol}{ionization}{# atoms}
+\let\texorpdfstring\@empty
+\gdef\csm@texorpdfstring#1#2{%
+	\ifx \texorpdfstring \@empty%
+		#1%
+	\else%
+		\texorpdfstring{#1}{#2}%
+	\fi%
+}
+\newcommand{\atom}[5]{%
+	\csm@texorpdfstring{$^{#1}_{#2}$}{}%
+	\protect\NoCaseChange{#3}%
+	\csm@texorpdfstring{$^{#4}_{#5}$}{#5}%
+}
+
+% The submittal sheet contains the 1) submittal statement; 2) the signatures of the author, thesis advisor, co-advisor (if applicable), and department head; as well as 3) signature dates. See the example in Appendix A.
+\let\@author\@empty
+\let\@advisor\@empty
+\let\@coadvisor\@empty
+\let\@degree\@empty
+\let\@department\@empty
+\let\@discipline\@empty
+\let\@dpthead\@empty
+\let\@dptheadtitle\@empty
+\newcommand{\degree}[1]{\def\@degree{#1}}
+\newcommand{\advisor}[1]{\def\@advisor{#1}}
+\newcommand{\coadvisor}[1]{\def\@coadvisor{#1}}
+\newcommand{\discipline}[1]{\def\@discipline{#1}}
+\newcommand{\department}[1]{\def\@department{#1}}
+\newcommand{\dpthead}[2]{\def\@dpthead{#1}\def\@dptheadtitle{#2}}
+% For LyX we break out the \dpthead command into two pieces:
+\newcommand{\dptheadname}[1]{\def\@dpthead{#1}}
+\newcommand{\dptheadtitle}[1]{\def\@dptheadtitle{#1}}
+\let\@makesubmittal@exists\@empty
+\newcommand{\makesubmittal}{
+	% Displayed page numbering in the thesis begins on the submittal sheet, and should be roman numeral two (ii), centered between the right and left text margins, ½ inch from the bottom edge of the paper. The submittal sheet is always blank on its back side.
+	\pagenumbering{roman}
+	\setcounter{csmpage}{2}
+	\setcounter{page}{2}
+	\let\@makesubmittal@exists\@true
+	% BEGIN LaTeX Sanity Checks
+		\sanitize{\@author}{author}
+		\sanitize{\@degree}{degree}
+		\sanitize{\@advisor}{advisor}
+		% Note: Co-advisor is optional
+		\sanitize{\@discipline}{discipline}
+		\sanitize{\@department}{department}
+		\sanitize{\@dpthead}{dpthead}
+		\sanitize{\@dptheadtitle}{dpthead} % (also controlled by dpthead command)
+	% END BEGIN LaTeX Sanity Checks
+	
+	% The submittal statement is typed in paragraph form beginning at the top text margin, double-spaced, with the first line indented.
+	A thesis submitted to the Faculty and the Board of Trustees of the Colorado School of Mines in partial fulfillment of the requirements for the degree of {\@degree} ({\@discipline}).
+	
+	% The city, state and signature date are flush with the left text margin.
+	\vspace*{3\baselineskip}
+	\begin{singlespace}
+		\noindent
+		Golden, Colorado\newline
+		Date \makebox[2in]{\hrulefill}
+		\vspace*{\baselineskip}
+	\end{singlespace}
+	
+	% The lines for signatures are flush with the right margin
+	\begin{raggedleft}
+		\begin{singlespace}
+			\noindent
+			Signed: \makebox[2in]{\hrulefill} \linebreak
+			\makeatletter\@author\makeatother
+		\end{singlespace}
+		\vspace*{\baselineskip}
+		\begin{singlespace}
+			\noindent
+			Signed: \makebox[2in]{\hrulefill} \linebreak
+			\makeatletter\@advisor\makeatother \linebreak
+			Thesis Advisor
+		\end{singlespace}
+		\ifx\@coadvisor\@empty
+			\relax
+		\else
+			\vspace*{\baselineskip}
+			\begin{singlespace}
+				\noindent
+				Signed: \makebox[2in]{\hrulefill} \linebreak
+				\makeatletter\@coadvisor\makeatother \linebreak
+				Thesis Advisor
+			\end{singlespace}
+		\fi
+	\end{raggedleft}
+	
+	% The city, state and signature date are flush with the left text margin.
+	\vspace*{3\baselineskip}
+	\begin{singlespace}
+		\noindent
+		Golden, Colorado\newline
+		Date \makebox[2in]{\hrulefill}
+		\vspace*{\baselineskip}
+	\end{singlespace}
+	
+	% The lines for signatures are flush with the right margin
+	\begin{raggedleft}
+		\begin{singlespace}
+			\noindent
+			Signed: \makebox[2in]{\hrulefill} \linebreak
+			\makeatletter\@dpthead\makeatother \linebreak
+			\makeatletter\@dptheadtitle\makeatother \linebreak
+			Department of {\@department}
+		\end{singlespace}
+	\end{raggedleft}
+}
+
+% Beginning with the abstract, the title for each part of the front matter is typed in all capital letters (e.g., ABSTRACT) and is centered between the left and right text margins, on the line one keyboard return below the top page margin. The text of the abstract begins two keyboard returns below the title.
+\renewcommand{\abstractname}{Abstract}
+
+% All chapters and sections in the thesis and their page numbers are included in the table of contents except for the title page, the submittal sheet page, the copyright page, and the table of contents itself. Electronic material is included in the table of contents.
+% The table of contents and all other lists included in the front matter are single sided and begin on a separate page. In cases where a list of figures, tables or plates has only one or two entries, they may all be placed on one page with a suitable title such as LIST OF FIGURES AND TABLES. If included in the front matter, a glossary, a list of abbreviations, or a list of symbols is placed as the last list. If these lists are included in the back matter, they are placed immediately before the REFERENCES CITED.
+% IMPORTANT NOTE: ``babel'' scews up \contentsname, so we use our own special \csm@contentsname
+\newcommand{\csm@contentsname}{\MakeUppercase{Table of Contents}}
+\let\@tableofcontents@exists\@empty
+\renewcommand{\tableofcontents}{
+	\global\let\@tableofcontents@exists\@true
+	\ifx \csm@hyperref\@true
+		\pdfbookmark[1]{Table of Contents}{toc}
+	\fi
+	\let\@chapter@call\@true
+	\section*{\csm@contentsname
+		\@mkboth{\MakeUppercase\csm@contentsname}{\MakeUppercase\csm@contentsname}
+	}
+	\let\@chapter@call\@empty
+	\@starttoc{toc}
+}
+
+% If hyperref is included BEFORE this template then throw an error
+% TODO: Find the myriad places where \AtBeginDocument can be used to avoid
+% hyperref overriding our settings.
+\@ifpackageloaded{hyperref}{\csm@thesis@error{You must include hyperref AFTER the thesis template, sorry!}}{}
+\AtBeginDocument{%
+	\@ifpackageloaded{hyperref}{%
+		\global\let\csm@hyperref=\@true%
+	}{%
+		\global\let\csm@hyperref=\@false%
+	}%
+}
+\newcommand{\csm@addtocontents}[4]{%
+	\ifx \csm@hyperref\@true%
+		\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}{\@currentHref}}%
+	\else%
+		\addtocontents{#1}{\protect\contentsline{#2}{#3}{#4}}%
+	\fi%
+}
+
+% Items, such as plates, which will be inserted in the pocket on the back cover of the thesis, have the word “pocket” in the page number column.
+\newcommand{\addpocketcontents}[1]{%
+	% Note: Pocket references are not hyperref-jumpable
+	\ifx \csm@hyperref\@true%
+		\expandafter\def\expandafter\@currentHref{}%
+	\fi%
+	\csm@addtocontents{toc}{section}{\protect\texorpdfupper{#1}}{Pocket}%
+}
+
+% The built-in \cleardoublepage prints a page number, this version does not
+\renewcommand{\cleardoublepage}{
+	\@ifstar{\null}{}
+	\clearpage % Dump all floats before making our new page
+	\newpage
+	\thispagestyle{empty} % There is no page number for blank pages
+	% If we are doing a two-sided document then the next page MUST be an odd-numbered page
+	\if@twoside
+		\ifodd\c@truepage \else
+% \hbox{} instead of \null?
+			\null\newpage
+			\if@twocolumn
+				\null\newpage
+			\fi
+		\fi
+	\fi
+	\thispagestyle{plain} % Go back to page numbers for normal pages
+}
+\newcommand{\newoddpage}{\cleardoublepage}
+\let\@chapter@call\@empty
+
+% In the double-numbering system, each heading is preceded by a number. For instance, in the second chapter of a thesis, the first subheading is numbered 2.1. The use of heading numbers requires at least two subdivisions under each main division. That is, if there is a 2.1, there must be a 2.2. If there is only one division under a heading, then that division is labeled as 2.0, not 2.1.
+% Numbered headings and subheadings use capital and lower case letters and are all placed flush with the left margin. Three single lines precede a heading or subheading, and one keyboard return follows it.
+\renewcommand{\subsection}[1]{
+	\csm@section@check % Redefine section commands with section check
+	\global\let\@currentlabel\thesubsection
+	\@startsection{subsection}{-1}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}
+	{\normalfont\bfseries}{#1}%
+	\reset@csm@section@check%
+}
+\renewcommand{\subsubsection}[1]{
+	\csm@section@check % Redefine section commands with section check
+	\global\let\@currentlabel\thesubsubsection
+	\@startsection{subsubsection}{-1}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}
+	{\normalfont\normalsize\bfseries}{#1}%
+	\reset@csm@section@check%
+}
+
+% Each list entry must have exactly the same wording, capitalization and punctuation as the titles and headings in the text. In the case of long figure captions, the text in the list may be abbreviated (while retaining the sense of the whole caption).
+\newcommand{\abbrvcaption}[2]{\caption[#1]{#1#2}}
+
+% Figures and tables are identified both by a number and by descriptive text contained in a caption. Typically, although not always, figure numbers and captions appear below the figure, and table numbers and captions appear above the table.
+% Captions may be placed flush with the left text margin or centered between the right and left text margins, but the location of all captions must be consistent throughout the text. If a figure or table fills the entire 6-inch by 9-inch text area on a page, leaving no room for the caption, then the caption for that illustration is centered alone on a separate preceding page.
+\usepackage{float} % The float package includes the [H] option (absolutely place it here)
+\usepackage{graphics}
+\newcommand{\@csmlongfigure}[6]{
+	\begin{figure}[#1]
+		\centering
+		\resizebox{#4}{!}{\includegraphics{#3}}
+		\abbrvcaption{#5\label{fig:#2}}{#6}
+	\end{figure}
+}
+\newcommand{\@csmfigure}[5]{
+	\@csmlongfigure{#1}{#2}{#3}{#4}{#5}{}
+}
+\gdef\@csmlongfigure@pos[#1]{\@csmlongfigure{#1}}
+\gdef\@csmfigure@pos[#1]{\@csmfigure{#1}}
+\gdef\csmlongfigure{%
+	\@ifnextchar[%
+		{\@csmlongfigure@pos}%
+		{\@csmlongfigure{\fps@figure}}%
+}
+\gdef\csmfigure{%
+	\@ifnextchar[%
+		{\@csmfigure@pos}%
+		{\@csmfigure{\fps@figure}}%
+}
+
+% Figure and table captions must be in the same font (e.g., Times Roman) and size (e.g., 10-12 point) as that used for the text in the rest of the thesis. Single line spacing is required in captions. As with figures, the font in a table matches the body text, and placement of numbers and captions must remain consistent. Notes and sources are typically placed at the bottom of the table or below the caption of a figure.
+% NOTE: In order to implement this properly on ALL figures (rather than just \csmfigure and \csmlongfigure) we redefine the figure environment at a fundamental TeX level (much easier to use with other packages than using renewenvironment).
+\global\let\csm@internal@beginfigure=\figure
+\global\let\csm@internal@endfigure=\endfigure
+\gdef\csm@internal@beginfigureA[#1]{\csm@internal@beginfigure[#1] \singlespace}%
+\gdef\csm@internal@beginfigureB{\csm@internal@beginfigure \singlespace}%
+\gdef\figure{%
+	% Very carefully redfine the \figure command so that the single spacing occurs
+	% inside of the figure (rather than messing up the spacing on the outside)
+	\@ifnextchar[%
+		{\csm@internal@beginfigureA}%
+		{\csm@internal@beginfigureB}%
+}
+\gdef\endfigure{%
+	\endsinglespace%
+	\csm@internal@endfigure%
+}
+
+% Figures and tables are numbered consecutively throughout the text of the thesis. If numbered headings are used in the text, then a parallel numbering system is used for illustrations. For instance, the first figure in Chapter 2 would be Figure 2.1 and the following figure would be Figure 2.2, etc. Related figures may be identified either by using the same number with a lower case letter (Figure 4.3a, Figure 4.3b), or by different numbers (Figure 4.3, Figure 4.4). Numbers for figures or tables that appear in appendices are preceded by the capital letter identifying the appendix, as in Figure A-3 or Table C-2.
+\global\let\csm@thesis@appendix@active\@empty % <<NOTE:>> This is changed in csm-thesis-environments when an appendix is created
+% <<NOTE:>> DO NOT PUT ANY RETURNS OR SPACES IN THE \csm@sectionlabel COMMAND
+\newcommand{\csm@sectionlabel}{\ifx\csm@thesis@appendix@active\@empty\relax\@arabic\c@section\else\@Alph\c@section\fi}
+\newcommand{\csm@define@label}[1]{
+	% Define the command \the<label> after everything else in the begging of the document
+	% (otherwise \thelstlisting will not work)
+	\CSM@AtBeginDocumentLast{%
+		\expandafter\gdef\csname the#1\endcsname{%
+			\ifx\csm@thesis@nolabel\@false%
+				\csname #1name\endcsname\nobreakspace%
+			\fi%
+			{\csm@sectionlabel}.\@arabic\csname c@#1\endcsname%
+		}
+		\expandafter\gdef\csname l@#1\endcsname{\@dottedtocline{1}{0.0em}{5.3em}}
+		\expandafter\def\csname fnum@#1\endcsname{\csname the#1\endcsname}
+	}
+	% hyperref doesn't like our \the<label> commands, fix it:
+	\AtBeginDocument{%
+		\expandafter\gdef\csname theH#1\endcsname{\csm@sectionlabel.\@arabic\csname c@#1\endcsname}%
+	}
+}
+\csm@define@label{figure}
+\csm@define@label{table}
+\csm@define@label{lstlisting}
+\csm@define@label{lstnumber}
+
+% ``subfigure'' legacy code:
+%\usepackage{subfigure}
+%\renewcommand{\@subcaption}[3]{\@nameuse{@make#1caption}{\@nameuse{@the#1}}{#3}}
+
+% IMPORTANT NOTE: ``subfig'' must be included AFTER \thefigure is redefined above.
+% Figure subtitles may be omitted unless those subtitles distinguish several items within the same title.
+% <<NOTE:>> Interpretted to read: do not include subfigure captions.
+
+% Include subfig, but do not format the subfigure label, we'll do it manually:
+\CSM@AtEndPreamble{
+	\@ifpackageloaded{subfigure}{
+		\csm@thesis@error{The subfigure package is deprecated, disable it to continue.}
+	}{
+		\def\csm@subfig@format{%
+				labelsep=space,%
+				font=footnotesize,%
+				labelformat=simple,%
+				listofformat=subsimple,%
+				subrefformat=subsimple%
+		}
+		\@ifpackageloaded{subfig}{
+%			\captionsetup[subfloat]{\csm@subfig@format}
+			\captionsetup[subfloat]{%
+				labelsep=space,%
+				font=footnotesize,%
+				labelformat=simple,%
+				listofformat=subsimple,%
+				subrefformat=subsimple%
+			}
+		}{
+			\usepackage[\csm@subfig@format]{subfig}
+		}
+		% Make \ref{} reference the subfigure more sensically (with parentheses around the subfigure):
+		\renewcommand{\thesubfigure}{(\alph{subfigure})}
+		% Redefine the subfigure/subtable calls to be backward-compatible with old documents:
+		\@ifundefined{c@subfigure}{\newsubfloat{figure}}{}
+		\def\subfigure{\subfloat}
+		\@ifundefined{c@subtable}{\newsubfloat{table}}{}
+		\def\subtable{\subfloat}
+	}
+}
+
+% <<NOTE:>> No directions are given for inserting code, assuming that single spacing is desired.
+\AtBeginDocument{
+	\@ifpackageloaded{listings}{
+		\def\lst@basicstyle{\small \singlespacing}
+		\lstKV@SetIf{t}{\lst@ifbreaklines}
+	}{}
+}
+
+% All equations referred to in the text must be numbered, although not all displayed equations must be numbered. As in numbering figures and tables, a double numbering system is used for equations; for example, Equation 2.1, where 2 is the chapter, and 1 is the first numbered equation in that chapter. The equation number is placed flush with the right text margin and enclosed in parentheses. Equations in running text are not numbered.
+\renewcommand{\theequation}{\@arabic\c@section.\@arabic\c@equation}
+
+% When using hyperref we want:
+% 1) The link borders disabled
+% 2) To import the document information, currently:
+%  (a) The title
+%  (b) The author
+\newcommand{\usehyperref}{
+	\usepackage[breaklinks=true,pdfborder={0 0 0}]{hyperref}
+	\AtBeginDocument{
+		\csm@pdf@title{\@title} % See csm-thesis-title.sty
+		\hypersetup{%
+			pdftitle = {\@csm@pdf@title},
+			pdfkeywords = {},
+			pdfauthor = {\@author}
+		}
+	}
+}
+
+\RequirePackage{subfig}
+\RequirePackage{ifthen}
+
+\newcommand{\@path}{.}
+\newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
+\providecommand{\figdir}{Fig}
+\providecommand{\fig@file}[1]{\@path/\figdir/#1}
+
+\newcommand{\plot}[4][htbp]{%
+  \begin{figure*}[#1]
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption{#4}
+    \label{fig:\@path-#2}
+    \label{fig:#2}
+\end{figure*}}
+
+\newcommand{\sideplot}[4][htbp]{%
+  \begin{figure*}[#1]
+    \makebox{%
+      \begin{minipage}{0.4\textwidth}
+	\caption{#4}
+	\label{fig:#2}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.6\textwidth}
+	\centering
+	\includegraphics[#3]{\fig@file{#2}}
+    \end{minipage}}
+\end{figure*}}
+
+\newlength{\box@width}
+\setlength{\box@width}{\textwidth}
+\addtolength{\box@width}{-20pt} 
+\setlength{\fboxsep}{10pt}
+
+\newcommand{\boxit}[1]{\noindent\fbox{\parbox{\box@width}{#1}}}
+
+\def\next@item#1,#2?{#1}
+\def\rest@item#1,#2?{#2}
+\newcounter{sub@fig}
+
+\newcommand{\multiplot}[5][htbp]{
+  \begin{figure*}[#1]
+    \centering
+    \setcounter{sub@fig}{0}
+    \edef\list@i{#3}
+    \loop
+    \edef\item@i{\expandafter\next@item\list@i,\empty?}
+    \edef\list@i{\expandafter\rest@item\list@i,\empty?}
+    \ifx\item@i\empty
+    \else
+    \stepcounter{sub@fig}
+    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\item@i}
+      \label{fig:\@path-\item@i}
+    }
+    \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
+    \repeat
+    \caption{#5}
+    \label{fig:#3}
+    \label{fig:\@path-#3}
+  \end{figure*}
+}
+
+% Fix some character encoding to produce sane results (note: important to do this last)
+\usepackage{csm-thesis-encoding}

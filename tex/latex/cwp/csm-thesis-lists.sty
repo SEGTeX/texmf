@@ -1,0 +1,177 @@
+% This setup is for a combined list of figures and tables
+% NOTE: If the table listing or figure listing is empty the title is updated appropriately
+\newcommand{\listfiguresandtablesname}{List of Figures and Tables}
+\def\@emptytoc{\select@language\space{english} }
+\newcommand{\IsTOCEmpty}[2]{
+	\global\let#2\@false
+	\begingroup
+		\global\let\csm@save@cite=\cite \gdef\cite{}
+		\global\let\csm@save@cr=\\ \gdef\\{}
+		\openin\@inputcheck#1 %
+		\ifeof\@inputcheck
+			\global\let#2\@true
+		\else
+			\read\@inputcheck to \@tempstring
+			\expandafter\ifx\@tempstring\par\relax
+				\global\let#2\@true
+			\else
+				% LyX (through babel) has a special entry it adds to each TOC
+				% Consider the TOC empty if that's the ONLY line
+				\ifcase\pdfstrcmp{\expandafter\string\@tempstring}{\expandafter\string\@emptytoc}\relax
+					\read\@inputcheck to \@tempstring
+					\expandafter\ifx\@tempstring\par\relax
+						\global\let#2\@true
+					\else
+						\global\let#2\@false
+					\fi
+				\else
+					\global\let#2\@false
+				\fi
+			\fi
+		\fi
+		\closein\@inputcheck
+		\global\let\cite=\csm@save@cite
+		\global\let\\=\csm@save@cr
+	\endgroup
+}
+\let\@LoFaT@exists\@empty
+\AtBeginDocument{
+	\global\let\@LoFaT@exists\@true
+	\IsTOCEmpty{\jobname.lof}{\csm@nofigures}
+	\IsTOCEmpty{\jobname.lot}{\csm@notables}
+	\ifx\csm@nofigures\@true
+		\ifx\csm@notables\@true
+			\ifx\csm@thesis@nochecks\@false
+				\csm@thesis@warning{There are no tables or figures.}
+			\fi
+		\else
+			\renewcommand{\listfiguresandtablesname}{List of Tables}
+		\fi
+	\fi
+	\ifx\csm@notables\@true
+		\ifx\csm@nofigures\@false
+			\renewcommand{\listfiguresandtablesname}{List of Figures}
+		\fi
+	\fi
+}
+\AtEndDocument{
+	\ifx\csm@nofigures\@true
+		\ifx\csm@notables\@true
+			% There are no figures and no tables
+			\let\csm@LoFaT@required\@false
+		\else
+			% There are no figures, but there are tables
+			\let\csm@LoFaT@required\@true
+		\fi
+	\else
+		% There are figures, that's enough
+		\let\csm@LoFaT@required\@true
+	\fi
+	\ifx\csm@LoFaT@required\@true
+		\requiredsection{\@LoFaT@exists}{\protect\listoffiguresandtables}
+	\else
+		\disallowedsection{\@LoFaT@exists}{\protect\listoffiguresandtables}{There are no tables or figures}
+	\fi
+}
+\newcommand{\listoffiguresandtables}{
+	\internalsection{\listfiguresandtablesname}
+	\@mkboth{\MakeUppercase\listfiguresandtablesname}
+		{\MakeUppercase\listfiguresandtablesname}
+	\csm@toc{lof}
+	\csm@toc{lot}
+}
+\renewcommand{\listoffigures}{
+	\global\let\@LoFaT@exists\@true
+	\internalsection{\listfigurename}
+	\@mkboth{\MakeUppercase\listfigurename}
+		{\MakeUppercase\listfigurename}
+	\csm@toc{lof}
+}
+\renewcommand{\listoftables}{
+	\global\let\@LoFaT@exists\@true
+	\internalsection{\listtablename}
+	\@mkboth{\MakeUppercase\listtablename}
+		{\MakeUppercase\listtablename}
+	\csm@toc{lot}
+}
+
+% Each list entry must have exactly the same wording, capitalization and punctuation as the titles and headings in the text. In the case of long figure captions, the text in the list may be abbreviated (while retaining the sense of the whole caption).
+% TODO: Fix issue where titles of <exactly the length of the TOC line> will butt-up right against the page number
+\newcommand{\ThesisContentsEntry}[5]{
+	\singlespacing % Line spacing for figure or table captions is single spaced, as is that for multiple-line entries in lists (e.g., Reference Cited).
+	\ifnum #1>\c@tocdepth \else
+	\vskip \z@ \@plus.2\p@
+	{\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+	\parindent #2\relax\@afterindenttrue
+	\interlinepenalty\@M
+	\leavevmode
+	\@tempdima #3\relax
+	\advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+	{#4}\nobreak
+	% For each list item, leader dots (spaced periods . . .) extend from the entry on the left side of the page to the page number that is flush with the right margin. The dots are aligned vertically.
+	\leaders\hbox{$\m@th
+		\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+		mu$}\hfill
+	\nobreak
+	{\normalfont \normalcolor #5}%
+	\par}%
+	\fi
+}
+\renewcommand*\l@section[2]{\ThesisContentsEntry{1}{0.0em}{0.5em}{#1}{#2}}
+
+% Line spacing for figure or table captions is single spaced, as is that for multiple-line entries in lists (e.g., Reference Cited).
+% Note: Must occur after all packages are included or natbib will override our changes.
+\AtBeginDocument{\def\bibitem{\protect\singlespacing\@ifnextchar[\@lbibitem\@bibitem}}
+
+% Disable hbox warnings inside lists
+\newcommand{\csm@toc}[1]{%
+	\begingroup%
+		%\tolerance=1000% Don't allow overfill
+		%\hbadness=10000% Disable overfill warning
+		\@starttoc{#1}%
+	\endgroup%
+}
+
+%%%%
+%% Many thanks go to Abram Van Der Gees for experimenting with the List of Symbols.
+%% The technique below is inspired from his work.
+%%%%
+\def\listsymbolname{List of Symbols}
+\newcommand{\listofsymbols@internal}[1]{
+ 	\global\let\@LoFaT@exists\@true
+ 	\internalsection{#1}
+ 	\@mkboth{\MakeUppercase#1}
+ 		{\MakeUppercase#1}
+ 	\csm@toc{los}
+}
+\def\listofsymbols@custom[#1]{\listofsymbols@internal{#1}}
+\def\listofsymbols{
+	\@ifnextchar[%
+		{\listofsymbols@custom}%
+		{\listofsymbols@internal{\listsymbolname}}%
+}
+
+% Create a temporary file output for adding symbols
+\newcommand{\addsymbol}[2]{%
+	\csm@addtocontents{los}{symbol}{#1}{#2}%
+}
+% When that file is called then dump the list of symbols
+\newcommand*\l@symbol{\@dottedtocline{1}{0.0em}{5.3em}}
+
+%%%%
+%% Handle abbreviations just like symbols
+%%%%
+\def\listabbrname{List of Abbreviations}
+\newcommand{\listofabbreviations}{
+ 	\global\let\@LoFaT@exists\@true
+ 	\internalsection{\listabbrname}
+ 	\@mkboth{\MakeUppercase\listabbrname}
+ 		{\MakeUppercase\listabbrname}
+ 	\csm@toc{loa}
+}
+% Create a temporary file output for adding abbreviations
+\newcommand{\addabbreviation}[2]{%
+	\csm@addtocontents{loa}{abbreviation}{#1}{#2}%
+}
+% When that file is called then dump the list of symbols
+\newcommand*\l@abbreviation{\@dottedtocline{1}{0.0em}{5.3em}}

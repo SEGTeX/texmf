@@ -1,0 +1,286 @@
+% The ``textcase'' package is used to capitalize the title but allow non-capitalized atoms/molules
+\usepackage{textcase}
+
+% <<NOTE:>> Internal command for user-specifed returns (manual trapezoidally-shaped titles)
+\newcommand{\ManualTrapezoidTitle}{
+	\let\@titlecr\\
+	\def\\{\protect\@titlecr}
+	\MakeTextUppercase{\@title}
+	\let\\\@titlecr
+}
+
+%%%%%%
+%%% Everything below here is for the automatic trapezoidal title
+%%%%%%
+
+% <<NOTE:>> The following code was inspired by the ``enumerate'' package, though it has been heavily modified
+% for our devious purposes (calculating the ACTUAL size of a line of text) and is therefore nearly
+% unrecognizable wrt. what you see in the ``enumerate'' package.
+\newbox{\temp@box}
+\newbox{\temp@trapezoid@box}
+\newbox{\best@trapezoid@box}
+\newbox{\last@trapezoid@box}
+\newcounter{trap@push@temp}
+\newtoks\temp@trapezoid@text
+\temp@trapezoid@text{}
+\edef\auto@trapezoid@title{}
+\newdimen{\@tempwidth}
+\newdimen{\trapezoid@width@value}
+\newdimen{\trapezoid@new@width}
+\newdimen{\temp@line@width}
+\newdimen{\temp@line@height}
+\newdimen{\test@line@width}
+
+% Internal flag for disabling capitalization:
+\global\let\csm@autotitle@caps@disable=0
+
+\def\@trapezoid@space{\afterassignment\@trapezoid@space@\let\@tempa= }
+\def\@trapezoid@space@{\trapezoid@char@loop}
+\def\@trapezoid@character#1{%
+% Diagnostic Line:
+%#1%
+	\temp@trapezoid@text\expandafter{\the\temp@trapezoid@text#1}
+	\trapezoid@char@loop%
+}
+\def\trapezoid@char@stop{}
+\def\trapezoid@char@loop{%
+	\futurelet\@trap@temp@char%
+	\trapezoid@char@loop@%
+}
+\def\trap@line@sep{\vspace*{-\temp@line@height}\vspace*{\baselineskip}}
+\gdef\@trapcr{}
+\def\trapezoid@save@line{%
+	\setbox\temp@trapezoid@box\vbox{\unvbox\temp@trapezoid@box\trap@line@sep\MakeTextUppercase{\auto@trapezoid@title}}%
+	\setlength{\trapezoid@new@width}{\test@line@width}%
+	\advance \trapezoid@new@width by -\@tempwidth%
+		% Test for underflow (this line being less than 1/2 of the last line)
+	\ifdim \trapezoid@new@width < 0.5\trapezoid@width@value%
+		\global\let\trapezoid@underflow\@true%
+	\fi%
+	\setlength{\trapezoid@width@value}{\trapezoid@new@width}
+	\ifdim \trapezoid@width@value > \linewidth \relax%
+		\global\let\trapezoid@overflow\@true%
+	\fi%
+	\setlength{\test@line@width}{\@tempwidth}%
+% Diagnostic Line:
+%\MakeTextUppercase{\auto@trapezoid@title} \\
+	\protected@edef\auto@trapezoid@title{\the\temp@trapezoid@text}%
+	\stepcounter{titlewidth@cnt}%
+}
+\global\let\trap@fresh@cr\@false
+\def\trapezoid@save@word{%
+	\ifx\trap@fresh@cr\@true%
+		\def\word@space{}%
+	\else%
+		\def\word@space{~}%
+	\fi%
+	\global\let\trap@fresh@cr\@false
+	% Get the width and height of the word for use in our calculations
+	\setbox\temp@box=\hbox{\word@space\MakeTextUppercase{\the\temp@trapezoid@text}}%
+	\@tempwidth\wd\temp@box%
+	\advance\test@line@width by \@tempwidth%
+	\temp@line@height\ht\temp@box%
+% Diagnostic Line:
+%X{\unhbox\temp@box}Y{\the\test@line@width}Z%
+	% The first line of the title is a special case, this really sets the entire shape so we run through
+	% this entire routine with a different number of words permitted in the title line
+	\ifnum \value{titlewidth@cnt}=0%
+		% If we're below the ``starting width'' then don't count this word toward our goal
+		\ifnum \trapezoid@width@value > \test@line@width%
+			\setlength{\temp@line@width}{\test@line@width}%
+			\protected@edef\auto@trapezoid@title{\auto@trapezoid@title\word@space\the\temp@trapezoid@text}%
+		\else%
+			% Reached the ``extra word goal'' for this try, save the line
+			\ifnum \value{trap@push@lineone}=\value{trap@push@temp}%
+				\trapezoid@save@line%
+			\else%
+				% Have not reached the ``extra word goal'' yet
+				\setlength{\temp@line@width}{\test@line@width}%
+				\protected@edef\auto@trapezoid@title{\auto@trapezoid@title\word@space\the\temp@trapezoid@text}%
+				\stepcounter{trap@push@temp}%
+			\fi%
+		\fi%
+	\else%
+		% For all other lines we just make sure that the line is smaller than the previous one
+		\ifnum \trapezoid@width@value > \test@line@width%
+			\setlength{\temp@line@width}{\test@line@width}%
+			\protected@edef\auto@trapezoid@title{\auto@trapezoid@title\word@space\the\temp@trapezoid@text}%
+		\else%
+			\trapezoid@save@line%
+		\fi%
+	\fi%
+	% At the end of the title we need to flush the last line
+	\ifx \trapezoid@flush\@true%
+		% The two spaces at the end of this line are disturbing, but appear necessary in order to get the correct alignment
+		\setbox\temp@trapezoid@box\vbox{\unvbox\temp@trapezoid@box\trap@line@sep\MakeTextUppercase{\auto@trapezoid@title}~~}%
+		\setlength{\trapezoid@new@width}{\test@line@width}%
+		\advance \trapezoid@new@width by -\@tempwidth%
+		% Test for underflow (this line being less than 1/2 of the last line)
+		\ifdim \trapezoid@new@width < 0.5\trapezoid@width@value%
+			\global\let\trapezoid@underflow\@true%
+		\fi%
+		\setlength{\trapezoid@width@value}{\trapezoid@new@width}
+		\ifdim \trapezoid@width@value > \linewidth \relax%
+			\global\let\trapezoid@overflow\@true%
+		\fi%
+% Diagnostic Line:
+%\MakeTextUppercase{\auto@trapezoid@title} \\
+		\stepcounter{titlewidth@cnt}%
+	\fi%
+}
+\def\@trapezoid@group#1{\@trapezoid@character{{#1}}}
+
+\def\trapezoid@char@loop@{%
+	% It is ABSOLUTELY CRITICAL to trap the ``begin group'' character for math mode to display properly
+	\ifx\bgroup\@trap@temp@char%
+		\let\@tempa\@trapezoid@group%
+	\else%
+		% The space character is the ``special token'' - use this character to check
+		% for good places to end the line
+		\ifx \@sptoken\@trap@temp@char%
+			\trapezoid@save@word%
+			\temp@trapezoid@text{}%
+			\let\@tempa\@trapezoid@space%
+		\else%
+			% \trapezoid@char@stop is specially defined so this routine knows
+			% when the entire text has been read (where to stop)
+			\ifx \trapezoid@char@stop\@trap@temp@char%
+				\global\let\trapezoid@flush\@true%
+				\trapezoid@save@word%
+				\let\@tempa\@gobble%
+			\else%
+				% Measure all other characters and include them in the width
+				\let\@tempa\@trapezoid@character%
+			\fi%
+		\fi%
+	\fi%
+	\@tempa%
+}
+
+% <<NOTE:>> The following ``for loop'' command is a convenience function for generating the inverted pyramid title
+\newcommand{\TrapForLoop}[5][1]{%
+	\setcounter{#2}{#3}%
+	\ifnum#4\relax
+		#5%
+		\addtocounter{#2}{#1}%
+		\TrapForLoop[#1]{#2}{\value{#2}}{#4}{#5}%
+	\fi
+}%
+
+% Setup some temporary variables for our calculations
+\newcounter{trap@push@lineone}
+\newcounter{titlewidth@lines}
+\newcounter{titlewidth@cnt}
+\newlength{\@titlewidth@max}
+\newlength{\@titlewidth@diff}
+\newlength{\@titlewidth@flex}
+\newlength{\@titlewidth}
+% <<NOTE:>> Internal command for automatically calculating an inverted pyramid title
+\newcommand{\AutoTrapezoidTitle}{
+	% Shoot for a three-line title (reliable sources say four lines is more expensive)
+	\setcounter{titlewidth@lines}{3}
+	% Calculate the max base length of our trapezoid (use a small base 3/4 the large base)
+	% MaxBase+MinBase = 7/4MaxBase = 2*Area/Height
+	% MaxBase = 4/7*Area/Height
+	% TWmax = 4/7*(FullTitleWidth*LineHeight*TWlines)/(LineHeight*TWlines)
+	\settowidth{\@titlewidth}{\MakeTextUppercase{\@title}}
+	\setlength{\@titlewidth@max}{4\@titlewidth}
+	\divide \@titlewidth@max by 7
+	\divide \@titlewidth@max by \value{titlewidth@lines}
+	\multiply \@titlewidth@max by 2 % Double spaced
+% Output Diagnostic:
+%\the\@titlewidth@max
+	% Throw in a small amount of flex space
+	\settowidth{\@titlewidth@flex}{flex}
+	\advance \@titlewidth@max by \@titlewidth@flex
+	% If the base width would be bigger than a line then set the base width to the line width
+	\ifdim \@titlewidth@max > \linewidth \relax
+		\setlength{\@titlewidth@max}{\linewidth}
+	\fi
+	% Try to build the trapezoid, pushing out an addition word on the first line each time
+	\global\let\trapezoid@found\@false
+	\TrapForLoop{trap@push@lineone}{0}{\value{trap@push@lineone} < 5}{%
+		\setcounter{trap@push@temp}{0}%
+		\setlength{\trapezoid@width@value}{\@titlewidth@max}%
+		\setlength{\test@line@width}{0pt}%
+		\global\let\trap@fresh@cr\@true%
+		\global\let\trapezoid@flush\@false%
+		\global\let\trapezoid@overflow\@false%
+		\global\let\trapezoid@underflow\@false%
+		\protected@edef\auto@trapezoid@title{}%
+		\temp@trapezoid@text{}%
+		\setbox\temp@trapezoid@box=\vbox{}%
+		\setcounter{titlewidth@cnt}{0}%
+		\expandafter\trapezoid@char@loop\@title\trapezoid@char@stop%
+		\ifnum \value{titlewidth@cnt}=\value{titlewidth@lines}%
+			\ifx \trapezoid@overflow\@false%
+				\ifx \trapezoid@underflow\@false%
+					\setbox\best@trapezoid@box\vbox{\unvbox\temp@trapezoid@box}%
+					\global\let\trapezoid@found\@true%
+				\else%
+					% Not really the ``best'' but it's probably better than the last non-overflowing one
+					\ifx \trapezoid@found\@false%
+						\setbox\best@trapezoid@box\vbox{\unvbox\temp@trapezoid@box}%
+						\global\let\trapezoid@found\@true%
+					\fi%
+				\fi%
+			\fi%
+		\fi%
+		\ifx \trapezoid@overflow\@false%
+			\setbox\last@trapezoid@box\vbox{\unvbox\temp@trapezoid@box}%
+		\fi%
+	}
+	\ifx \trapezoid@found\@true
+		\unvbox\best@trapezoid@box%
+	\else
+		\unvbox\last@trapezoid@box%
+	\fi
+}
+
+
+%%%%%%
+%%% Everything below here is for the removal of carriage returns in PDF titles
+%%%%%%
+
+\newtoks\temp@pdftitle@text
+\temp@pdftitle@text{}
+\def\pdftitle@char@stop{}
+\def\pdftitle@char@loop{%
+	\futurelet\@pdftitle@temp@char%
+	\pdftitle@char@loop@%
+}
+\def\@pdftitle@character#1{%
+	\temp@pdftitle@text\expandafter{\the\temp@pdftitle@text#1}
+	\pdftitle@char@loop%
+}
+\def\@pdftitle@space{\afterassignment\@pdftitle@space@\let\@tempa= }
+\def\@pdftitle@space@{\pdftitle@char@loop}
+\def\@pdftitle@cr#1{\@pdftitle@character{ }}
+\def\@pdftitle@group#1{\@pdftitle@character{{#1}}}
+\def\pdftitle@char@loop@{%
+	% It is ABSOLUTELY CRITICAL to trap the ``begin group'' character for commands to handle properly
+	\ifx\bgroup\@pdftitle@temp@char%
+		\let\@tempa\@pdftitle@group%
+	\else%
+		% The space character is the ``special token''.
+		\ifx \@sptoken\@pdftitle@temp@char%
+			\temp@pdftitle@text\expandafter{\the\temp@pdftitle@text\space}
+			\let\@tempa\@pdftitle@space%
+		\else%
+			\ifx \pdftitle@char@stop\@pdftitle@temp@char%
+				\let\@tempa\@gobble%
+			\else%
+				\ifx \\\@pdftitle@temp@char%
+					\let\@tempa\@pdftitle@cr%
+				\else%
+					\let\@tempa\@pdftitle@character%
+				\fi%
+			\fi%
+		\fi%
+	\fi%
+	\@tempa%
+}
+\newcommand{\csm@pdf@title}[1]{%
+	\expandafter\pdftitle@char@loop#1\pdftitle@char@stop%
+	\protected@edef\@csm@pdf@title{\the\temp@pdftitle@text}
+}

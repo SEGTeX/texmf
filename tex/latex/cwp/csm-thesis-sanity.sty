@@ -1,0 +1,71 @@
+% Make a nice command for outputting errors
+\newcommand{\csm@thesis@error}[1]{
+	{\@latex@error{#1}\@ehc}
+}
+
+% Make a nice command for outputting warnings
+\newcommand{\csm@thesis@warning}[1]{
+	{\@latex@warning{#1}}
+}
+
+% Make sure the variable (#1) is set, if it's not then output an error
+\newcommand{\sanitize}[2]{
+	\ifx#1\@empty
+		\csm@thesis@error{No #2 given}
+	\fi
+}
+
+% Make sure a section/environment (#1) is set, if it's not then output an error
+\newcommand{\requiredsection}[2]{
+	\ifx\csm@thesis@nochecks\@false
+		\ifx#1\@empty
+			\csm@thesis@error{Required section (environment) missing: #2}
+		\fi
+	\fi
+}
+
+% Make sure a section/environment (#1) is set, if it's not then output a warning
+\newcommand{\suggestedsection}[2]{
+	\ifx\csm@thesis@nochecks\@false
+		\ifx#1\@empty
+			\csm@thesis@warning{It is recommended that you include the '#2' section (environment)}
+		\fi
+	\fi
+}
+
+% Make sure a section/environment (#1) is NOT set, if it's SET then output an error
+% The reason for the failure is output in parenthesis (#3)
+\newcommand{\disallowedsection}[3]{
+	\ifx\csm@thesis@nochecks\@false
+		\ifx#1\@true
+			\@latex@warning@no@line{Disallowed section (environment) exists: #2 (#3)}
+		\fi
+	\fi
+}
+
+% Make sure ``fullpage'' does not get included!
+\AtBeginDocument{
+	\@ifpackageloaded{fullpage}{\csm@thesis@error{The 'fullpage' package is incompatible with csm-thesis}}{}
+}
+
+% Construct a custom command for performing operations at the end of the preamble
+\global\let\csm@endpreamblehook\@empty
+\@onlypreamble\CSM@AtEndPreamble
+\gdef\CSM@AtEndPreamble{\g@addto@macro\csm@endpreamblehook}
+% and at the end of the beginning of the document
+\global\let\csm@begindocumenthook\@empty
+\@onlypreamble\CSM@AtBeginDocumentLast
+\gdef\CSM@AtBeginDocumentLast{\g@addto@macro\csm@begindocumenthook}
+% code for both:
+\global\let\orig@begin@document=\document
+\gdef\document{%
+	\endgroup
+	\let\CSM@AtEndPreamble\@firstofone%
+	\csm@endpreamblehook%
+	\global\let\csm@endpreamblehook\@empty%
+	\begingroup
+	\orig@begin@document%
+	\let\CSM@AtBeginDocumentLast\@firstofone%
+	\csm@begindocumenthook%
+	\global\let\csm@begindocumenthook\@empty%
+}

@@ -1,0 +1,170 @@
+% Special commands for counting words in the abstract
+\newcounter{csm@abstract@words}
+\begingroup
+\global\let\orig@cr\@empty
+\global\let\orig@spaceA\@empty
+\global\let\orig@spaceB\@empty
+\catcode`\ =\active
+\gdef\countwords{%
+	\global\let\orig@cr=\par%
+	\global\let\orig@spaceA=\space%
+	\global\let\orig@spaceB= %
+	\gdef\csm@space{\stepcounter{csm@abstract@words}\orig@spaceA}%
+	\gdef\par{\stepcounter{csm@abstract@words}\orig@cr}%
+	\catcode`\ =\active%
+	\global\let =\csm@space%
+}
+\gdef\stopwordcount{%
+	\global\let\space=\orig@spaceA%
+	\global\let =\orig@spaceB%
+	\global\let\par=\orig@cr%
+	\catcode`\ =11%
+}
+\endgroup
+
+% The abstract in a master’s thesis has no length restriction. However, in a Ph.D. dissertation, the abstract limit is 350 words, or approximately 1½ pages of text. This limit is set by the publishers of the Dissertation Abstracts International. Dissertation abstracts are submitted by OGS to this publication for indexing. As an alternative, you may include a longer abstract in the thesis and also separately submit a shorter summary to OGS that adheres to the 350-word limit. The submission of the shorter summary is part of the graduation checkout requirement.
+% <<EXTRA:>> Also done so \section calls are done internally
+\global\let\@abstract@exists\@empty
+\renewenvironment{abstract}{
+	\global\let\@abstract@exists\@true
+	\internalsection{\abstractname}
+	\begingroup
+	\countwords
+}{
+	\stopwordcount
+	\endgroup
+	\ifnum\value{csm@abstract@words}>350
+		\@latex@warning@no@line{Your abstract contains \arabic{csm@abstract@words} words, a dissertation (PhD thesis) may not exceed 350 words.  If you are submitting a dissertation you may alternatively submit a shorter summary to OGS that adheres to the 350-word limit}
+	\fi
+}
+
+% If a dedication page is included, it is placed at the end of the front matter section, following the acknowledgments. Typically, a dedication page has no title; it simply states, e.g., “For my father.” Roman numeral page numbering continues on the dedication page, which is blank on the back side.
+\global\let\@dedication@exists\@empty
+\newenvironment{dedication}{
+	\global\let\@dedication@exists\@true
+	% Add a ToC entry for the PDF
+	\magicsection
+	\addcontentsline{toc}{section}{\protect\texorpdfupper{Dedication}}
+	\begingroup
+		% Set up a vertical space and horizontal centering
+		\vspace*{\fill}
+		\center
+}{
+		% End horizontal centering and use another vertical space (to give us a vertically centered page)
+		\endcenter
+		\vspace*{\fill}
+		\vspace*{\baselineskip}
+	\endgroup
+}
+
+% EXTRA: Make an environment for acknowledgements so that all \section calls are done internally
+\global\let\@acknowledgements@exists\@empty
+\newenvironment{acknowledgements}{
+	\ifx\csm@thesis@nochecks\@false
+		\ifx\@dedication@exists\@empty \else
+			\csm@thesis@error{The dedication must be the last item in the front matter.}
+		\fi
+	\fi
+	\global\let\@acknowledgements@exists\@true
+	\internalsection{Acknowledgements}
+}{}
+
+% EXTRA: Make an environment for the introduction so that all \section calls are done internally
+% NOTE: This section is optional
+\newenvironment{introduction}{
+	\internalsection{Introduction}
+}{}
+
+% EXTRA: Make an environment for the bibliography so that all \section calls are done internally
+% NOTE: This section is optional
+\newenvironment{selected-bibliography}{
+	\internalsection{Selected Bibliography}
+}{}
+
+% EXTRA: Use special bibliography environment when using the ``biblatex'' package.
+\AtBeginDocument{
+	\@ifpackageloaded{biblatex}{
+		\global\let\external@printbibliography=\printbibliography
+		\newcommand{\csm@printbibliography@before}{%
+			\cleardoublepage%
+			\magicsection%
+			\global\let\@bibliography@exists\@true%
+			\global\let\@chapter@call\@true%
+			\addcontentsline{toc}{section}{\protect\texorpdfupper{\refname}}%
+		}
+		\newcommand{\csm@printbibliography@after}{%
+			\global\let\@chapter@call\@empty%
+		}
+		\gdef\csm@printbibliography{%
+			\csm@printbibliography@before%
+			\external@printbibliography%
+			\csm@printbibliography@after%
+		}
+		\gdef\csm@printbibliography@opt[#1]{%
+			\csm@printbibliography@before%
+			\external@printbibliography[#1]%
+			\csm@printbibliography@after%
+		}
+		\gdef\printbibliography{%
+			\@ifnextchar[% ] bracket matching
+			{\csm@printbibliography@opt}%
+			{\csm@printbibliography}%
+		}
+	}
+}
+
+% EXTRA: Make an environment for the bibiliography so that all \section calls are done internally
+\global\let\@bibliography@exists\@empty
+\let\latex@bibliography\bibliography
+\renewcommand{\bibliography}[1]{
+	\cleardoublepage
+	\global\let\@bibliography@exists\@true
+	\latex@bibliography{#1}
+}{}
+
+% EXTRA: Make the references be called ``References Cited'' and be included in the TOC
+% IMPORTANT NOTES:
+%  1) ``babel'' scews up \refname, so we renew \refname at the beginning of the document.
+%  2) ``natbib'' screws up \thebibliography, so we most renew at the beginning of the document.
+%  3) LyX messes with \refname, so use an internal \csm@refname where possible.
+\AtBeginDocument{
+	\makeatletter
+	\newcommand{\csm@refname}{References Cited}
+	\renewcommand{\refname}{\csm@refname}
+	% Do not change the bibliography section if biblatex is used, otherwise we get two section titles
+	\@ifpackageloaded{biblatex}{}{
+		\renewenvironment{thebibliography}[1]{
+			\internalsection{\csm@refname}%
+			\@mkboth{\MakeUppercase\csm@refname}{\MakeUppercase\csm@refname}%
+			\list{\@biblabel{\@arabic\c@enumiv}}%
+			{\settowidth\labelwidth{\@biblabel{#1}}%
+				\leftmargin\labelwidth
+				\advance\leftmargin\labelsep
+				\@openbib@code
+				\usecounter{enumiv}%
+				\let\p@enumiv\@empty
+				\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+			\sloppy
+			\raggedright
+			\clubpenalty4000
+			\@clubpenalty \clubpenalty
+			\widowpenalty4000%
+			\sfcode`\.\@m}
+			{\def\@noitemerr
+				{\@latex@warning{Empty `thebibliography' environment}}%
+			\endlist}
+	}
+	\makeatother
+}
+
+% EXTRA: Add checks at the end of the document environment to ensure that all required sections exist
+\AtEndDocument{
+	\requiredsection{\@frontmatter@exists}{\protect\frontmatter}
+	\requiredsection{\@maketitle@exists}{\protect\maketitle}
+	\requiredsection{\@makesubmittal@exists}{\protect\makesubmittal}
+	\requiredsection{\@tableofcontents@exists}{\protect\tableofcontents}
+	\requiredsection{\@bodymatter@exists}{\protect\bodymatter}
+	\requiredsection{\@abstract@exists}{abstract}
+	\suggestedsection{\@acknowledgements@exists}{acknowledgements}
+	\requiredsection{\@bibliography@exists}{bibliography}
+}
