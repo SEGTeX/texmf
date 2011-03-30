@@ -66,12 +66,15 @@
 \newcommand{\@name}{Paul Sava}
 \renewcommand{\author}[1]{\renewcommand{\@name}{#1}}
 
+\newcommand{\@hdate}{\today}
+\renewcommand{\date}[1]{\renewcommand{\@hdate}{#1}}
+
 \newcommand{\@cname}{Class name}
 \renewcommand{\title}[2]{%
   \begin{center}
 {\small
   #1 \hfill #2 \\
-  \@name \hfill \today } \\ 
+  \@name \hfill \@hdate } \\ 
 \hrulefill
 \end{center}}
 
