@@ -912,13 +912,14 @@
 % number to 1 (Miguel A. Lerma).
 
 \def\utabstract{\clearpage      % <-
+    \shortchapter*{\ti@tle}
     \short@page
     \setcounter{regular@short}{1}
     \pagestyle{plain}
     \addcontentsline{toc}{chapter}{Abstract}
     \baselineskip 14pt plus .5pt minus .2 pt    
-    \begin{center}
-     \baselineskip=22.5pt plus .5pt minus .2 pt
+    %\begin{center}
+    \baselineskip=22.5pt plus .5pt minus .2 pt
 %
 %	The Graduate School now permits mixed case in the title.
 %		Note: The title printed on
@@ -928,16 +929,18 @@
 %			must all be the same.
 %
 %     \large\bf\TI@TLE		% All capitals title.
-     \large\bf\ti@tle		% Mixed case title.
+     %\large\bf\ti@tle		% Mixed case title.
+     
+    
 
-    \end{center}
-    \vspace*{25pt}
+    %\end{center}
+    %\vspace*{25pt}
     \pubnum                                            % (MAL 3/18/98)
     \vspace*{25pt}
     \centerline{\au@thor, \target@degree}                            % <-
     \vspace*{5pt}                                      % (MAL 7/25/98)
     \centerline{The University of Texas at Austin, \graduation@year} % <-
-%
+
     \vspace{10pt}
     \begin{center}
      { \ifnum\numberofsupervisors=1		% One supervisor
