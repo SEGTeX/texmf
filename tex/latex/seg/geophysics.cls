@@ -374,7 +374,7 @@
 \newcommand{\ms@number}{Manuscript}
 \newcommand{\ms}[1]{\renewcommand{\ms@number}{\textbf{#1}}}
 \newcommand{\geo@published}{Unknown}
-\newcommand{\pulished}[1]{\renewcommand{\geo@published}{#1}}
+\newcommand{\published}[1]{\renewcommand{\geo@published}{#1}}
 \newcommand{\seg@title}{}
 \newenvironment{geo@title}{%
   \begin{minipage}{\textwidth}%
