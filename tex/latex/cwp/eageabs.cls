@@ -63,7 +63,7 @@
 %%
 \pagestyle{fancy} % load package
 \fancyhf{} % clear styles
-\fancyhead[RO,RE]{\includegraphics[height=0.85in,width=2.4in]{eagelogo}} % input logo top right, even and odd side
+\fancyhead[RO,RE]{\includegraphics[height=0.65in,width=1.83in]{eagelogo}} % input logo top right, even and odd side
 \renewcommand{\headrulewidth}{0pt} % no line in header
 %
 \fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{74\textsuperscript{rd} EAGE Conference \& Exhibition incorporating SPE EUROPEC 2012 \\ Copenhagen, Denmark, 4 -- 7 June 2012}} % footnote
