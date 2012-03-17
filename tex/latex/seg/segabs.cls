@@ -53,19 +53,21 @@
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \DeclareRobustCommand{\fullplot}[4][htbp]{%
-\begin{figure*}[#1]
-\centering
-\includegraphics[#3]{\fig@file{#2}}
-\caption[]{#4}
-\label{fig:#2}
-\end{figure*}}
+  \begin{figure*}[#1]
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption[]{#4}
+    \label{fig:\@path-#2}
+    \label{fig:#2}
+  \end{figure*}}
 \DeclareRobustCommand{\sideplot}[4][htbp]{%
-\begin{figure}[#1]
-\centering
-\includegraphics[#3]{\fig@file{#2}}
-\caption[]{#4}
-\label{fig:#2}
-\end{figure}}
+  \begin{figure}[#1]
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption[]{#4}
+    \label{fig:\@path-#2}
+    \label{fig:#2}
+  \end{figure}}
 \def\plot{\@ifstar{\fullplot}{\sideplot}}
 \RequirePackage{subfigure}
 \def\next@item#1,#2?{#1}
@@ -83,10 +85,12 @@
     \else
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
     \caption{#5}
+    \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure}
 }
@@ -102,10 +106,12 @@
     \else
     \stepcounter{sub@fig}
     \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+      \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
     \caption{#5}
+    \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure*}
 }
