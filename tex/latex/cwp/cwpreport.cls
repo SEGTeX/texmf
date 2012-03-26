@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpreport}[2006/03/20 v0.1 CWP report]
 
-\LoadClass{cwppcs}
+\LoadClass{cwpreport2012}
 
 % ------------------------------------------------------------
 \RequirePackage{graphicx}
@@ -142,7 +142,7 @@
 \DeclareRobustCommand{\refname}{REFERENCES}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
 {\renewcommand\bibsection{        \section{\refname}}}
-\newcommand{\shortcite}[1]{\citet{#1}}
 
-\newcommand{\newblock}[1]{}
+%\newcommand{\shortcite}[1]{\citet{#1}}
+%\newcommand{\newblock}[1]{}
 
