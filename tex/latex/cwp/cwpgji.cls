@@ -1,15 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pept}[]
+\ProvidesClass{cwpgji}[]
 
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{svjour3}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{gji}}
 \ProcessOptions*
 
-\RequirePackage{ifthen}
-
-\LoadClass{svjour3}
-
-\RequirePackage{natbib}
-\RequirePackage{graphicx}
+\LoadClass{gji}
 
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
@@ -29,24 +24,25 @@
   \begin{figure*}[#1]
     \makebox{%
       \begin{minipage}{0.4\textwidth}
-	\caption{#4}
-	\label{fig:#2}
+        \caption{#4}
+        \label{fig:#2}
       \end{minipage}
       \hfill
       \begin{minipage}{0.6\textwidth}
-	\centering
-	\includegraphics[#3]{\fig@file{#2}}
+        \centering
+        \includegraphics[#3]{\fig@file{#2}}
     \end{minipage}}
 \end{figure*}}
 
 \newlength{\box@width}
 \setlength{\box@width}{\textwidth}
-\addtolength{\box@width}{-20pt} 
+\addtolength{\box@width}{-20pt}
 \setlength{\fboxsep}{10pt}
 
 \newcommand{\boxit}[1]{\noindent\fbox{\parbox{\box@width}{#1}}}
 
 \RequirePackage{subfigure}
+
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
@@ -73,3 +69,5 @@
     \label{fig:\@path-#3}
   \end{figure*}
 }
+
+
