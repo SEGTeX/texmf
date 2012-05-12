@@ -4,7 +4,11 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{gji}}
 \ProcessOptions*
 
+\RequirePackage{ifthen}
+
 \LoadClass{gji}
+
+\RequirePackage{graphicx}
 
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
@@ -25,6 +29,7 @@
     \makebox{%
       \begin{minipage}{0.4\textwidth}
         \caption{#4}
+        \label{fig:\@path-#2}
         \label{fig:#2}
       \end{minipage}
       \hfill
