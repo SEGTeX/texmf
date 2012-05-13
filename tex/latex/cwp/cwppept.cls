@@ -3,19 +3,20 @@
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{svjour3}}
 \ProcessOptions*
-
-\RequirePackage{ifthen}
-
 \LoadClass{svjour3}
 
 \RequirePackage{natbib}
 \RequirePackage{graphicx}
+\RequirePackage{ifthen}
+
+% ------------------------------------------------------------
 
 \newcommand{\@path}{.}
 \newcommand{\inputdir}[1]{\renewcommand{\@path}{#1}}
 \providecommand{\figdir}{Fig}
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 
+% ------------------------------------------------------------
 \newcommand{\plot}[4][htbp]{%
   \begin{figure*}[#1]
     \centering
@@ -25,6 +26,7 @@
     \label{fig:#2}
 \end{figure*}}
 
+% ------------------------------------------------------------
 \newcommand{\sideplot}[4][htbp]{%
   \begin{figure*}[#1]
     \makebox{%
@@ -46,6 +48,7 @@
 
 \newcommand{\boxit}[1]{\noindent\fbox{\parbox{\box@width}{#1}}}
 
+% ------------------------------------------------------------
 \RequirePackage{subfigure}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
