@@ -1226,17 +1226,26 @@ $\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
 % citation call-outs is required; it is crucial for the future use of
 % on-line browsers.
 
-\def\references{\section*{REFERENCES}
-    \bgroup\parindent=\z@\parskip=\z@\reset@font\small
-    \def\refpar{\par\hangindent=1em\hangafter=1}}
-\def\endreferences{\refpar\egroup}
+\RequirePackage{natbib}
+\bibpunct[,]{(}{)}{;}{a}{,}{,}
+\DeclareRobustCommand{\refname}{REFERENCES}
+{\renewcommand\bibsection{\newpage\section{\refname}}}
+{\renewcommand\bibsection{        \section{\refname}}}
+\newcommand{\shortcite}[1]{\citet{#1}}
+\newcommand{\newblock}[1]{}
+
+
+%\def\references{\section*{REFERENCES}
+%    \bgroup\parindent=\z@\parskip=\z@\reset@font\small
+%    \def\refpar{\par\hangindent=1em\hangafter=1}}
+%\def\endreferences{\refpar\egroup}
 %%\let\endreferences=\endlist 
 
 %% \small should probably be \scriptsize to match print version 
 
 
-\def\reference{\relax\refpar}  % Generic: might be better...
-\def\markcite#1{#1\relax}
+%\def\reference{\relax\refpar}  % Generic: might be better...
+%\def\markcite#1{#1\relax}
 
 
  
@@ -1374,40 +1383,39 @@ $\reset@font\displaystyle##$\hfil\cr>\cr\approx\cr}}}
 % 
 %  Code taken from apalike.sty. 
 % 
-\ifGJ@extra
-\else
-\def\@cite#1#2{(#1\if@tempswa , #2\fi)} 
-\def\@cited#1#2{#1\if@tempswa (#2)\fi}
-\def\@biblabel#1{} 
+%\ifGJ@extra
+%\else
+%\def\@cite#1#2{(#1\if@tempswa , #2\fi)} 
+%\def\@cited#1#2{#1\if@tempswa (#2)\fi}
+%\def\@biblabel#1{} 
  
 % Set length of hanging indentation for bibliography entries 
 % 
-\newlength{\bibhang} 
-\setlength{\bibhang}{1em} 
-\fi 
+%\newlength{\bibhang} 
+%\setlength{\bibhang}{1em} 
+%\fi 
 %  Define default title and page-head text. 
 % 
-\def\bibtitle{References} 
-\def\bibheadtitle{REFERENCES} 
+%\def\bibtitle{References} 
+%\def\bibheadtitle{REFERENCES} 
  
 %  Code taken from aaai.sty. 
 % 
 % don't box citations, add space between multiple citations, separate with ; 
-\def\@citex[#1]#2{\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi 
-  \def\@citea{}\@cite{\@for\@citeb:=#2\do 
-    {\@citea\def\@citea{; }\@ifundefined 
-       {b@\@citeb}{@warning 
-       {Citation `\@citeb' on page \thepage \space undefined}}% 
-{\csname b@\@citeb\endcsname}}}{#1}} 
+%\def\@citex[#1]#2{\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi 
+%  \def\@citea{}\@cite{\@for\@citeb:=#2\do 
+%    {\@citea\def\@citea{; }\@ifundefined 
+%       {b@\@citeb}{@warning 
+%       {Citation `\@citeb' on page \thepage \space undefined}}% 
+%{\csname b@\@citeb\endcsname}}}{#1}} 
 % Allow short (name-less) citations, when used in 
 % conjunction with a bibliography style that creates labels like 
 %       \citename{<names> }<year> 
-\let\@internalcite\cite
-\def\cite{\def\citename##1{##1}\@internalcite} 
-\def\shortcite{\def\citename##1{}\@internalcite}
+%\let\@internalcite\cite
+%\def\cite{\def\citename##1{##1}\@internalcite} 
+%\def\shortcite{\def\citename##1{}\@internalcite}
 
- 
-\def\bsp{\medskip\reset@font\small\noindent This paper has been produced  
+ \def\bsp{\medskip\reset@font\small\noindent This paper has been produced  
  using the Blackwell Scientific Publications GJI \LaTeX2e\ class file.} 
  
  
