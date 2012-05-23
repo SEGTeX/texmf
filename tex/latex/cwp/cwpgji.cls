@@ -54,7 +54,7 @@
 \newcounter{sub@fig}
 
 \newcommand{\multiplot}[4]{
-  \begin{figure*}
+  \begin{figure}
     \centering
     \setcounter{sub@fig}{0}
     \edef\list@i{#2}
@@ -73,7 +73,7 @@
     \caption{#4}
     \label{fig:#2}
     \label{fig:\@path-#2}
-  \end{figure*}
+  \end{figure}
 }
 
 \newcommand{\sidemultiplot}[4]{
