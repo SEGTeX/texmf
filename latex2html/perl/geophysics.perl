@@ -110,6 +110,17 @@ sub buttons {
 			     "width=\"34\" height=\"32\"></a>");
 	    }
 	}
+    } elsif ($path eq 'Sage') {
+	foreach $name (@names) {
+	    my $sage = join('/','..',$path,$name . '.sage');
+	    if (-f $sage) {
+		$out .= join(''," <a href=\"$sage\">", 
+			     "<img src=\"$main::ICONSERVER/sage.$type\"",
+			     " border=\"0\"", 
+			     " alt=\"[sage]\"",
+			     "width=\"38\" height=\"32\"></a>");
+	    }
+	}
     } elsif ($path eq 'Pylab') {
 	foreach $name (@names) {
 	    my $pytl = join('/','..',$path,$name . '.py');
