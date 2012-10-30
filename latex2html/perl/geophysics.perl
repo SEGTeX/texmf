@@ -110,7 +110,18 @@ sub buttons {
 			     "width=\"34\" height=\"32\"></a>");
 	    }
 	}
-    } elsif ($path eq 'Sage') {
+      } elsif ($path eq 'Gnuplot') {
+	foreach $name (@names) {
+	  my $gnuplot = join('/','..',$path,$name . '.gp');
+	  if (-f $gnuplot) {
+	    $out .= join(''," <a href=\"$gnuplot\">", 
+			 "<img src=\"$main::ICONSERVER/gnuplot.$type\"",
+			 " border=\"0\"", 
+			 " alt=\"[gnuplot]\"",
+			 "width=\"32\" height=\"32\"></a>");
+	  }
+	}
+      } elsif ($path eq 'Sage') {
 	foreach $name (@names) {
 	    my $sage = join('/','..',$path,$name . '.sage');
 	    if (-f $sage) {
