@@ -45,11 +45,14 @@
 % Top margin is now set in the disstemplate.tex file.
 %					29 Nov 2001	cwm
 
+\textwidth 16.59cm
+\textheight 21.94cm
+
 \oddsidemargin 0.625in \evensidemargin 0.625in
-\textwidth 5.5in
+%\textwidth 5.5in
 \headheight .21in
 \headsep .29in	% \headheight + \headsep = 0.5in
-\textheight 8in	% \textheight includes \footskip
+%\textheight 8in	% \textheight includes \footskip
 \footskip .5in
 
 \skip\footins 22.8pt plus 4pt minus 2pt
@@ -520,7 +523,14 @@
 	% when creating master's document.
 				%	08 Apr 2002	cwm
 %
-\def\certif@words{ }		%	13 Mar 2002	cwm
+%\def\certif@words{ }		%	13 Mar 2002	cwm
+
+\def\certif@words{              %       11 Nov 2012     cwm
+        \centerline{The Thesis committee for \au@thor}
+        \centerline{Certifies that this is the approved version\
+                of the following thesis:}
+                                           }
+
 %
 \def\approvalwords{%
          \leftline{\hbox to 2.5in{}APPROVED BY\hfill}         %           
