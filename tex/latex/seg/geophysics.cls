@@ -210,6 +210,7 @@
     \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
     \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
 }
+\renewcommand{\thesubfigure}{\alph{subfigure}}
 \newcounter{@tabls}
 \setcounter{@tabls}{0}
 \ifthenelse{\boolean{@manu}}{

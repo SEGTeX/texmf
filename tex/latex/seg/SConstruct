@@ -2,6 +2,9 @@ import os, sys, signal, re
 
 env=Environment()
 
+if sys.platform == 'darwin':
+    env['ENV']['PATH'] = ':'.join(['/opt/local/bin',env['ENV']['PATH']])
+
 latex = WhereIs('latex')
 pdflatex = WhereIs('pdflatex')
 makeindex = WhereIs('makeindex')
