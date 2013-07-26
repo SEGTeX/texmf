@@ -75,10 +75,25 @@
   \vfill \ \newpage}
 \newcommand{\geo@header}{}
 \newcommand{\GEOheader}[1]{\renewcommand{\geo@header}{#1}}
+\newcounter{@append}
+\providecommand{\append@name}{A}
+\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
+\renewcommand{\appendix}{%
+  \ifthenelse{\equal{\append@name}{A}}{%
+    \renewcommand{\append@name}{\Alph{@append}}}{}
+  \setcounter{equation}{0}%
+  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
+  \stepcounter{@append}
+}
+\providecommand{\append}[1]{%
+  \appendix\section{Appendix \append@name}\section{#1}}
 \newcommand{\paper@dir}{.}
 \newcommand{\paper@tag}{self}
 \newcommand{\GEOpaper}[2]{%
 \ifthenelse{\boolean{@book}}{}{%
+  \setcounter{@append}{0}%
   \setcounter{equation}{0}\setcounter{figure}{0}%
   \setcounter{table}{0}\setcounter{footnote}{0}%
   \renewcommand{\theequation}{\arabic{equation}}%
@@ -348,20 +363,6 @@
 \def\section{\@ifstar{\segsection*}{\segsection*}}
 \def\subsection{\@ifstar{\seg@subsection*}{\seg@subsection*}}%
 \def\subsubsection{\@ifstar{\seg@subsubsection*}{\seg@subsubsection*}}}
-\newcounter{@append}
-\providecommand{\append@name}{A}
-\providecommand{\appendname}[1]{\renewcommand{\append@name}{#1}}
-\renewcommand{\appendix}{%
-  \ifthenelse{\equal{\append@name}{A}}{%
-    \renewcommand{\append@name}{\Alph{@append}}}{}
-  \setcounter{equation}{0}%
-  \renewcommand{\theequation}{\mbox{\append@name-\arabic{equation}}}%
-  \setcounter{figure}{0}%
-  \renewcommand{\thefigure}{\append@name-\arabic{figure}}%
-  \stepcounter{@append}
-}
-\providecommand{\append}[1]{%
-  \appendix\section{Appendix \append@name}\section{#1}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
