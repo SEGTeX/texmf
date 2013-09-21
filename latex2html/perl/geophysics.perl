@@ -21,6 +21,8 @@ sub figure {
             $out .= sprintf (" %s=%d",$dimension,$1*75);
         } elsif ($size =~ /$dimension=(\d*\.?\d*)cm/) {
             $out .= sprintf (" %s=%d",$dimension,$1*30);
+        } elsif ($size =~ /$dimension=(\d*\.?\d*)mm/) {
+            $out .= sprintf (" %s=%d",$dimension,$1*3);
 	} elsif ($size =~ /$dimension=(\d*\.?\d*)pt/) {
             $out .= sprintf (" %s=%d",$dimension,$1);  
         } elsif ($size =~ /$dimension=(\d*\.?\d*)/) {
