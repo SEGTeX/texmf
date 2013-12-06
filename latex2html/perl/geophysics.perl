@@ -125,6 +125,17 @@ sub buttons {
 			 "width=\"32\" height=\"32\"></a>");
 	  }
 	}
+     } elsif ($path eq 'Tikz') {
+	foreach $name (@names) {
+	  my $tikz = join('/','..',$path,$name . '.tex');
+	  if (-f $tikz) {
+	    $out .= join(''," <a href=\"$tikz\">", 
+			 "<img src=\"$main::ICONSERVER/tex.$type\"",
+			 " border=\"0\"", 
+			 " alt=\"[tikz]\"",
+			 "width=\"56\" height=\"32\"></a>");
+	  }
+	}
       } elsif ($path eq 'Sage') {
 	foreach $name (@names) {
 	    my $sage = join('/','..',$path,$name . '.sage');
