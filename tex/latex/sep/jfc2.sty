@@ -1,0 +1,74 @@
+\RequirePackage{listings}
+\lstset{language=c,numbers=left,numberstyle=\tiny,frame=single,showstringspaces=false}
+
+\RequirePackage{varioref}
+%\newcommand{\T}{^*} 
+
+% make bold and index
+\newcommand{\bx}[1]{\textbf{#1}\index{#1}} 
+% secondary index entries
+\newcommand{\sx}[1]{\index{#1}}
+% bold first, index second
+\newcommand{\bxbx}[2]{\textbf{#1}\index{#2}}
+%\newcommand{\moddex}[5]{\index{#1 module}%
+%  \index{operator!\texttt{#1}, #2}%
+%  \lstinputlisting[float=htbp,label=lst:#1,title=#5/#1.c,firstline=#3,lastline=#4]{\RSF/#5/#1.c}
+%}
+
+\newcommand{\bold}[1]{\mathbf{#1}}
+\newcommand{\FT}[1]{{\rm FT(}{#1})}
+\newcommand{\eq}{\quad=\quad}
+%\newcommand{\T}{^\mathrm{T}}    % Doesn't seem to work, but this sty file isn't getting used?
+\newcommand{\T}{^\ast}    % Experimental.
+%\newcommand{\T}{^\textnormal{T}}    
+\newcommand{\E}{^\textnormal{E}}
+\newcommand{\boxit}[1]{\noindent\fbox{\parbox{0.95\textwidth}{#1}}}
+\newcommand{\todo}[1]{}
+
+\newcounter{exercount}
+\newenvironment{exer}{%
+  \subsubsection*{{\rmfamily EXERCISES:}}
+  \begin{list}{\arabic{exercount}}
+    {\usecounter{exercount}\setcounter{exercount}{0}
+      \setlength{\leftmargin}{20pt}
+      \setlength{\labelsep}{10pt}}}
+  {\end{list}}
+
+\newcommand{\reference}[1]{\begin{list}{}
+{\setlength{\leftmargin}{1.5em}\setlength{\itemindent}{-1.5em}}
+\item [] {#1} \end{list}}
+
+
+\lstset{language=c,numbers=none,basicstyle=\footnotesize,frame=none,showstringspaces=false}
+\newcommand{\progdex}[2]{\index{#1 subroutine}%
+\index{subroutine!\texttt{#1}, #2}
+ \lstinputlisting[title=#2.rt,label=/prog:#1]{../Lib/#1.rt}
+}
+
+\newcommand{\opdex}[2]{\index{#1 subroutine}%
+\index{subroutine!\texttt{#1}, #2}
+ \lstinputlisting[title=#2.lop,label=/prog:#1]{../Lib/book/#1.lop}
+}
+
+
+\newcommand{\moddex}[2]{\index{#1 subroutine}%
+\index{subroutine!\texttt{#1}, #2}
+ \lstinputlisting[title=#2.r90,label=/prog:#1]{../Lib/book/#1.r90}
+}
+
+
+\newcommand{\progdexa}[3]{\index{#1 subroutine}%
+\index{subroutine!\texttt{#1}, #2}
+ \lstinputlisting[title=#2.rt,label=/prog:#1]{#3/#1}
+}
+
+\ifx\paper@dir\undefined
+\newcommand{\paper@dir}{.}
+\fi
+
+\newcommand{\viewit}[1]
+{
+\PushButton[name=#1,onclick={sendMessage('open:\paper@dir:#1');}]{\fbox{VIEW}}
+%\PushButton[name=#1,onclick={sendMessagec('open:#1');}]{\bf #1}
+%\PushButton[name=#1,onclick={sendMessage('open:#1');}]{\bf #1}
+}
