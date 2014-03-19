@@ -23,21 +23,30 @@
     \label{fig:#2}
 \end{figure*}}
 
-% ------------------------------------------------------------
 \newcommand{\sideplot}[4][htbp]{%
-  \begin{figure*}
-    \makebox{%
-      \begin{minipage}{0.4\textwidth}
-	\caption{#4}
-	\label{fig:#2}
-      \end{minipage}
-      \hfill
-      \begin{minipage}{0.6\textwidth}
-	\centering
-	\includegraphics[#3]{\fig@file{#2}}
-    \end{minipage}
-    }
-\end{figure*}}
+  \begin{figure}
+    \centering
+    \includegraphics[#3]{\fig@file{#2}}
+    \caption{#4}
+    \label{fig:\@path-#2}
+    \label{fig:#2}
+    \end{figure}}
+    
+% ------------------------------------------------------------
+%\newcommand{\sideplot}[4][htbp]{%
+%  \begin{figure*}
+%    \makebox{%
+%      \begin{minipage}{0.4\textwidth}
+%	\caption{#4}
+%	\label{fig:#2}
+%      \end{minipage}
+%     \hfill
+%      \begin{minipage}{0.6\textwidth}
+%	\centering
+%	\includegraphics[#3]{\fig@file{#2}}
+%    \end{minipage}
+%    }
+%\end{figure*}}
 
 % ------------------------------------------------------------
 \newlength{\box@width}
