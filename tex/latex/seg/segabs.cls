@@ -130,6 +130,7 @@
     \label{tbl:#2}
   \end{table*}
 }
+\renewcommand{\thesubfigure}{\alph{subfigure}}
 \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
