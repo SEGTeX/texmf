@@ -116,6 +116,7 @@
   \end{figure*}
 }
 \def\multiplot{\@ifstar{\fullmultiplot}{\sidemultiplot}}
+\renewcommand{\thesubfigure}{\alph{subfigure}}
 \providecommand{\seg@sidetabl}[4][htbp]{
   \begin{table}[#1]
     #4
@@ -130,7 +131,6 @@
     \label{tbl:#2}
   \end{table*}
 }
-\renewcommand{\thesubfigure}{\alph{subfigure}}
 \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
