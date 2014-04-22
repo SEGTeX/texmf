@@ -69,7 +69,7 @@
     \label{fig:#2}
   \end{figure}}
 \def\plot{\@ifstar{\fullplot}{\sideplot}}
-\RequirePackage{subfigure}
+\RequirePackage{subfig}
 \def\next@item#1,#2?{#1}
 \def\rest@item#1,#2?{#2}
 \newcounter{sub@fig}
@@ -84,7 +84,7 @@
     \ifx\item@i\empty
     \else
     \stepcounter{sub@fig}
-    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+    \subfloat[]{\includegraphics[#4]{\fig@file{\item@i}}%
       \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
@@ -105,7 +105,7 @@
     \ifx\item@i\empty
     \else
     \stepcounter{sub@fig}
-    \subfigure[]{\includegraphics[#4]{\fig@file{\item@i}}%
+    \subfloat[]{\includegraphics[#4]{\fig@file{\item@i}}%
       \label{fig:\@path-\item@i}
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
