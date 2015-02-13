@@ -63,10 +63,10 @@
 %%
 \pagestyle{fancy} % load package
 \fancyhf{} % clear styles
-\fancyhead[RO,RE]{\includegraphics[height=0.47in,width=2.06in]{eagelogo}} % input logo top right, even and odd side
+\fancyhead[RO,RE]{\includegraphics[height=0.76in,width=2.34in]{eagelogo}} % input logo top right, even and odd side
 \renewcommand{\headrulewidth}{0pt} % no line in header
 %
-\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{74\textsuperscript{rd} EAGE Conference \& Exhibition incorporating SPE EUROPEC 2013 \\ London, UK, 10 -- 13 June 2013}} % footnote
+\fancyfoot[CO,CE]{\fontsize{10}{10}\selectfont{77\textsuperscript{th} EAGE Conference \& Exhibition 2015 \\ Madrid, Spain, 1 -- 4 June 2015}} % footnote
 \renewcommand{\footrulewidth}{0.5pt} % add line in footnote
 % \renewcommand{\footrule}{%
 %   \vskip-\footruleskip\vskip-\footrulewidth 
@@ -219,6 +219,9 @@
 
 % ------------------------------------------------------------
 \RequirePackage{natbib}
+\gdef\bibfont{\fontsize{10}{11}\selectfont}
+\setlength{\bibsep}{0pt} % no lines between bibitems
+\setlength{\bibhang}{1em} % indentation of second line in bibitem
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
 {\renewcommand\bibsection{\newpage\section{\refname}}}
