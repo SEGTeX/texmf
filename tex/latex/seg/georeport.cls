@@ -55,6 +55,8 @@
   \LoadClass[9pt]{book}}{%
   \LoadClass[11pt]{book}}
 \RequirePackage{seg}
+\ifthenelse{\boolean{@book}}{}{%
+\RequirePackage{attachfile2}}
 \RequirePackage{chapterbib}
 \newlength{\toc@width}%
 \setlength{\toc@width}{\textwidth}%
@@ -125,12 +127,39 @@
     \centering
     \includegraphics[#2]{\plot@file{#1}}
 \end{figure*}}
+\newcommand{\rr@button}[1]{\ifthenelse{\boolean{@repr}}{%
+\IfFileExists{\paper@dir/\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 0 1]{\paper@dir/\@path/SConstruct}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\paper@dir/\@path/#1.ma}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Gnuplot}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\paper@dir/\@path/#1.gp}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Sage}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\paper@dir/\@path/#1.sage}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Matlab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\paper@dir/\@path/#1.ml}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Pylab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\paper@dir/\@path/#1.py}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{XFig}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\paper@dir/\@path/#1.fig}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\paper@dir/\@path}{Tikz}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\paper@dir/\@path/#1.tex}{\fbox{\paper@dir/\@path\ #1}}%
+}{%
+}}}}}}}}}%
+{}}
 \newcommand{\fullplot}[4][htbp]{%
   \begin{figure*}[#1]
     \centering
     \setlength{\fboxsep}{0.5ex}
     \includegraphics[#3]{\fig@file{#2}}
-    \caption{#4 \fbox{\paper@dir/\@path\ #2}}
+    \caption[#4]{#4 \rr@button{#2}}
     \label{fig:#2}
   \end{figure*}
 }
@@ -140,7 +169,7 @@
       \centering
       \setlength{\fboxsep}{0.5ex}
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4 \fbox{\paper@dir/\@path\ #2}}
+      \caption[#4]{#4 \rr@button{#2}}
       \label{fig:#2}
     \end{figure}
   }{%
@@ -148,7 +177,7 @@
       \makebox{%
         \begin{minipage}{0.4\textwidth}
   \setlength{\fboxsep}{0.5ex}
-          \caption{#4 \fbox{\paper@dir/\@path\ #2}}
+          \caption[#4]{#4 \rr@button{#2}}
           \label{fig:#2}
         \end{minipage}
         \hfill
@@ -183,7 +212,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption[]{#5 \fbox{\paper@dir/\@path\ #3}}
+    \caption[#5]{#5 \rr@button{#3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure*}
@@ -205,7 +234,7 @@
       \label{fig:\item@i}}
     \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
     \repeat
-    \caption[]{#5 \fbox{\paper@dir/\@path\ #3}}
+    \caption[#5]{#5 \rr@button{#3}}
     \label{fig:\@path-#3}
     \label{fig:#3}
   \end{figure}

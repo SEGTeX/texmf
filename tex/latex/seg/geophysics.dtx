@@ -188,12 +188,19 @@
 \DeclareOption{endfloat}{\setboolean{@eflt}{true}}
 \DeclareOption{noendfloat}{\setboolean{@eflt}{false}}
 %    \end{macrocode}
-% An revision option
+% A revision option
 %    \begin{macrocode}
 \newboolean{@revd}
 \setboolean{@revd}{false}
 \DeclareOption{revised}{\setboolean{@revd}{true}}
 \DeclareOption{new}{\setboolean{@revd}{false}}
+%    \end{macrocode}
+% Reproducible research option
+%    \begin{macrocode}
+\newboolean{@repr}
+\setboolean{@repr}{false}
+\DeclareOption{reproduce}{\setboolean{@repr}{true}}
+\DeclareOption{nonreprod}{\setboolean{@repr}{false}}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -204,7 +211,7 @@
 %    \end{macrocode}
 % We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper,onecolumn,long,noendfloat,new}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -213,6 +220,7 @@
 % Load SEG style package
 %    \begin{macrocode}
 \RequirePackage{seg}
+\ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
 %    \end{macrocode}
 %
 % \subsection{Figures and Tables}
@@ -240,9 +248,41 @@
 %    \end{macrocode}
 % \begin{macro}{\plot}
 % Define commands for figure inclusion.
+%
+% A button for reproducible research
+%    \begin{macrocode}
+\newcommand{\rr@button}[1]{\ifthenelse{\boolean{@repr}}{%
+\IfFileExists{\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 0 1]{\@path/SConstruct}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ma}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Gnuplot}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.gp}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Sage}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.sage}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Matlab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ml}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Pylab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.py}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{XFig}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.fig}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Tikz}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.tex}{\fbox{\@path\ #1}}%
+}{%
+}}}}}}}}}%
+{}}
+%    \end{macrocode} 
+% Plot commands.
 %    \begin{macrocode}
 \ifthenelse{\boolean{@manu}}
-%    \end{macrocode} 
+%    \end{macrocode} % 
 % In manuscripts, each figure appears on a separate page at the
 % end of the paper. 
 %    \begin{macrocode}
@@ -280,7 +320,7 @@
     \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4}
+      \caption[#4]{#4 \rr@button{#2}}
       \label{fig:\@path-#2}
       \label{fig:#2}
     \end{figure*}
@@ -311,7 +351,7 @@
       \begin{figure*}[#1]
         \makebox{%
           \begin{minipage}{0.4\textwidth}
-            \caption{#4}
+            \caption[#4]{#4 \rr@button{#2}}
 	    \label{fig:\@path-#2}
             \label{fig:#2}
           \end{minipage}
@@ -383,7 +423,7 @@
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
       \repeat
-      \caption{#5}
+      \caption[#5]{#5 \rr@button{#3}}
       \label{fig:\@path-#3}
       \label{fig:#3}
     \end{figure*}
@@ -404,7 +444,7 @@
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
       \repeat
-      \caption{#5}
+      \caption[#5]{#5 \rr@button{#3}}
       \label{fig:\@path-#3}
       \label{fig:#3}
     \end{figure}

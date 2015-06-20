@@ -58,13 +58,18 @@
 \setboolean{@revd}{false}
 \DeclareOption{revised}{\setboolean{@revd}{true}}
 \DeclareOption{new}{\setboolean{@revd}{false}}
+\newboolean{@repr}
+\setboolean{@repr}{false}
+\DeclareOption{reproduce}{\setboolean{@repr}{true}}
+\DeclareOption{nonreprod}{\setboolean{@repr}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper,onecolumn,long,noendfloat,new}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
   \LoadClass[11pt]{article}}
 \RequirePackage{seg}
+\ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
 \ifthenelse{\boolean{@eflt}}{
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
@@ -75,6 +80,33 @@
 \providecommand{\fig@file}[1]{\@path/\figdir/#1}
 \newcounter{@plots}
 \setcounter{@plots}{0}
+\newcommand{\rr@button}[1]{\ifthenelse{\boolean{@repr}}{%
+\IfFileExists{\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 0 1]{\@path/SConstruct}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ma}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Gnuplot}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.gp}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Sage}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.sage}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Matlab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ml}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Pylab}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.py}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{XFig}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.fig}{\fbox{\@path\ #1}}%
+}{%
+\ifthenelse{\equal{\@path}{Tikz}}{\setlength{\fboxsep}{0.5ex}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.tex}{\fbox{\@path\ #1}}%
+}{%
+}}}}}}}}}%
+{}}
 \ifthenelse{\boolean{@manu}}
 {\newcommand{\fullplot}[4][X]{
     \stepcounter{@plots}
@@ -96,7 +128,7 @@
     \begin{figure*}[#1]
       \centering
       \includegraphics[#3]{\fig@file{#2}}
-      \caption{#4}
+      \caption[#4]{#4 \rr@button{#2}}
       \label{fig:\@path-#2}
       \label{fig:#2}
     \end{figure*}
@@ -116,7 +148,7 @@
       \begin{figure*}[#1]
         \makebox{%
           \begin{minipage}{0.4\textwidth}
-            \caption{#4}
+            \caption[#4]{#4 \rr@button{#2}}
     \label{fig:\@path-#2}
             \label{fig:#2}
           \end{minipage}
@@ -180,7 +212,7 @@
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat
-      \caption{#5}
+      \caption[#5]{#5 \rr@button{#3}}
       \label{fig:\@path-#3}
       \label{fig:#3}
     \end{figure*}
@@ -201,7 +233,7 @@
         \label{fig:\item@i}}
       \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
       \repeat
-      \caption{#5}
+      \caption[#5]{#5 \rr@button{#3}}
       \label{fig:\@path-#3}
       \label{fig:#3}
     \end{figure}
