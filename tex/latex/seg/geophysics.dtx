@@ -253,28 +253,28 @@
 %    \begin{macrocode}
 \newcommand{\rr@button}[1]{\ifthenelse{\boolean{@repr}}{%
 \IfFileExists{\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=0 0 1]{\@path/SConstruct}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=0 0 1]{\@path/SConstruct}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ma}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ma}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Gnuplot}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.gp}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.gp}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Sage}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.sage}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.sage}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Matlab}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ml}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.ml}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Pylab}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.py}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=1 0 1]{\@path/#1.py}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{XFig}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.fig}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.fig}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Tikz}}{\setlength{\fboxsep}{0.5ex}%
-\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.tex}{\fbox{\@path\ #1}}%
+\textattachfile[mimetype=text/plain,color=0 1 1]{\@path/#1.tex}{\fbox{\@path/\ #1}}%
 }{%
 }}}}}}}}}%
 {}}
