@@ -81,7 +81,7 @@
 \newcounter{@plots}
 \setcounter{@plots}{0}
 \newcommand{\rr@button}[1]{\ifthenelse{\boolean{@repr}}{%
-\IfFileExists{\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
+\IfFileExists{\@path/.rsfproj}{\setlength{\fboxsep}{0.5ex}%
 \textattachfile[mimetype=text/plain,color=0 0 1]{\@path/SConstruct}{\fbox{\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%

@@ -128,7 +128,7 @@
     \includegraphics[#2]{\plot@file{#1}}
 \end{figure*}}
 \newcommand{\rr@button}[1]{\ifthenelse{\boolean{@book}}{}{%
-\IfFileExists{\paper@dir/\@path/SConstruct}{\setlength{\fboxsep}{0.5ex}%
+\IfFileExists{\paper@dir/\@path/.rsfproj}{\setlength{\fboxsep}{0.5ex}%
 \textattachfile[mimetype=text/plain,color=0 0 1]{\paper@dir/\@path/SConstruct}{\fbox{\paper@dir/\@path/\ #1}}%
 }{%
 \ifthenelse{\equal{\paper@dir/\@path}{Math}}{\setlength{\fboxsep}{0.5ex}%
