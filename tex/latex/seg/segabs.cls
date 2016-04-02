@@ -44,7 +44,7 @@
 \ExecuteOptions{times}
 \ProcessOptions*
 \LoadClass[11pt]{article}
-\ifthenelse{\boolean{@times}}{\RequirePackage{mathptmx}}{}
+\ifthenelse{\boolean{@times}}{\RequirePackage{newtxtext,newtxmath}}{}
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \RequirePackage{seg}
 \providecommand{\figdir}{.}
