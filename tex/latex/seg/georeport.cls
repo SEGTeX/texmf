@@ -241,6 +241,7 @@
 \ifthenelse{\boolean{@twoc}}{%
   \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@sidemultiplot}}}{%
   \def\multiplot{\@ifstar{\seg@fullmultiplot}{\seg@fullmultiplot}}}
+\renewcommand{\thesubfigure}{\alph{subfigure}}
 \providecommand{\seg@sidetabl}[4][htbp]{
   \begin{table}[#1]
     #4
