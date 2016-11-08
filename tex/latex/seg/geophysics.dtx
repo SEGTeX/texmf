@@ -222,6 +222,10 @@
 \RequirePackage{seg}
 \ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
 %    \end{macrocode}
+% Load rotating package to support sidewaystabl
+%    \begin{macrocode}
+\RequirePackage{rotating}
+%    \end{macrocode}
 %
 % \subsection{Figures and Tables}
 % Either load the endfloat package or define special plotting commands
@@ -462,7 +466,7 @@
 \setcounter{@tabls}{0}
 %    \end{macrocode}
 % \begin{macro}{\tabl}
-% Define the |\tabl| macro for handling tables.
+% Define the |\tabl| and  |\sidewaystabl| macros for handling tables.
 %    \begin{macrocode}
 \ifthenelse{\boolean{@manu}}{
   \providecommand{\tabl}[4][X]{
@@ -473,6 +477,16 @@
         \caption{#3}
         \label{tbl:#2}
       \end{table}\clearpage
+    }
+  }
+  \providecommand{\sidewaystabl}[4][X]{
+    \stepcounter{@tabls}
+    \AtEndDocument{
+      \begin{sidewaystable}[p]
+        #4
+        \caption{#3}
+        \label{tbl:#2}
+      \end{sidewaystable}\clearpage
     }
   }
 }{
@@ -489,6 +503,13 @@
       \caption{#3}
       \label{tbl:#2}
     \end{table*}
+  }
+  \providecommand{\sidewaystabl}[4][htbp]{
+    \begin{sidewaystable}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{sidewaystable}
   }
   \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 }

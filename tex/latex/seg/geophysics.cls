@@ -70,6 +70,7 @@
   \LoadClass[11pt]{article}}
 \RequirePackage{seg}
 \ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
+\RequirePackage{rotating}
 \ifthenelse{\boolean{@eflt}}{
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
@@ -256,6 +257,16 @@
       \end{table}\clearpage
     }
   }
+  \providecommand{\sidewaystabl}[4][X]{
+    \stepcounter{@tabls}
+    \AtEndDocument{
+      \begin{sidewaystable}[p]
+        #4
+        \caption{#3}
+        \label{tbl:#2}
+      \end{sidewaystable}\clearpage
+    }
+  }
 }{
   \providecommand{\seg@sidetabl}[4][htbp]{
     \begin{table}[#1]
@@ -270,6 +281,13 @@
       \caption{#3}
       \label{tbl:#2}
     \end{table*}
+  }
+  \providecommand{\sidewaystabl}[4][htbp]{
+    \begin{sidewaystable}[#1]
+      #4
+      \caption{#3}
+      \label{tbl:#2}
+    \end{sidewaystable}
   }
   \def\tabl{\@ifstar{\seg@fulltabl}{\seg@sidetabl}}
 }
