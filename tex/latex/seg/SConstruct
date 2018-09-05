@@ -77,7 +77,7 @@ env.Pdf('geophysics_manuscript.pdf',
 env.Command('geophysics_paper.ltx','geophysics_example.ltx',
             'sed s/manuscript/paper/ < $SOURCE > $TARGET')
 
-for case in ('paper','twocolumn','endfloat'):    
+for case in ('paper','twocolumn','endfloat','noblind'):    
     env.Pdf('geophysics_%s.pdf' % case,
             ['geophysics_%s.ltx' % case,'geophysics.cls',
              'example.bib','Fig/exgr.pdf'])

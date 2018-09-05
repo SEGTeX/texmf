@@ -62,8 +62,12 @@
 \setboolean{@repr}{false}
 \DeclareOption{reproduce}{\setboolean{@repr}{true}}
 \DeclareOption{nonreprod}{\setboolean{@repr}{false}}
+\newboolean{@blind}
+\setboolean{@blind}{true}
+\DeclareOption{blind}{\setboolean{@blind}{true}}
+\DeclareOption{noblind}{\setboolean{@blind}{false}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod,blind}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -449,8 +453,9 @@
       \seg@title
       \begin{center}
         \ifthenelse{\boolean{@manu}}{%
+          \ifthenelse{\boolean{@blind}}{}{
           \textbf{#1} \\
-          \emph{\seg@address}\ \\
+          \emph{\seg@address}\ \\}
           (\today) \\
   \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number \\}
   Running head: \textbf{\seg@rhead} \\
