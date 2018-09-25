@@ -202,6 +202,13 @@
 \DeclareOption{reproduce}{\setboolean{@repr}{true}}
 \DeclareOption{nonreprod}{\setboolean{@repr}{false}}
 %    \end{macrocode}
+% Blind review option (only for manuscripts)
+%    \begin{macrocode}
+\newboolean{@blind}
+\setboolean{@blind}{true}
+\DeclareOption{blind}{\setboolean{@blind}{true}}
+\DeclareOption{noblind}{\setboolean{@blind}{false}}
+%    \end{macrocode}
 %
 %    \begin{macrocode}
 %    \end{macrocode}
@@ -211,7 +218,7 @@
 %    \end{macrocode}
 % We will use onecolumn paper and 11pt fonts by default.
 %    \begin{macrocode}
-\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod}
+\ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod,blind}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
@@ -743,8 +750,9 @@
       \seg@title
       \begin{center}
         \ifthenelse{\boolean{@manu}}{%
+          \ifthenelse{\boolean{@blind}}{}{
           \textbf{#1} \\
-          \emph{\seg@address}\ \\
+          \emph{\seg@address}\ \\}
           (\today) \\
 	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number \\}
 	  Running head: \textbf{\seg@rhead} \\
