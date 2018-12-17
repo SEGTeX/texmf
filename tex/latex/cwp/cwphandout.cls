@@ -75,10 +75,10 @@
 \includegraphics[width=0.50in]{CSMlogo}
 \hspace{+0.20in}
 \begin{minipage}{\textwidth}
-  \vspace{-1.25in}
+  \vspace{-1.00in}
   \begin{center}
-  {\small #1 \hfill #2 \\
-  \@name \hfill \@hdate } \\ 
+  {\small \textbf{#1} \hfill {\sc #2} \\
+  \textbf{\@name} \hfill \@hdate } \\ 
   \hrulefill
   \end{center}
   \end{minipage}
