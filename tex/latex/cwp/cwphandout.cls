@@ -3,7 +3,6 @@
 
 \RequirePackage{ifthen}
 \RequirePackage{times}
-\RequirePackage{fancyhdr}
 
 \newboolean{@web}
 \DeclareOption{web}{\setboolean{@web}{true}}
@@ -64,13 +63,6 @@
 \setlength{\textfloatsep}{30pt plus 3pt minus 6pt}
 \setlength{\headsep}{0in}}
 
-%\pagestyle{fancy} % load package
-%\fancyhf{} % clear styles
-%\fancyhead[RO,RE]{
-%\hspace{-1.00in}
-%\includegraphics[height=0.5in,width=0.5in]{CSMlogo}
-%}
-
 \newcommand{\@name}{Paul Sava}
 \renewcommand{\author}[1]{\renewcommand{\@name}{#1}}
 
@@ -83,7 +75,7 @@
 \includegraphics[width=0.50in]{CSMlogo}
 \hspace{+0.20in}
 \begin{minipage}{\textwidth}
-  \vspace{-0.65in}
+  \vspace{-1.25in}
   \begin{center}
   {\small #1 \hfill #2 \\
   \@name \hfill \@hdate } \\ 
