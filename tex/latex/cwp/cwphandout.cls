@@ -77,7 +77,7 @@
 \begin{minipage}{\textwidth}
   \vspace{-1.00in}
   \begin{center}
-  {\small \textbf{#1} \hfill {\sc #2} \\
+  {\small \textbf{#1} \hfill \textbf{#2} \\
   \textbf{\@name} \hfill \@hdate } \\ 
   \hrulefill
   \end{center}
