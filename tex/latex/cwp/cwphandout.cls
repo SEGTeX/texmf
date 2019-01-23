@@ -72,6 +72,7 @@
 \newcommand{\@cname}{Class Name}
 \renewcommand{\title}[2]{%
 \hspace{-1.00in}
+\vspace{-0.50in}
 \includegraphics[width=0.50in]{CSMlogo}
 \hspace{+0.20in}
 \begin{minipage}{\textwidth}
