@@ -1,7 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpreport}[]
 
-\LoadClass{cwpreport2012}
+% \LoadClass{cwpreport2012}
+\LoadClass{cwpreport2020}
 
 \RequirePackage{graphicx}
 \RequirePackage{ifthen}
