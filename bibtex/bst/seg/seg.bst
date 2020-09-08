@@ -261,7 +261,7 @@ FUNCTION {emphasize}
 { duplicate$ empty$
     { pop$ "" }
 %%    { "{\em " swap$ * "}" * }			%% emphasize is bold
-    { "{\bf " swap$ * "}" * }			%% in seglike.bst
+    { "{\bfseries " swap$ * "}" * }			%% in seglike.bst
   if$
 }
 
@@ -500,7 +500,7 @@ FUNCTION {format.bvolume}
     { series empty$
         { ", " * volume emphasize * }
         { "volume" volume emphasize tie.or.space.connect
-	  " {\it of} " * series *
+	  " {\itshape of} " * series *
         }
       if$
       "volume and number" number either.or.check
@@ -520,7 +520,7 @@ FUNCTION {format.number.series}
 %	  number tie.or.space.connect
 	  series empty$
 	    { "there's a number but no series in " cite$ * warning$ }
-%	    { " {\it in} " * series * }
+%	    { " {\itshape in} " * series * }
 %       Replaced by
 	    { series ", No.~" * number * }
 	  if$
@@ -621,8 +621,8 @@ FUNCTION {format.in.ed.booktitle}
 %	{ "In " booktitle emphasize * }
 %	{ "In " format.editors * ", " * booktitle emphasize * }
 %%			%% modified according to seg.bst
-        { "{\it in} " booktitle * }
-        { "{\it in} " format.bookeditors * " " * booktitle * }
+        { "{\itshape in} " booktitle * }
+        { "{\itshape in} " format.bookeditors * " " * booktitle * }
       if$
     }
   if$
@@ -635,8 +635,8 @@ FUNCTION {format.in.ed.title}                   %% used in inbook
 %	{ "In " booktitle emphasize * }
 %	{ "In " format.editors * ", " * booktitle emphasize * }
 %%			%% modified according to seg.bst
-        { "{\it in} " title * }
-        { "{\it in} " format.bookeditors * " " * title * }
+        { "{\itshape in} " title * }
+        { "{\itshape in} " format.bookeditors * " " * title * }
       if$
     }
   if$
