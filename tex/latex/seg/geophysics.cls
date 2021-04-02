@@ -120,8 +120,10 @@
         \centering
         \includegraphics[#3]{\fig@file{#2}}
         \caption [#4]{#4 \\
+          \ifthenelse{\boolean{@blind}}{%
+            \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}{%
   \textbf{\seg@lhead} --
-  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}}
 \label{fig:\@path-#2}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -193,8 +195,10 @@
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}
         \repeat
         \caption[#5]{#5 \\
+          \ifthenelse{\boolean{@blind}}{%
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}{%
   \textbf{\seg@lhead} --
-  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
+  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}}
 \label{fig:\@path-#3}
         \label{fig:#3}
       \end{figure}\clearpage
@@ -317,12 +321,11 @@
 }}
 \ifthenelse{\boolean{@revd}}{
   \RequirePackage{color}%
-  \RequirePackage{ulem}%
-  \normalem
+  \RequirePackage{soul}%
 }{}
 \DeclareRobustCommand{\new}[1]{%
   \ifthenelse{\boolean{@revd}}{\textit{\textcolor{red}{#1}}}{#1}}
-\DeclareRobustCommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\sout{#1}}}{}}
+\DeclareRobustCommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\st{#1}}}{}}
 \RequirePackage{natbib}
 \bibpunct[,]{(}{)}{;}{a}{,}{,}
 \DeclareRobustCommand{\refname}{REFERENCES}
