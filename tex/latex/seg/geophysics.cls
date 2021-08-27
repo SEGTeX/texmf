@@ -71,7 +71,7 @@
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
-  \LoadClass[11pt]{article}}
+  \LoadClass[12pt]{article}}
 \RequirePackage{seg}
 \ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
 \RequirePackage{rotating}
