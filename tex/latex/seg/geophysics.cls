@@ -75,6 +75,7 @@
 \RequirePackage{seg}
 \ifthenelse{\boolean{@repr}}{\RequirePackage{attachfile2}}{}
 \RequirePackage{rotating}
+\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\RequirePackage{xcomment}}{}
 \ifthenelse{\boolean{@eflt}}{
   \ifthenelse{\boolean{@manu}}{\RequirePackage{endfloat}}{}
 }{
@@ -469,8 +470,11 @@
     }}}
 \renewcommand{\maketitle}{\ifthenelse{\boolean{@shrt}}{%
     \ifthenelse{\boolean{@twoc}}{\twocolumn[\seg@author]}{\seg@author}}{}}
-\ifthenelse{\boolean{@manu}}{
-  \renewenvironment{abstract}{\seg@author
+\ifthenelse{\boolean{@manu}}{%
+  \renewenvironment{abstract}{
+    \ifthenelse{\boolean{@manu}\AND\boolean{@blind}}%
+    {{\setboolean{@blind}{false}\seg@author}\newpage\setcounter{page}{1}}{}%
+    \seg@author
     \section{ABSTRACT}}{\newpage}
 }
 {
@@ -485,6 +489,9 @@
     \medskip\end{minipage}\end{lrbox}%
     \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
 }
+\newenvironment{acknowledgments}%
+  {\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\comment}{\section{acknowledgments}}}%
+  {\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\endcomment}{}}
 \ifthenelse{\boolean{@manu}}
 {\pagestyle{plain}\thispagestyle{plain}}
 {\newcommand{\ps@seg}{%

@@ -82,6 +82,9 @@ for case in ('paper','twocolumn','endfloat','noblind'):
             ['geophysics_%s.ltx' % case,'geophysics.cls',
              'example.bib','Fig/exgr.pdf'])
 
+env.Pdf('geophysics_titlepage.pdf',['geophysics_titlepage.ltx','geophysics_example.pdf'])
+env.Pdf('geophysics_notitlepage.pdf',['geophysics_notitlepage.ltx','geophysics_example.pdf'])
+
 for case in ('segabs','eage'):
     env.Pdf(case+'_example.pdf',
             [case+'_example.ltx',case+'.cls',
