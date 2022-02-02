@@ -443,6 +443,17 @@ FUNCTION {format.doi.access}
   if$
 }
 
+FUNCTION {format.doi}
+{ doi empty$
+    { }
+    { "; doi: \href{https://doi.org/" * doi * "}{" * doi * "}" * }
+  if$
+  accessed empty$   % To avoid warning
+    { "" }
+    { "accessed " accessed * }
+  if$
+}
+
 FUNCTION {format.title}
 { title empty$
     { "" }
@@ -823,6 +834,7 @@ FUNCTION {article}
       format.pages output
     }
   if$
+  format.doi output
   new.block
   format.note output
   fin.entry
