@@ -72,6 +72,8 @@ ENTRY
     chapter
 %%                      new entry for earticle
     doi
+%%                      new entry for article number
+    eid
     edition
     editor
     howpublished
@@ -589,7 +591,11 @@ FUNCTION {format.vol.num.pages}
     }
   if$
   pages empty$
-    'skip$
+    { eid missing$
+        'skip$
+        { ", Art no. " * eid *}
+      if$
+    }
     { duplicate$ empty$
         { pop$ format.pages }
         { ", " * pages n.dashify * }
