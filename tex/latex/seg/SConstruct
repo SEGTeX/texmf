@@ -26,8 +26,8 @@ for cls in ('geophysics','georeport','segabs','eage'):
     
 def interrupt(signum,frame):
     global child
-    print "%s: aborting..." % sys.argv[0]
-    print "Press Enter a few times to empty LaTeX buffer!"
+    print("%s: aborting..." % sys.argv[0])
+    print("Press Enter a few times to empty LaTeX buffer!")
     if child:
         os.kill(child,signal.SIGINT)
     sys.exit(1)
@@ -61,7 +61,7 @@ def latex2pdf(target=None,source=None,env=None):
 def latex_emitter(target, source, env):
     '''Produces a list of extra outputs from the LaTeX/BibTeX'''
     base = re.sub('\.[^\.]+$','',str(source[0]))
-    extra = map (lambda x: base+x,['.pdf','.aux','.log','.bbl','.blg'])
+    extra = [base+x for x in ('.pdf','.aux','.log','.bbl','.blg')]
     return (extra,source)
 
 Pdf = Builder(action = Action(latex2pdf),
@@ -81,6 +81,9 @@ for case in ('paper','twocolumn','endfloat','noblind'):
     env.Pdf('geophysics_%s.pdf' % case,
             ['geophysics_%s.ltx' % case,'geophysics.cls',
              'example.bib','Fig/exgr.pdf'])
+
+env.Pdf('geophysics_titlepage.pdf',['geophysics_titlepage.ltx','geophysics_example.pdf'])
+env.Pdf('geophysics_notitlepage.pdf',['geophysics_notitlepage.ltx','geophysics_example.pdf'])
 
 for case in ('segabs','eage'):
     env.Pdf(case+'_example.pdf',

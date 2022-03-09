@@ -216,13 +216,13 @@
 %    \begin{macrocode}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %    \end{macrocode}
-% We will use onecolumn paper and 11pt fonts by default.
+% We will use onecolumn paper and 12pt fonts by default.
 %    \begin{macrocode}
 \ExecuteOptions{paper,onecolumn,long,noendfloat,new,nonreprod,blind}
 \ProcessOptions*
 \ifthenelse{\boolean{@twoc}}{%
   \LoadClass[9pt]{article}}{%
-  \LoadClass[11pt]{article}}
+  \LoadClass[12pt]{article}}
 %    \end{macrocode}
 % Load SEG style package
 %    \begin{macrocode}
@@ -232,6 +232,11 @@
 % Load rotating package to support sidewaystabl
 %    \begin{macrocode}
 \RequirePackage{rotating}
+%    \end{macrocode}
+% Load comment package to exclude acknowledgments section for double-blind 
+% review.
+%    \begin{macrocode}
+\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\RequirePackage{xcomment}}{}
 %    \end{macrocode}
 %
 % \subsection{Figures and Tables}
@@ -303,9 +308,11 @@
       \begin{figure}[p]
         \centering
         \includegraphics[#3]{\fig@file{#2}}
-        \caption [#4]{#4 \\ 
+        \caption [#4]{#4 \\
+          \ifthenelse{\boolean{@blind}}{%
+            \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}{%
 	  \textbf{\seg@lhead} --
-	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
+	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}}
 	\label{fig:\@path-#2}
         \label{fig:#2}
       \end{figure}\clearpage
@@ -410,8 +417,10 @@
         \ifthenelse{\value{sub@fig} = #2}{\\ \setcounter{sub@fig}{0}}{}   
         \repeat
         \caption[#5]{#5 \\
+          \ifthenelse{\boolean{@blind}}{%
+	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}{%
 	  \textbf{\seg@lhead} --
-	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}
+	  \ifthenelse{\equal{\ms@number}{Manuscript}}{}{\ms@number}}}
 	\label{fig:\@path-#3}
         \label{fig:#3}
       \end{figure}\clearpage
@@ -558,8 +567,9 @@
 %    \begin{macrocode}
 \ifthenelse{\boolean{@revd}}{
   \RequirePackage{color}%
-  \RequirePackage{ulem}%
-  \normalem
+  \RequirePackage{soul}%
+%  \RequirePackage{ulem}%
+%  \normalem
 }{}
 %    \end{macrocode}
 % In a revised paper, changes are marked with |\new| and appear in
@@ -568,7 +578,7 @@
 %    \begin{macrocode}
 \DeclareRobustCommand{\new}[1]{%
   \ifthenelse{\boolean{@revd}}{\textit{\textcolor{red}{#1}}}{#1}}
-\DeclareRobustCommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\sout{#1}}}{}}
+\DeclareRobustCommand{\old}[1]{\ifthenelse{\boolean{@revd}}{\textcolor{blue}{\st{#1}}}{}}
 %    \end{macrocode}
 % \subsection{References}
 % Load the \textsf{natbib} package for natural-science-style citations.
@@ -736,7 +746,7 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\author}
-% Finally, everything goes to \author and is stored in |\seg@author|.
+% Finally, everything goes to |\author| and is stored in |\seg@author|.
 %    \begin{macrocode}
 \providecommand{\seg@author}{}
 \renewcommand{\author}[1]{%
@@ -773,8 +783,11 @@
 % \begin{macro}{abstract}
 % For manuscripts, the abstract environment is simply a section.
 %    \begin{macrocode}
-\ifthenelse{\boolean{@manu}}{
-  \renewenvironment{abstract}{\seg@author
+\ifthenelse{\boolean{@manu}}{%
+  \renewenvironment{abstract}{
+    \ifthenelse{\boolean{@manu}\AND\boolean{@blind}}%
+    {{\setboolean{@blind}{false}\seg@author}\newpage\setcounter{page}{1}}{}%
+    \seg@author
     \section{ABSTRACT}}{\newpage}
 }
 %    \end{macrocode}
@@ -792,6 +805,14 @@
     \medskip\end{minipage}\end{lrbox}%
     \ifthenelse{\boolean{@shrt}}{}{\noindent\fbox{\usebox{\seg@abstract}}}}
 } 
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{acknowledgments}
+% Acknowledgments section is removed for double-blind review.
+%    \begin{macrocode}
+\newenvironment{acknowledgments}%
+  {\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\comment}{\section{acknowledgments}}}%
+  {\ifthenelse{\boolean{@manu}\AND\boolean{@blind}}{\endcomment}{}}
 %    \end{macrocode}
 % \end{macro}
 % \subsection{Page style}
