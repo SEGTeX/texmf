@@ -4,7 +4,7 @@
 %  Journals use two-sided printing.
 %
 \@twosidetrue
-\@twocolumntrue
+%\@twocolumntrue
 \@mparswitchtrue
 \def\ds@draft{\overfullrule 5pt}
 \def\ds@twocolumn{\@twocolumntrue}
