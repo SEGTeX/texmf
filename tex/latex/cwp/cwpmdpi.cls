@@ -1,18 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwpmdpi}[]
 
-\RequirePackage{graphicx}
-\RequirePackage{ifthen}
-
+% Pass options (including journal short name) to base mdpi class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{mdpi}}
 \ProcessOptions*
 \LoadClass{mdpi}
 
 % ------------------------------------------------------------
-% Fix Header Height Warning
+% Fix Header Height Warning & Link Color Hooks
 % ------------------------------------------------------------
 \setlength{\headheight}{20.0pt}
 \addtolength{\topmargin}{-8.0pt}
+
+\providecommand{\@urlcolor}{blue}
+\providecommand{\@linkcolor}{blue}
+\providecommand{\@citecolor}{blue}
 
 % ------------------------------------------------------------
 % Paths & Graphics Search
@@ -20,51 +22,76 @@
 \graphicspath{{/Users/psava/Library/texmf/tex/latex/cwp/}}
 
 % ------------------------------------------------------------
-% MDPI Title, Author, & Address Metadata Aliases
+% Safe Defaults (Prevents \begin{document} crashes)
 % ------------------------------------------------------------
-\gdef\title#1{\gdef\@Title{#1}\Title{#1}}
-\gdef\author#1{\gdef\@Author{#1}\Author{#1}}
-\gdef\address#1{\gdef\@address{#1}\Address{#1}}
-\gdef\affil#1{\gdef\@address{#1}\Address{#1}}
-
-% Safe defaults for basic title/author info
-\providecommand{\@Title}{}
-\providecommand{\@Author}{}
-\providecommand{\@address}{}
-\providecommand{\Address}[1]{\gdef\@address{#1}}
+\gdef\@Title{}
+\gdef\@title{}
+\gdef\@Author{}
+\gdef\@author{}
+\gdef\@address{}
+\gdef\@Address{}
+\gdef\@abstract{}
+\gdef\@keyword{}
 
 % ------------------------------------------------------------
-% Strict Numeric & Metadata Defaults for MDPI Engine
+% Metadata Overrides & Hooking MDPI's Internal Layout Engine
 % ------------------------------------------------------------
+\gdef\Title#1{\gdef\@Title{#1}\gdef\@title{#1}}
+\gdef\Author#1{\gdef\@Author{#1}\gdef\@author{#1}}
+\gdef\Address#1{\gdef\@address{#1}\gdef\@Address{#1}}
+\gdef\Abstract#1{\gdef\@abstract{#1}}
+
+\gdef\title#1{\Title{#1}}
+\gdef\author#1{\Author{#1}}
+\gdef\address#1{\Address{#1}}
+\gdef\affil#1{\Address{#1}}
+\gdef\journal#1{\gdef\@journal{#1}\gdef\@journalfull{#1}}
+\gdef\Journal#1{\journal{#1}}
+
+% Defaults for MDPI numeric sequence engine
 \gdef\@doiabbr{journal}
 \gdef\@pubvolume{1}
 \gdef\@issuenum{1}
-\gdef\@journal{journal}
-
-% Define both non-hyphenated and hyphenated variants for compatibility
 \gdef\@articlenumber{1}
 \expandafter\gdef\csname @article-number\endcsname{1}
 
 \providecommand{\doiabbr}[1]{\gdef\@doiabbr{#1}}
 \providecommand{\pubvolume}[1]{\gdef\@pubvolume{#1}}
 \providecommand{\issuenum}[1]{\gdef\@issuenum{#1}}
-
-% Update both internal macros when \articlenumber is called
 \providecommand{\articlenumber}[1]{%
   \gdef\@articlenumber{#1}%
   \expandafter\gdef\csname @article-number\endcsname{#1}%
 }
 
-% Date default initializations
 \providecommand{\@datepublished}{\today}
 \providecommand{\@datereceived}{\today}
 \providecommand{\@daterevised}{\today}
 \providecommand{\@dateaccepted}{\today}
 
-\providecommand{\datepublished}[1]{\gdef\@datepublished{#1}}
-\providecommand{\datereceived}[1]{\gdef\@datereceived{#1}}
-\providecommand{\daterevised}[1]{\gdef\@daterevised{#1}}
-\providecommand{\dateaccepted}[1]{\gdef\@dateaccepted{#1}}
+% ------------------------------------------------------------
+% Force MDPI Header Layout Construction
+% ------------------------------------------------------------
+% Re-executes MDPI's internal \@maketitle routine after mdpi.tex 
+% populates all title, author, address, and abstract macros.
+% Defer the full MDPI header to the body. The stock class prints
+% title/abstract via \AfterEndPreamble, before the Madagascar body sets the
+% front-matter macros; neutralize those so nothing prints empty, and re-run the
+% real routines from \makemdpiheader once \Title/\Author/\address/\abstract/
+% \keyword are populated.
+\let\cwp@maketitle\maketitle
+\let\cwp@maketitlen\maketitlen
+\@ifundefined{abstractkeywords}{\let\cwp@abstractkeywords\relax}%
+  {\let\cwp@abstractkeywords\abstractkeywords}
+\renewcommand{\maketitle}{}
+\renewcommand{\maketitlen}{}
+\@ifundefined{abstractkeywords}{}{\renewcommand{\abstractkeywords}{}}
+\newcommand{\makemdpiheader}{%
+  \begingroup
+  \cwp@maketitle
+  \cwp@maketitlen
+  \cwp@abstractkeywords
+  \endgroup
+}
 
 % ------------------------------------------------------------
 % Pathing and Figures
