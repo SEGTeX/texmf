@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{cwppsj}[]
 
-% Planetary Science Journal: AASTeX v7 (aastex701.cls, texmf/tex/latex/aastex)
+% Planetary Science Journal: AASTeX v7 (aastex701.cls, texmf/tex/latex/cwp)
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{aastex701}}
 \ProcessOptions*
 \LoadClass{aastex701}
